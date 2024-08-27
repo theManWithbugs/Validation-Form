@@ -18,6 +18,7 @@ urlpatterns = [
     path('base/excluir/', views.excluir_form, name='excluir_form'),
     path('base/editar_dados',views.capturar_cpf, name='capturar_dados'),
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
+    path('base/not_found', views.notfound_view, name='not_found_page'),
 ]
 
 

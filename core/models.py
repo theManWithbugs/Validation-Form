@@ -35,19 +35,24 @@ class Cidadao(models.Model):
     cpf = models.CharField(max_length=11, primary_key=True)
     nome = models.CharField(max_length=60)
     nome_social = models.CharField(max_length=50, blank=True, null=True)
-    endereco = models.CharField(max_length=50)
+    endereco = models.CharField(max_length=50, verbose_name='Endereço')
     cidade = models.CharField(max_length=20)
-    telefone = models.CharField(max_length=20)
-    estado = models.CharField(max_length=15)
+    telefone = models.CharField(max_length=13)
+    estado = models.CharField(
+                    choices=c_estado,
+                    max_length=19,
+                    blank=False,
+                    null=False,
+                     )
     data_nascimento = models.DateField()
     idade = models.CharField(max_length=3, blank=True)  
     naturalidade = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1, choices=c_sexo, default='selecione')
-    mae = models.CharField(max_length=50)
+    mae = models.CharField(max_length=50, verbose_name='Nome da mãe')
     estado_civil = models.CharField(max_length=20)
-    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=True)
+    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=True, verbose_name='Remuneração')
     renda_individual = models.CharField(max_length=50, choices=c_renda_invidual)
-    cor_raca = models.CharField(max_length=8, choices=c_raca_cor)
+    cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça')
     escolaridade = models.CharField(max_length=50)
 
     def __str__(self):
@@ -71,17 +76,26 @@ class Cidadao(models.Model):
 # FORMULÁRIO 2
 class HistoricoSaude(models.Model):
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='historicos_saude')
-    saude = models.CharField(max_length=255, default='')
-    tratamento_psiquiatrico = models.CharField(max_length=100)
-    medicacao_controlada = models.CharField(max_length=100, default='')
-    deficiencia = models.CharField(max_length=100, default='')
+    saude = models.CharField(max_length=255, default='', verbose_name='Apresenta problemas de saude?')
+    tratamento_psiquiatrico = models.CharField(max_length=100, verbose_name='Faz ou fez tratamento psiquiatrico?')
+    medicacao_controlada = models.CharField(max_length=100, default='', verbose_name='Faz uso de alguma medicação controlada?')
+    deficiencia = models.CharField(
+        choices=c_sim_nao,
+        max_length=3, 
+        verbose_name='É portador de alguma deficiência')
+    
     drogas_uso = models.CharField(
         max_length=20,
-        choices=DROGAS_CHOICES,
+        choices=DROGAS_CHOICES, 
         blank=True,
-        null=True
+        null=True,
+        verbose_name='Faz ou já fez uso de'
     )
-    tratamento = models.CharField(max_length=100, default='')  # Definido como não-nulo com valor padrão
+    tratamento = models.CharField(
+                                choices=c_sim_nao,
+                                max_length=3, 
+                                default='', 
+                                verbose_name='Já procurou tratamento?')  # Definido como não-nulo com valor padrão
 
     def __str__(self):
         return f"Histórico de Saúde do Cidadão {self.cidadao.cpf}"
@@ -104,13 +118,12 @@ class HistoricoCriminal(models.Model):
     juiz_de_origem = models.CharField(max_length=50, blank=True)
     medida_aplicada = models.CharField(max_length=50, blank=True)
     tipo_penal = models.CharField(max_length=50, blank=True)
-    violencia_domestica = models.CharField(max_length=50, blank=True)
-    violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True)
-    grau_de_parentesco = models.CharField(max_length=50, blank=True)
-    reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True)
+    violencia_domestica = models.CharField(max_length=50, blank=True, verbose_name='Em caso de violência domestica')
+    violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True, verbose_name='Nome da vitima de violência domestica')
+    grau_de_parentesco = models.CharField(max_length=50, blank=True, verbose_name='Grau de parentesco da vitima')
+    reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True, verbose_name='Relata reincidência?') #Deverá haver duas opções sim ou não isso não deve ser um charfield
     sugestao_de_trabalho = models.CharField(max_length=36, choices=c_sugestao_trabalho, blank=True, null=True)
-    sugest_encaminhamento = models.CharField(max_length=36, choices=c_sugestao_encaminhamento, blank=True, null=True)
-    prisao = models.CharField(max_length=255, default='', blank=True)  # Valor padrão definido
+    sugest_encaminhamento = models.CharField(max_length=36, choices=c_sugestao_encaminhamento, blank=True, null=True, verbose_name='Sugestão de encaminhamento')
 
     def __str__(self):
         return f"Histórico Criminal do Cidadão {self.cidadao.cpf}"
@@ -126,16 +139,16 @@ class HistoricoCriminal(models.Model):
 # FORMULÁRIO 4
 class InformacoesComplementares(models.Model):
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='informacoes_complementares')
-    quantas_pessoas = models.CharField(max_length=100)
-    nome_familiar = models.CharField(max_length=70)
-    parentesco = models.CharField(max_length=100, default='')
-    idade_familiar = models.CharField(max_length=3, default='0')  # Valor padrão definido
-    escolaridade_familiar = models.CharField(max_length=100)
-    ocupacao = models.CharField(max_length=100)
-    analise_descritiva = models.CharField(max_length=300)
+    quantas_pessoas = models.CharField(max_length=100, verbose_name='Quantas pessoas moram com você ? (inclua você na contagem)')
+    nome_familiar = models.CharField(max_length=70, verbose_name='Nome de um familiar')
+    parentesco = models.CharField(max_length=100, default='', verbose_name='Grau de parentesco')
+    idade_familiar = models.CharField(max_length=3, default='0', verbose_name='Idade do familiar')  # Valor padrão definido
+    escolaridade_familiar = models.CharField(max_length=100, verbose_name='Grau de Escolaridade')
+    ocupacao = models.CharField(max_length=100, verbose_name='Ocupação')
+    analise_descritiva = models.CharField(max_length=300, verbose_name='Análise descritiva')
     tecnico_responsavel = models.CharField(max_length=200)
     data = models.CharField(max_length=12)
-    evolucao_percepcoes = models.CharField(max_length=255)
+    evolucao_percepcoes = models.CharField(max_length=255, verbose_name='Evolução percepções')
 
     def __str__(self):
         return self.nome_familiar

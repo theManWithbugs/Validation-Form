@@ -5,7 +5,6 @@ from .models import *
 from django.core.exceptions import ValidationError
 import re
 
-
 #classe de validação de cpf
 class CPFValidationForm(forms.Form):
     cpf = forms.CharField(
@@ -55,17 +54,22 @@ class HistoricoSaudeForm(forms.ModelForm):
     class Meta:
         model = HistoricoSaude
         fields = '__all__'
+        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
+
  
 class HistoricoCriminalForm(forms.ModelForm):
     class Meta:
         model = HistoricoCriminal
         fields = '__all__'
+        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
 
 
 class InformacoesComplementaresForm(forms.ModelForm):
     class Meta:
         model = InformacoesComplementares
         fields = '__all__'
+        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
+
 
 #Essa classe é usada para buscar o cidadão pelo cpf
 class BuscarCidadaoForm(forms.Form):

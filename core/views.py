@@ -165,7 +165,7 @@ def busca_form_view(request):
             cidadao = Cidadao.objects.get(cpf=cpf)
 
         except Cidadao.DoesNotExist:
-            messages.error(request, 'Cidadão não econtrado no banco de dados!')
+            return redirect('not_found_page')
 
         else:
             # Recupera o primeiro histórico de saúde associado ao cidadão
@@ -202,6 +202,10 @@ def footer_view(request):
 
 def usuario_view(request):
     return render(request, 'account/perfil.html')
+
+def notfound_view(request):
+    template_name='commons/include/not_found.html'
+    return render(request, template_name)
 
 def excluir_form(request):
     form = BuscarCidadaoForm(request.POST or None)
@@ -243,7 +247,7 @@ def atualizar_dados(request, cpf):
         cidadao = Cidadao.objects.get(cpf=cpf)
     except Cidadao.DoesNotExist:
         messages.error(request, 'Cidadao não encontrado')
-        return redirect('capturar_cpf')
+        return redirect('not_found_page')
 
     if request.method == 'POST':
         form_cidadao = AlterarDadosForm(request.POST, instance=cidadao)
