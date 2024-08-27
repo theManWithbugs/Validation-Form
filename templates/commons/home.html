@@ -1,0 +1,47 @@
+{% extends 'commons/base.html' %}
+
+{% block content %}
+
+<div class="card" style="
+    border-radius: 20px; 
+    margin-top: 80px; 
+    background-color: #ffffff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+    max-width: 600px; 
+    margin-left: auto; 
+    margin-right: auto;
+">
+    <div class="card-body text-center">
+        <h4 class="card-title" style="font-size: 24px; font-weight: bold; color: #333;">Opções</h4>
+        <div class="d-flex justify-content-center gap-4 mt-4" style="
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            padding: 10px; 
+            border-radius: 10px;
+        ">
+            <a href="{% url 'form1' %}" class="btn btn-secondary" style="
+                background-color: #007bff; 
+                border-color: #007bff; 
+                padding: 12px 24px; 
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            " onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">NOVO CADASTRO</a>
+            <a href="{% url 'busca' %}" class="btn btn-secondary" style="
+                background-color: #28a745; 
+                border-color: #28a745; 
+                padding: 12px 24px; 
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            " onmouseover="this.style.backgroundColor='#218838'" onmouseout="this.style.backgroundColor='#28a745'">CONSULTAR DADOS</a>
+            <a href="{% url 'capturar_dados' %}" class="btn btn-secondary" style="
+            background-color: #dc3545; 
+            border-color: #dc3545; 
+            padding: 12px 24px; 
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#c82333'" onmouseout="this.style.backgroundColor='#dc3545'">EDITAR DADOS</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

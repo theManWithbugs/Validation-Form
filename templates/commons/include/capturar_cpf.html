@@ -1,0 +1,55 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>Title</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+        <style>
+            body {
+                margin-top: 80px;
+                background-color: rgb(20, 104, 104);
+            }
+
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+            }
+
+            .navbar {
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+
+{% include 'commons/include/navbar.html' %}
+    {% block content %}
+    <body>
+
+        <div class="container">
+            <div class="bg-white p-3 rounded">
+                <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Buscar dados para edição</h3>
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-center w-100">
+                                <form class="d-flex w-100" method="post">
+                                    {% csrf_token %}
+                                    <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill">
+                                    <button type="submit" class="btn btn-outline-success flex-shrink-1" style="margin-left: 5px;">Enviar</button>
+                                </form>
+                        </div>
+                    </div>
+                </nav>
+            </div> 
+        </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    </body>
+    {% endblock content %}
+{% include 'commons/include/footer.html' %}
+</html>
