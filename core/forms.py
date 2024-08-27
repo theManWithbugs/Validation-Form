@@ -55,7 +55,6 @@ class HistoricoSaudeForm(forms.ModelForm):
         model = HistoricoSaude
         fields = '__all__'
         exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
-
  
 class HistoricoCriminalForm(forms.ModelForm):
     class Meta:
@@ -69,7 +68,6 @@ class InformacoesComplementaresForm(forms.ModelForm):
         model = InformacoesComplementares
         fields = '__all__'
         exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
-
 
 #Essa classe é usada para buscar o cidadão pelo cpf
 class BuscarCidadaoForm(forms.Form):
