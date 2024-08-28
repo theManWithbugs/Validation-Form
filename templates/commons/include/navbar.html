@@ -26,26 +26,12 @@
     
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'perfil' %}" style="font-size: larger;">Perfil</a>
+                    <li class="nav-item mb-3">
+                        <a class="btn btn-outline-light btn-lg w-100" aria-current="page" href="{% url 'perfil' %}" style="font-size: 1.25rem; border-radius: 30px; padding: 15px; height: 50px; display: flex; align-items: center; justify-content: center;">Perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}" style="font-size: larger;">Sair</a>
-                    </li>
-                    <li class="nav-item dropdown" style="font-size: larger;">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
+                        <a class="btn btn-outline-light btn-lg w-100" href="{% url 'logout' %}" style="font-size: 1.25rem; border-radius: 30px; padding: 15px; height: 50px; display: flex; align-items: center; justify-content: center;">Sair</a>
+                    </li>                    
                 </ul>
             
             </div>

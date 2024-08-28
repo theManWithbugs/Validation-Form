@@ -93,14 +93,14 @@ c_perioculosidade = (
 )
 
 DROGAS_CHOICES = (
-    ('Álcool', 'Álcool'),
-    ('Cigarro', 'Cigarro'),
-    ('Maconha', 'Maconha'),
-    ('Pasta Base', 'Pasta Base'),
-    ('Cocaína', 'Cocaína'),
-    ('Merla', 'Merla'),
-    ('Crack', 'Crack'),
-    ('Outras drogas', 'Outras drogas'),
+    ('ALCOOL', 'Álcool'),
+    ('CIGARRO', 'Cigarro'),
+    ('MACONHA', 'Maconha'),
+    ('PASTA BASE', 'Pasta Base'),
+    ('COCAINA', 'Cocaína'),
+    ('MERLA', 'Merla'),
+    ('CRACK', 'Crack'),
+    ('OUTRAS DROGAS', 'Outras drogas'),
 )
 
 c_sugestao_trabalho = (
@@ -137,12 +137,12 @@ c_remuneracao = (
 )
 
 c_renda_invidual = (
-    ('Menos de um salario minimo', 'Menos de um salario minimo'),
-    ('1 salario minimo', '1 salario minimo'),
-    ('2 a 3 salarios minimos', '2 a 3 salarios minimos'),
-    ('Mais de 4 salarios minimos', 'Mais de 4 salarios minimos'),
-    ('Recebo bolsa familia', 'Recebo bolsa familia'),
-    ('Dependo financeiramente de outras pessoas', 'Dependo financeiramente de outras pessoas'),
+    ('MENOS DE UM SALARIO MINIMO', 'Menos de um salario minimo'),
+    ('1 SALARIO MINIMO', '1 salario minimo'),
+    ('2 A 3 SALARIOS MINIMOS', '2 a 3 salarios minimos'),
+    ('MAIS DE 4 SALARIOS MINIMOS', 'Mais de 4 salarios minimos'),
+    ('RECEBO BOLSA FAMILIA', 'Recebo bolsa familia'),
+    ('DEPENDO FINANCEIRAMENTE DE OUTRAS PESSOAS', 'Dependo financeiramente de outras pessoas'),
 )
 
 c_estado = (

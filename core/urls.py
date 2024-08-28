@@ -19,6 +19,7 @@ urlpatterns = [
     path('base/editar_dados',views.capturar_cpf, name='capturar_dados'),
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
     path('base/not_found', views.notfound_view, name='not_found_page'),
-]
+    path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
+    ]
 
 

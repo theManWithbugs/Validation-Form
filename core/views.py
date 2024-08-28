@@ -136,7 +136,7 @@ def form4_view(request):
             informacoes_complementares = form.save(commit=False)
             informacoes_complementares.cidadao = cidadao
             informacoes_complementares.save()
-            return redirect('base')
+            return redirect('sucess_page')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
     else:
@@ -146,6 +146,7 @@ def form4_view(request):
 
 #-------------------------------------------------------------------------------------------------------#  
 #View de busca de dados, usa como principal parametro o cpf pois é o elemento que interliga as tabelas
+@login_required
 def busca_form_view(request):
     # Instancia o formulário com os dados da requisição GET, se disponíveis, ou um formulário vazio
     form = BuscarCidadaoForm(request.GET or None)
@@ -207,6 +208,7 @@ def notfound_view(request):
     template_name='commons/include/not_found.html'
     return render(request, template_name)
 
+@login_required
 def excluir_form(request):
     form = BuscarCidadaoForm(request.POST or None)
     cidadao = None
@@ -242,6 +244,7 @@ def excluir_form(request):
     return render(request, 'commons/include/busca_form.html', context)
 
 #view para atualizar dados do formulario
+@login_required
 def atualizar_dados(request, cpf):
     try:
         cidadao = Cidadao.objects.get(cpf=cpf)
@@ -283,6 +286,7 @@ def atualizar_dados(request, cpf):
         'cidadao': cidadao
     })
 
+@login_required
 def capturar_cpf(request):
     if request.method == 'POST':
         cpf = request.POST.get('cpf')
@@ -291,6 +295,16 @@ def capturar_cpf(request):
         else:
             messages.error(request, 'CPF não fornecido')
     return render(request, 'commons/include/capturar_cpf.html')
+
+
+def sucess_page_view(request):
+    template_name = 'commons/include/sucess_page.html'
+    return render(request, template_name)
+
+
+        
+
+
 
 
 

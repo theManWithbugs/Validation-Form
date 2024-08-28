@@ -142,8 +142,11 @@ class HistoricoSaude(models.Model):
     
     def save(self, *args, **kwargs):
         self.saude = self.saude.upper()
-        self.tratamento_psiquiatrico = self.tratamento_psiquiatrico.upper()
+        self.saude_just = self.saude_just.upper()
+        self.tratamento_psi = self.tratamento_psi.upper()
+        self.tratamento_psi_jus = self.tratamento_psi_jus.upper()
         self.medicacao_controlada = self.medicacao_controlada.upper()
+        self.medicacao_controlada_jus = self.medicacao_controlada_jus.upper()
         self.deficiencia = self.deficiencia.upper()
         self.tratamento = self.tratamento.upper()
         super().save(*args, **kwargs)
@@ -205,6 +208,7 @@ class InformacoesComplementares(models.Model):
         self.tecnico_responsavel = self.tecnico_responsavel.upper()
         self.evolucao_percepcoes = self.evolucao_percepcoes.upper()
         super().save(*args, **kwargs)
+
 
 
       
