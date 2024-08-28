@@ -55,7 +55,7 @@ def home(request):
     return render(request, template_name, context)
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
-#-------------------------------------------------------------------------------------------------------              
+#-------------------------------------------------------------------------------------------------------#         
 @login_required
 def form1_view(request):
     if request.method == 'POST':
@@ -144,7 +144,7 @@ def form4_view(request):
         
     return render(request, 'commons/include/form4.html', {'formulario_complementar': form})
 
-#-------------------------------------------------------------------------------------------------------     
+#-------------------------------------------------------------------------------------------------------#  
 #View de busca de dados, usa como principal parametro o cpf pois é o elemento que interliga as tabelas
 def busca_form_view(request):
     # Instancia o formulário com os dados da requisição GET, se disponíveis, ou um formulário vazio

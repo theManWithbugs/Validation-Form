@@ -49,7 +49,6 @@ class CidadaoForm(forms.ModelForm):
     class Meta:
         model = Cidadao
         fields = '__all__'
-        
 class HistoricoSaudeForm(forms.ModelForm):
     class Meta:
         model = HistoricoSaude

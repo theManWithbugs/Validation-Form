@@ -175,6 +175,21 @@ c_estado = (
     ('Tocantins', 'TO'),    
 )
 
+c_moradia_situacao = (
+    ('PROPIA', 'Propia'),
+    ('ALUGADO', 'Alugado'),
+    ('CEDIDO', 'Cedido'),
+    ('OCUPACAO', 'Ocupação'),
+    ('IRREGULAR', 'Irregular'),
+    ('SITUACAO DE RUA', 'Situação de rua'),
+)
+
+c_moradia_tipo = (
+    ('ALVENARIA', 'Alvenaria'),
+    ('MADEIRA', 'Madeira'),
+    ('MISTA', 'Mista'),
+)
+
 
 
 

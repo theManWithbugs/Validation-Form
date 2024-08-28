@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from core.choices import *  # Certifique-se de que todas as escolhas estão corretamente definidas
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -33,9 +34,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 # FORMULÁRIO 1
 class Cidadao(models.Model):
     cpf = models.CharField(max_length=11, primary_key=True)
-    nome = models.CharField(max_length=60)
-    nome_social = models.CharField(max_length=50, blank=True, null=True)
-    endereco = models.CharField(max_length=50, verbose_name='Endereço')
+    nome = models.CharField(max_length=80)
+    nome_social = models.CharField(max_length=80, blank=True, null=True)
+    endereco = models.CharField(max_length=80, verbose_name='Endereço')
+    moradia_situacao = models.CharField(
+                        max_length=15,
+                        choices=c_moradia_situacao,
+                        verbose_name='Situação de moradia, tipo de ocupação',
+                        blank=True,
+                        null=True
+                    )
+    
+    moradia_tipo = models.CharField(
+                        max_length=9,
+                        choices=c_moradia_tipo,
+                        verbose_name='Tipo de moradia',
+                        blank=True,
+                        null=True
+                    )
+
     cidade = models.CharField(max_length=20)
     telefone = models.CharField(max_length=13)
     estado = models.CharField(
@@ -44,8 +61,8 @@ class Cidadao(models.Model):
                     blank=False,
                     null=False,
                      )
-    data_nascimento = models.DateField()
-    idade = models.CharField(max_length=3, blank=True)  
+    data_nascimento = models.DateField(blank=False)
+    idade = models.CharField(max_length=3)  
     naturalidade = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1, choices=c_sexo, default='selecione')
     mae = models.CharField(max_length=50, verbose_name='Nome da mãe')
@@ -54,6 +71,7 @@ class Cidadao(models.Model):
     renda_individual = models.CharField(max_length=50, choices=c_renda_invidual)
     cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça')
     escolaridade = models.CharField(max_length=50)
+
 
     def __str__(self):
         return self.nome
@@ -76,9 +94,31 @@ class Cidadao(models.Model):
 # FORMULÁRIO 2
 class HistoricoSaude(models.Model):
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='historicos_saude')
-    saude = models.CharField(max_length=255, default='', verbose_name='Apresenta problemas de saude?')
-    tratamento_psiquiatrico = models.CharField(max_length=100, verbose_name='Faz ou fez tratamento psiquiatrico?')
-    medicacao_controlada = models.CharField(max_length=100, default='', verbose_name='Faz uso de alguma medicação controlada?')
+    saude = models.CharField(
+                            choices=c_sim_nao,
+                            max_length=3,
+                            default='Selecione',
+                            verbose_name='Apresenta problemas de saude?'
+                             )
+    saude_just = models.CharField(max_length=80, verbose_name='Se apresenta problema de saúde qual?', blank=True, null=True)
+    
+
+    tratamento_psi = models.CharField(
+                                    choices=c_sim_nao,
+                                    max_length=3, 
+                                    verbose_name='Faz ou fez tratamento psiquiatrico?',
+                                    default='Selecione'
+                                    )
+    tratamento_psi_jus = models.CharField(max_length=80, verbose_name='Especifique o tratamento psiquiatrico')
+
+    medicacao_controlada = models.CharField(
+                                            choices=c_sim_nao,
+                                            max_length=3, 
+                                            default='Selecione', 
+                                            verbose_name='Faz uso de alguma medicação controlada?')
+    
+    medicacao_controlada_jus = models.CharField(max_length=80, blank=True, null=True, verbose_name='Especifique o tipo de medicação controlada')
+
     deficiencia = models.CharField(
         choices=c_sim_nao,
         max_length=3, 
@@ -96,7 +136,7 @@ class HistoricoSaude(models.Model):
                                 max_length=3, 
                                 default='', 
                                 verbose_name='Já procurou tratamento?')  # Definido como não-nulo com valor padrão
-
+    
     def __str__(self):
         return f"Histórico de Saúde do Cidadão {self.cidadao.cpf}"
     
@@ -138,15 +178,16 @@ class HistoricoCriminal(models.Model):
 
 # FORMULÁRIO 4
 class InformacoesComplementares(models.Model):
+
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='informacoes_complementares')
-    quantas_pessoas = models.CharField(max_length=100, verbose_name='Quantas pessoas moram com você ? (inclua você na contagem)')
+    quantas_pessoas = models.CharField(max_length=2, verbose_name='Quantas pessoas moram com você ? (inclua você na contagem)')
     nome_familiar = models.CharField(max_length=70, verbose_name='Nome de um familiar')
     parentesco = models.CharField(max_length=100, default='', verbose_name='Grau de parentesco')
-    idade_familiar = models.CharField(max_length=3, default='0', verbose_name='Idade do familiar')  # Valor padrão definido
+    idade_familiar = models.CharField(max_length=3, verbose_name='Idade do familiar', blank=True)  # Valor padrão definido
     escolaridade_familiar = models.CharField(max_length=100, verbose_name='Grau de Escolaridade')
     ocupacao = models.CharField(max_length=100, verbose_name='Ocupação')
     analise_descritiva = models.CharField(max_length=300, verbose_name='Análise descritiva')
-    tecnico_responsavel = models.CharField(max_length=200)
+    tecnico_responsavel = models.CharField(max_length=200, verbose_name='Técnico responsavel')
     data = models.CharField(max_length=12)
     evolucao_percepcoes = models.CharField(max_length=255, verbose_name='Evolução percepções')
 
@@ -164,6 +205,7 @@ class InformacoesComplementares(models.Model):
         self.tecnico_responsavel = self.tecnico_responsavel.upper()
         self.evolucao_percepcoes = self.evolucao_percepcoes.upper()
         super().save(*args, **kwargs)
+
 
       
 
