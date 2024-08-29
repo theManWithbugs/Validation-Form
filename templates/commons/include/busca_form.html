@@ -2,63 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buscar Cidadão</title>
+    <title>CADASTRO | BUSCA</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/busca.css' %}" rel="stylesheet">
 
-    <style>
-        body {
-            background-color: rgb(20, 104, 104);
-            margin-top: 80px;
-        }
-
-        h1, h2, h3 {
-            margin-left: 30px;
-            margin-bottom: 5px;
-            color: #343a40;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .navbar {
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-control {
-            border-radius: .25rem;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .075);
-        }
-
-        .btn {
-            border-radius: .25rem;
-        }
-
-        .section-title {
-            margin-top: 40px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-        }
-
-        .info-item {
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-
-        .info-item p {
-            margin-left: 30px;
-            margin-bottom: 0px;
-            margin-top: 0px;
-            margin-right: 0px;
-        }
-        
-    </style>
 </head>
 
 {% include 'commons/include/navbar.html' %}
@@ -69,12 +16,12 @@
     <div class="container">
         
         <div class="bg-white p-3 rounded">
-            <h3 style="font-family: 'Times New Roman', Times, serif;">Consultar Dados</h3>
+            <h3 style="font-family: 'Times New Roman', Times, serif;">Consultar Dados(CPF)</h3>
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <div class="d-flex justify-content-center w-100">
                         <form class="d-flex w-100" method="get" action="{% url 'busca' %}">
-                            <input type="text" name="cpf" class="form-control flex-fill" placeholder="Buscar...">
+                            <input type="text" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="11">
                             <button class="btn btn-outline-success flex-shrink-1" type="submit" style="margin-left: 5px;">Buscar</button>
                         </form>
                     </div>

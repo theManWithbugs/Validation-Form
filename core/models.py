@@ -1,3 +1,5 @@
+from tkinter import CASCADE
+from django.conf import settings
 from django.utils import timezone
 from django.db import models
 from core.choices import *  # Certifique-se de que todas as escolhas estão corretamente definidas

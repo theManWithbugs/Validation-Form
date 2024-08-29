@@ -19,11 +19,22 @@
         />
         <link href="{% static 'css/login.css' %}" rel="stylesheet">
 
-        
-
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <style>
+                body {
+                background-image: url("{% static '/img/acreImg.png' %}");
+                background-size: cover; /* Pode ajustar 'cover' ou 'contain' conforme necessário */
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: contain;
+                background-size: 100% 100%; /* Ajusta largura e altura como porcentagem do elemento */
+                margin-top: 20px;
+                }
+        </style>
     </head>
 
 <body>
@@ -43,7 +54,7 @@
                                 <img src="{{ MEDIA_URL }}/media/brasaoacre.png">
                             </div>
                         </div>
-                        <form id="login-form" class="form" method="post">
+                        <form id="login-form" class="form" method="post" style="color: aliceblue;">
                             {% csrf_token %}
                             <h3 class="text-center text-info" style="font-family: 'Times New Roman', Times, serif;">Centro integrado de alternativas penais</h3>
                             <div class="form-group">

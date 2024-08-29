@@ -12,10 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 
 # variaveis de ambiente
-progName = 'CONDUTA'
-msgSucesso = 'Operação realizada com sucesso!'
-msgError = 'Não foi possivel salvar as alterações solicitadas!'
-msgIntegridade = 'Você tentou salvar um registro que já existe! Por favor, verifique e tente novamente.'
+progName = 'CADASTRO'
 iten_rage_page = 30  # registros por página
 
 def login_n(request):
@@ -28,13 +25,12 @@ def login_n(request):
             user = authenticate(request, username = cpf, password=senha)
             if user is not None:
                 login(request, user)
-                messages.success(request, msgSucesso)
                 return redirect('base')
 
             else: 
-                form.add_error('cpf', 'CPF ou senha incorretos.')
+                form.add_error('senha', 'Senha incorreta')
         else:
-            messages.error(request, 'Erro no formulario. Por favor, verifique os campos.')
+            messages.error(request, '')
     else:
         form = CPFValidationForm()
 
@@ -44,14 +40,17 @@ def login_n(request):
 def base_view(request):
     return render(request, 'base.html')
 
-@login_required
 def home(request):
-    template_name='commons/home.html'
+    template_name = 'commons/home.html'
     formName = 'home'
-    context={
-        'progName': progName,
+    total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
+    
+    context = {
+        'progName': 'CADASTRO',  # Substitua por um valor real se necessário
         'formName': formName,
+        'total_usuarios': total_usuarios  # Adicione o total de usuários ao contexto
     }
+    
     return render(request, template_name, context)
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
@@ -176,7 +175,7 @@ def busca_form_view(request):
             # Recupera a primeira informação complementar associada ao cidadão
             informacoes_complementares = cidadao.informacoes_complementares.first()
     else:
-        messages.error(request, 'Formulario invalido!')
+        messages.error(request, '')
 
     # Prepara o contexto para o template, incluindo o formulário e as informações recuperadas
     context = {
@@ -200,9 +199,6 @@ def logout_view(request):
 def footer_view(request):
     template_name = 'commons/include/footer.html'
     return render(request, template_name)
-
-def usuario_view(request):
-    return render(request, 'account/perfil.html')
 
 def notfound_view(request):
     template_name='commons/include/not_found.html'
@@ -296,10 +292,14 @@ def capturar_cpf(request):
             messages.error(request, 'CPF não fornecido')
     return render(request, 'commons/include/capturar_cpf.html')
 
-
 def sucess_page_view(request):
     template_name = 'commons/include/sucess_page.html'
     return render(request, template_name)
+
+@login_required
+def usuario_view(request):
+    return render(request, 'account/perfil.html')
+
 
 
         

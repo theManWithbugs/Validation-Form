@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-    <title>Title</title>
+    <title>CADASTRO | PERFIL</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -13,32 +13,26 @@
 <body>
     {% include 'commons/include/navbar.html' %}
     {% block content %}
-    <section class="bg-dark">
+    <section class="bg-dark py-5 mt-80">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 mb-4 mb-sm-5">
                     <div class="card card-style1 border-0">
                         <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
                             <div class="row align-items-center">
-                                <div class="col-lg-6 mb-4 mb-lg-0">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
+                                <div class="col-lg-6 mb-4 mb-lg-0 text-center">
+                                    <img src="{% static 'img/do-utilizador.png' %}" alt="Imagem padrão" class="img-fluid" style="max-width: 40%;">
                                 </div>
                                 <div class="col-lg-6 px-xl-10">
-                                    <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
+                                    <div class="bg-secondary d-lg-inline-block py-3 px-3 px-sm-4 mb-4 rounded">
                                         <h3 class="h2 text-white mb-0">Bem vindo: {{ user.nome }}</h3>
                                     </div>
-                                    <ul class="list-unstyled mb-1-9">
-                                        <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Login de usuario:</span> 
-                                        {% if user.is_authenticated %}
-                                            <p>{{ user.cpf }}</p>
-                                        {% endif %}
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="mb-2">
+                                            <span class="text-secondary me-2 font-weight-600">Usuario logado: {{ user.cpf }}</span>
+                                            <br>
+                                            <span class="text-secondary me-2 font-weight-600">Ultimo acesso: {{ user.last_login }}</span>
                                         </li>
-                                    </ul>
-                                    <ul class="social-icon-style1 list-unstyled mb-0 ps-0">
-                                        <li><a href="#!"><i class="ti-twitter-alt"></i></a></li>
-                                        <li><a href="#!"><i class="ti-facebook"></i></a></li>
-                                        <li><a href="#!"><i class="ti-pinterest"></i></a></li>
-                                        <li><a href="#!"><i class="ti-instagram"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -48,10 +42,10 @@
             </div>
         </div>
     </section>
+    {% endblock content %}
+    {% include 'commons/include/footer.html' %}
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/all.min.js' %}"></script>
-    {% endblock content %}
-    {% include 'commons/include/footer.html' %}
 </body>
 </html>

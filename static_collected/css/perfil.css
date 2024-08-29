@@ -1,12 +1,14 @@
-
 body {
-    background-image: url("{% static '/img/acreImg.png' %}");
-    background-size: cover; /* Pode ajustar 'cover' ou 'contain' conforme necessário */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-image: url("{% static 'img/acreImg.jpg' %}");
+    background-size:25%; 
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita repetição da imagem */
+    background-attachment: fixed; /* Faz com que a imagem de fundo fique fixa quando a página é rolada */
+
+
+
     background-color: rgb(20, 104, 104);
-    margin-top: 20px;
+    margin-top: 20px; /* Ajustado para 20px conforme o último estilo */
 }
 
 .card-style1 {
@@ -98,8 +100,5 @@ section {
     border-radius: 0.25rem!important;
 }
 
-.mt-80 {
-    margin-top: 80px;
-}
 
 
