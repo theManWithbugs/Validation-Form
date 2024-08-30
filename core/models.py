@@ -175,6 +175,7 @@ class HistoricoCriminal(models.Model):
     
     def save(self, *args, **kwargs):
         self.juiz_de_origem = self.juiz_de_origem.upper()
+        self.medida_aplicada = self.medida_aplicada.upper()
         self.tipo_penal = self.tipo_penal.upper()
         self.violencia_domestica = self.violencia_domestica.upper()
         self.violencia_dome_nome_vitima = self.violencia_dome_nome_vitima.upper()

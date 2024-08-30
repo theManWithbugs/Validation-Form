@@ -1,3 +1,4 @@
+from itertools import count
 from django.conf import settings
 from django.contrib import messages
 from django.db import IntegrityError
@@ -10,6 +11,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+from django.db.models import Count
+from .models import Cidadao, HistoricoSaude
 
 # variaveis de ambiente
 progName = 'CADASTRO'
@@ -40,17 +43,27 @@ def login_n(request):
 def base_view(request):
     return render(request, 'base.html')
 
+@login_required
 def home(request):
     template_name = 'commons/home.html'
     formName = 'home'
-    total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
     
+    total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
+
+    drogas_ms = (HistoricoSaude.objects
+                 .values('drogas_uso')  # Agrupar pelos valores de drogas_uso
+                 .annotate(quantidade=Count('drogas_uso'))  # Contar a quantidade de cada droga
+                 .order_by('-quantidade')  # Ordenar pelo total em ordem decrescente
+                 [:3]  # Selecionar os 3 principais
+                )
+
     context = {
         'progName': 'CADASTRO',  # Substitua por um valor real se necessário
         'formName': formName,
-        'total_usuarios': total_usuarios  # Adicione o total de usuários ao contexto
+        'total_usuarios': total_usuarios,  # Adicione o total de usuários ao contexto
+        'drogas_ms': drogas_ms
     }
-    
+
     return render(request, template_name, context)
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
@@ -61,8 +74,10 @@ def form1_view(request):
         form = CidadaoForm(request.POST)
         if form.is_valid():
             cidadao = form.save()
-            #armazena o cpf do cidadão na sesão para que possa ser utilizado em uma requisição futura
+            # Armazena o cpf do cidadão na sessão para que possa ser utilizado em uma requisição futura
             request.session['cidadao_cpf'] = cidadao.cpf
+            # Marca o formulário como completo
+            request.session['form1_complete'] = True
             return redirect('form2')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
@@ -86,6 +101,8 @@ def form2_view(request):
             historico_saude = form.save(commit=False)
             historico_saude.cidadao = cidadao
             historico_saude.save()
+            # Marca o formulário como completo
+            request.session['form2_complete'] = True
             return redirect('form3')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
@@ -110,6 +127,8 @@ def form3_view(request):
             historico_criminal.cidadao = cidadao
             try:
                 historico_criminal.save()
+                # Marca o formulário como completo
+                request.session['form3_complete'] = True
                 return redirect('form4')
             except IntegrityError:
                 messages.error(request, 'Já existe um registro de histórico criminal para este cidadão.')
@@ -120,14 +139,21 @@ def form3_view(request):
 
     return render(request, 'commons/include/form3.html', {'formulario_tecnico': form})
 
+@login_required
 def form4_view(request):
     cidadao_cpf = request.session.get('cidadao_cpf')
     if not cidadao_cpf:
         messages.error(request, 'Dados do cidadão não encontrados.')
         return redirect('form1')
     
-    #recupera o objeto ou exibe um erro caso não seja possivel
     cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
+
+    # Verifica se todos os formulários anteriores foram preenchidos
+    if not (request.session.get('form1_complete') and 
+            request.session.get('form2_complete') and 
+            request.session.get('form3_complete')):
+        messages.error(request, 'Por favor, complete todos os formulários anteriores antes de enviar.')
+        return redirect('form1')
 
     if request.method == 'POST':
         form = InformacoesComplementaresForm(request.POST)
@@ -135,6 +161,8 @@ def form4_view(request):
             informacoes_complementares = form.save(commit=False)
             informacoes_complementares.cidadao = cidadao
             informacoes_complementares.save()
+            # Marca o formulário como completo
+            request.session['form4_complete'] = True
             return redirect('sucess_page')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
@@ -245,7 +273,6 @@ def atualizar_dados(request, cpf):
     try:
         cidadao = Cidadao.objects.get(cpf=cpf)
     except Cidadao.DoesNotExist:
-        messages.error(request, 'Cidadao não encontrado')
         return redirect('not_found_page')
 
     if request.method == 'POST':
@@ -292,6 +319,7 @@ def capturar_cpf(request):
             messages.error(request, 'CPF não fornecido')
     return render(request, 'commons/include/capturar_cpf.html')
 
+@login_required
 def sucess_page_view(request):
     template_name = 'commons/include/sucess_page.html'
     return render(request, template_name)
