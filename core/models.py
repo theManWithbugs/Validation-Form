@@ -68,12 +68,18 @@ class Cidadao(models.Model):
     naturalidade = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1, choices=c_sexo, default='selecione')
     mae = models.CharField(max_length=50, verbose_name='Nome da mãe')
-    estado_civil = models.CharField(max_length=20)
+    estado_civil = models.CharField(choices=c_estado_civil,
+                                    default='selecione',
+                                    max_length=20)
     remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=True, verbose_name='Remuneração')
     renda_individual = models.CharField(max_length=50, choices=c_renda_invidual)
     cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça')
-    escolaridade = models.CharField(max_length=50)
-
+    escolaridade = models.CharField(
+                                choices=c_escolaridade,
+                                max_length=22,
+                                default='selecione'
+                                    )
+    data_entrada = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.nome
@@ -166,7 +172,7 @@ class HistoricoCriminal(models.Model):
     violencia_domestica = models.CharField(max_length=50, blank=True, verbose_name='Em caso de violência domestica')
     violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True, verbose_name='Nome da vitima de violência domestica')
     grau_de_parentesco = models.CharField(max_length=50, blank=True, verbose_name='Grau de parentesco da vitima')
-    reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True, verbose_name='Relata reincidência?') #Deverá haver duas opções sim ou não isso não deve ser um charfield
+    reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True, verbose_name='Relata reincidência?') 
     sugestao_de_trabalho = models.CharField(max_length=36, choices=c_sugestao_trabalho, blank=True, null=True)
     sugest_encaminhamento = models.CharField(max_length=36, choices=c_sugestao_encaminhamento, blank=True, null=True, verbose_name='Sugestão de encaminhamento')
 
@@ -194,7 +200,6 @@ class InformacoesComplementares(models.Model):
     ocupacao = models.CharField(max_length=100, verbose_name='Ocupação')
     analise_descritiva = models.CharField(max_length=300, verbose_name='Análise descritiva')
     tecnico_responsavel = models.CharField(max_length=200, verbose_name='Técnico responsavel')
-    data = models.CharField(max_length=12)
     evolucao_percepcoes = models.CharField(max_length=255, verbose_name='Evolução percepções')
 
     def __str__(self):

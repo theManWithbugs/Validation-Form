@@ -3,7 +3,9 @@ from django import forms
 from django.shortcuts import redirect, render
 from .models import *
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 import re
+
 
 #classe de validação de cpf
 class CPFValidationForm(forms.Form):
@@ -77,6 +79,22 @@ class AlterarDadosForm(forms.ModelForm):
     class Meta:
         model = Cidadao
         fields = '__all__'
+
+class UserCreationFormCustom(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('cpf', 'nome', 'is_active', 'is_staff', 'is_superuser')
+    
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
+class UserChangeFormCustom(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('cpf', 'nome', 'is_active', 'is_staff', 'is_superuser')
+
+
+
 
 
 

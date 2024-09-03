@@ -20,6 +20,7 @@ urlpatterns = [
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
     path('base/not_found', views.notfound_view, name='not_found_page'),
     path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
+    path('base/estatisticas/', views.analise_view, name='estatisticas'),
     ]
 
 

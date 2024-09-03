@@ -7,12 +7,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from .forms import *
 from .forms import CidadaoForm
-from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.db.models import Count
 from .models import Cidadao, HistoricoSaude
+from .utils import *
 
 # variaveis de ambiente
 progName = 'CADASTRO'
@@ -232,6 +232,7 @@ def notfound_view(request):
     template_name='commons/include/not_found.html'
     return render(request, template_name)
 
+#-------------------------------------------------------------------------------------------------------#  
 @login_required
 def excluir_form(request):
     form = BuscarCidadaoForm(request.POST or None)
@@ -266,6 +267,7 @@ def excluir_form(request):
     }
 
     return render(request, 'commons/include/busca_form.html', context)
+
 
 #view para atualizar dados do formulario
 @login_required
@@ -328,6 +330,30 @@ def sucess_page_view(request):
 def usuario_view(request):
     return render(request, 'account/perfil.html')
 
+# Aqui nesta pagina ficam as estatisticas para análise de dados
+def analise_view(request):
+    aumento_percentual =  calcular_porcent()
+    template_name = 'commons/include/estatisticas.html'
+
+    porcentagem_masculino, porcentagem_feminino = calcular_sexo()
+
+    total_usuarios = Cidadao.objects.count()
+
+    drogas_ms = (HistoricoSaude.objects
+                 .values('drogas_uso')
+                 .annotate(quantidade=Count('drogas_uso'))
+                [:3]
+                )
+    
+    context = {
+        'porcentagem_homens': porcentagem_masculino,
+        'porcentagem_mulheres': porcentagem_feminino,
+        'aumento_percentual': aumento_percentual,
+        'total_usuarios': total_usuarios,
+        'drogas_ms': drogas_ms
+    }
+
+    return render(request, template_name, context)
 
 
         

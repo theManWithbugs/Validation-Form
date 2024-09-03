@@ -13,19 +13,5 @@
     </div>
 </div>
 
-<div class="card custom-card">
-    <div class="card-body">
-        <h2><strong>Total de cadastros: {{ total_usuarios }}</strong></h2>
-        <h3><strong>Drogas mais utilizadas:</strong></h3>
-        <ol class="custom-list"><strong>
-            {% for droga in drogas_ms %}
-                <li>{{ droga.drogas_uso }}: {{ droga.quantidade }} usuários</li>
-            {% empty %}
-                <li class="no-data">Nenhuma droga registrada.</li>
-            {% endfor %}
-        </strong>
-        </ol>
-    </div>
-</div>
 
 {% endblock content %}

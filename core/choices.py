@@ -190,6 +190,35 @@ c_moradia_tipo = (
     ('MISTA', 'Mista'),
 )
 
+c_escolaridade = (
+    ('SELECIONE', 'Selecione'),
+    ('NAO ESCOLARIZADO', 'Não escolarizado'),
+    ('FUNDAMENTAL INCOMPLETO', 'Fundamental incompleto'),
+    ('FUNDAMENTAL COMPLETO', 'Fundamental completo'),
+    ('MEDIO INCOMPLETO', 'Médio Incompleto'),
+    ('MEDIO COMPLETO', 'Médio Completo'),
+    ('SUPERIOR INCOMPLETO', 'Superior Incompleto'),
+    ('SUPERIOR COMPLETO', 'Superior Completo'),
+    ('POS GRADUAÇÃO', 'Pós-Graduação'),
+    ('MESTRADO', 'Mestrado'),
+    ('DOUTORADO', 'Doutorado'),
+    ('POS-DOUTORADO', 'Pós Doutorado'),
+    ('NÃO DETERMINADO', 'Não determinado'),
+)
+
+c_estado_civil = (
+    ('','Selecione'),
+    ('SOLTEIRO', 'Solteiro'),
+    ('CASADO', 'Casado'),
+    ('UNIAO ESTAVEL', 'União Estavel'),
+    ('SEPARADO', 'Separado'),
+    ('DIVORCIADO', 'Divorciado'),
+    ('VIUVO', 'Viúvo'),
+)
+
+
+
+
 
 
 
