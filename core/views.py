@@ -39,9 +39,6 @@ def login_n(request):
 
     return render(request, 'account/login_n.html', {'form': form})
 
-@login_required
-def base_view(request):
-    return render(request, 'base.html')
 
 @login_required
 def home(request):
@@ -171,6 +168,38 @@ def form4_view(request):
         
     return render(request, 'commons/include/form4.html', {'formulario_complementar': form})
 
+def form_acomp_view(request):
+    cidadao_cpf = request.session.get('cidadao_cpf')
+
+    if not cidadao_cpf:
+        messages.error(request, 'Dados do cidadão não encontrados')
+        return redirect('base/not_found')
+    
+    cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
+
+    if request.method == 'POST':
+        form = AcompCentralForm(request.POST)
+        if form.is_valid():
+            acompcentral = form.save(commit=False)
+            acompcentral.cidadao = cidadao
+            acompcentral.save()
+          
+            request.session['form_acomp_complete'] = True
+        
+            return redirect('sucess_page')
+        else:
+      
+            messages.error(request, 'Por favor, corrija os erros no formulário')
+    else:
+    
+        form = AcompCentralForm()
+
+    return render(request, 'commons/include/form_acom.html', {
+        'formulario_acom': form,
+        'cidadao_nome': cidadao.nome,
+        'data_entrada': cidadao.data_entrada,
+    })
+       
 #-------------------------------------------------------------------------------------------------------#  
 #View de busca de dados, usa como principal parametro o cpf pois é o elemento que interliga as tabelas
 @login_required
@@ -183,6 +212,7 @@ def busca_form_view(request):
     historico_saude = None
     historico_criminal = None
     informacoes_complementares = None
+    form_acomp = None
 
     # Verifica se o formulário é válido
     if form.is_valid():
@@ -202,6 +232,8 @@ def busca_form_view(request):
             historico_criminal = cidadao.historicos_criminais.first()  
             # Recupera a primeira informação complementar associada ao cidadão
             informacoes_complementares = cidadao.informacoes_complementares.first()
+            #Recupera as informações do formulario de acompanhamento na central
+            form_acomp = cidadao.form_acompanhamento_central.first()
     else:
         messages.error(request, '')
 
@@ -212,27 +244,13 @@ def busca_form_view(request):
         'historico_saude': historico_saude,
         'historico_criminal': historico_criminal,
         'informacoes_complementares': informacoes_complementares,
+        'form_acomp_central': form_acomp,
     }
     
     # Renderiza o template 'busca_form.html' com o contexto preparado
     return render(request, 'commons/include/busca_form.html', context)
 
-def edit_form_view(request):
-    return render(request, 'commons/include/editar_form.html')
-
-def logout_view(request):
-    auth_logout(request)
-    return redirect('login_new')
-
-def footer_view(request):
-    template_name = 'commons/include/footer.html'
-    return render(request, template_name)
-
-def notfound_view(request):
-    template_name='commons/include/not_found.html'
-    return render(request, template_name)
-
-#-------------------------------------------------------------------------------------------------------#  
+#-------------------------------------------------------------------------------------------------------#
 @login_required
 def excluir_form(request):
     form = BuscarCidadaoForm(request.POST or None)
@@ -267,7 +285,6 @@ def excluir_form(request):
     }
 
     return render(request, 'commons/include/busca_form.html', context)
-
 
 #view para atualizar dados do formulario
 @login_required
@@ -321,15 +338,6 @@ def capturar_cpf(request):
             messages.error(request, 'CPF não fornecido')
     return render(request, 'commons/include/capturar_cpf.html')
 
-@login_required
-def sucess_page_view(request):
-    template_name = 'commons/include/sucess_page.html'
-    return render(request, template_name)
-
-@login_required
-def usuario_view(request):
-    return render(request, 'account/perfil.html')
-
 # Aqui nesta pagina ficam as estatisticas para análise de dados
 def analise_view(request):
     aumento_percentual =  calcular_porcent()
@@ -355,6 +363,106 @@ def analise_view(request):
 
     return render(request, template_name, context)
 
+@login_required
+def base_view(request):
+    return render(request, 'base.html')
+
+@login_required
+def sucess_page_view(request):
+    template_name = 'commons/include/sucess_page.html'
+    return render(request, template_name)
+
+@login_required
+def usuario_view(request):
+    return render(request, 'account/perfil.html')
+
+def edit_form_view(request):
+    return render(request, 'commons/include/editar_form.html')
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('login_new')
+
+def footer_view(request):
+    template_name = 'commons/include/footer.html'
+    return render(request, template_name)
+
+def notfound_view(request):
+    template_name='commons/include/not_found.html'
+    return render(request, template_name)
+
+def buscar_acmform_view (request):
+    form = BuscarCidadaoForm(request.GET or None)
+
+    form_acomp = None
+    cidadao = None
+    historico_criminal = None
+
+    if form.is_valid():
+        cpf = form.cleaned_data['cpf']
+
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+        
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+        
+        else:
+            historico_criminal = cidadao.historicos_criminais.first()
+            form_acomp = cidadao.form_acompanhamento_central.all()
+
+    else:
+        messages.error(request, '')
+
+    context = {
+        'formulario': form, 
+        'form_acomp_central': form_acomp,
+        'cidadao': cidadao,
+        'historico_criminal': historico_criminal,
+    }
+
+    return render(request, 'commons/include/acomp_busca.html', context)
+
+def capturar_acmform_view(request, cpf):
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')  # Supondo que você tenha uma página de "não encontrado"
+    
+    if request.method == 'POST':
+        form = AcompCentralForm(request.POST)
+        if form.is_valid():
+            acomp_central = form.save()
+            return redirect('sucess_page')  # Supondo que você tenha uma página de sucesso
+        else:
+            messages.error(request, 'Formulário inválido!')
+    else:
+        form = AcompCentralForm()
+
+    context = {
+        'formulario': form,
+    }
+
+    return render(request, 'template_name.html', context)  # Substitua 'template_name.html' pelo nome do seu template
+    
+
+def register_acmform_view(request):
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf')
+        if cpf:
+            try:
+                # Se o CPF já existe, você pode querer mostrar uma mensagem ou redirecionar
+                Cidadao.objects.get(cpf=cpf)
+                messages.error(request, 'O CPF já está registrado.')
+                return redirect('some_page')  # Redirecionar para uma página apropriada
+            except Cidadao.DoesNotExist:
+                # Registrar um novo cidadão
+                Cidadao.objects.create(cpf=cpf)
+                return redirect('capturar_acmform_view', cpf=cpf)  # Redireciona para capturar_acmform_view
+        else:
+            messages.error(request, 'CPF não fornecido')
+    
+    return render(request, 'commons/include/acomp_reg.html')  # Substitua pelo caminho do seu template
 
         
 

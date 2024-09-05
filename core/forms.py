@@ -55,20 +55,30 @@ class HistoricoSaudeForm(forms.ModelForm):
     class Meta:
         model = HistoricoSaude
         fields = '__all__'
-        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
+        exclude = ['cidadao']  
  
 class HistoricoCriminalForm(forms.ModelForm):
     class Meta:
         model = HistoricoCriminal
         fields = '__all__'
-        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
+        exclude = ['cidadao']   
 
 
 class InformacoesComplementaresForm(forms.ModelForm):
     class Meta:
         model = InformacoesComplementares
         fields = '__all__'
-        exclude = ['cidadao']  # Excluindo o campo cidadao do formulário
+        exclude = ['cidadao']  
+
+class AcompCentralForm(forms.ModelForm):
+    class Meta:
+        model = AcompCentral
+        fields = '__all__'
+        exclude = ['cidadao']
+        widgets = {
+            'tecnico_responsavel': forms.TextInput(attrs={'class': 'form-control'}),
+            'evolucao_percepcoes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
 
 #Essa classe é usada para buscar o cidadão pelo cpf
 class BuscarCidadaoForm(forms.Form):

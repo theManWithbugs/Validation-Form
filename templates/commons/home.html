@@ -2,16 +2,25 @@
 
 {% block content %}
 
-<div class="card" style="border-radius: 12px; margin-top: 80px;  background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); padding: 20px;max-width: 600px; margin-left: auto; margin-right: auto; border: solid 1px black;">
+<div class="card" style="border-radius: 12px; margin-top: 80px; background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto; border: solid 1px black;">
     <div class="card-body text-center">
-        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: #333;">Opções</h4>
-        <div class="d-flex justify-content-center gap-4 mt-4">
-            <a href="{% url 'form1' %}" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease;text-decoration: none;" onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)'">NOVO CADASTRO</a>
-            <a href="{% url 'busca' %}" class="btn btn-success" style="background-color: #28a745; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease;text-decoration: none;" onmouseover="this.style.backgroundColor='#218838'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#28a745'; this.style.transform='scale(1)'">CONSULTAR DADOS</a>
-            <a href="{% url 'capturar_dados' %}" class="btn btn-danger" style="background-color: #dc3545; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease;text-decoration: none;" onmouseover="this.style.backgroundColor='#c82333'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#dc3545'; this.style.transform='scale(1)'">EDITAR DADOS</a>
+        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: #333;">Opções principais</h4>
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <a href="{% url 'form1' %}" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)'">NOVO CADASTRO</a>
+            <a href="{% url 'busca' %}" class="btn btn-success" style="background-color: #28a745; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#218838'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#28a745'; this.style.transform='scale(1)'">CONSULTAR DADOS</a>
+            <a href="{% url 'capturar_dados' %}" class="btn btn-danger" style="background-color: #dc3545; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#c82333'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#dc3545'; this.style.transform='scale(1)'">EDITAR DADOS</a>
         </div>
     </div>
 </div>
 
+<div class="card" style="border-radius: 12px; margin-top: 20px; background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto; border: solid 1px black;">
+    <div class="card-body text-center">
+        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: #333;">Formulario de Acompanhamento na Central</h4>
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <a href="{% url 'acmform_view' %}" class="btn btn-warning" style="background-color: #00bcd4; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#0097a7'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#00bcd4'; this.style.transform='scale(1)'">CADASTRAR</a>
+            <a href="{% url 'acmform' %}" class="btn btn-warning" style="background-color: #9c27b0; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#7b1fa2'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#9c27b0'; this.style.transform='scale(1)'">FICHA-ACMP</a>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}

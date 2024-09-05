@@ -108,19 +108,29 @@
                     <p><strong>Ocupação:</strong> {{ informacoes_complementares.ocupacao }}</p>
                     <p><strong>Análise Descritiva:</strong> {{ informacoes_complementares.analise_descritiva }}</p>
                     <p><strong>Tecnico responsavel pelo acolhimento:</strong> {{ informacoes_complementares.tecnico_responsavel }}</p>
-                    <p><strong>EVOLUÇÃO/DEMANDAS/PERCEPÇÕES</strong> {{ informacoes_complementares.evolucao_percepcoes }} </p>
+                    <p><strong>Tipo penal:</strong> {{ informacoes_complementares.tip_penal }} </p>
+                    <p><strong>Medida de cumprimento:</strong> {{ informacoes_complementares.medida_cumprimento }} </p>
                     <p><strong>Data de entrada:</strong> {{ cidadao.data_entrada }}</p>
                 {% else %}
                     <p>Informações complementares não disponíveis.</p>
                 {% endif %}
-                
+
+            <div class="info-item">
+                {% if form_acomp_central %}
+                    <p><strong>Tecnico responsavel pelo acolhimento:</strong> {{ form_acomp_central.tecnico_responsavel }} </p>
+                    <p><strong>Evolução/Demanadas/Percepções:</strong> {{ form_acomp_central.evolucao_percepcoes }} </p>
+                {% else %}
+                    <p>Formulario de acompanhamento indisponivel</p>
+                {% endif %}
+            </div>
+ 
                 <form method="post" action="{% url 'excluir_form' %}">
                     {% csrf_token %}
                     <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
                     <button class="btn btn-primary" type="submit" style="background-color: red; margin-top: 40px; margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
                 </form>
-
             </div>
+
         {% else %}
             {% if form.is_valid %}
                 <p class="text-center">Cidadão não encontrado.</p>

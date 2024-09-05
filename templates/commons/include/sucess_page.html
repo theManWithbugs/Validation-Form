@@ -9,7 +9,12 @@
         <title>NOVO CIDADAO|SUCESS</title>
         <style>
             body {
-                background-color: rgb(20, 104, 104);
+                background-color: aliceblue;
+                background-image: url("{% static '/img/img_sucess.png' %}");
+                background-size: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
             }
         </style>
     </head>
@@ -18,7 +23,7 @@
 {% block content %}
     <body>
         <div class="vh-100 d-flex justify-content-center align-items-center">
-            <div class="card col-md-4 bg-white shadow-md p-5">
+            <div class="card col-md-4 bg-white shadow-md p-5" style="background: rgba(255, 255, 255, 0.6);">
                 <div class="mb-4 text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="85" height="80"
                         fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">

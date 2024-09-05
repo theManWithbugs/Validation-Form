@@ -21,6 +21,9 @@ urlpatterns = [
     path('base/not_found', views.notfound_view, name='not_found_page'),
     path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
+    path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
+    path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),
+    path('base/acmform/', views.register_acmform_view, name='acmform_view'),
     ]
 
 
