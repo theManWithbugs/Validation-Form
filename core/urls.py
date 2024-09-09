@@ -23,7 +23,9 @@ urlpatterns = [
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
     path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
     path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),
-    path('base/acmform/', views.register_acmform_view, name='acmform_view'),
+    path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
+    path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
+    path('base/calcular_temp', views.calcular_tem_view, name='calcular_temp'),
     ]
 
 

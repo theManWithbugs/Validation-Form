@@ -169,7 +169,7 @@ class HistoricoCriminal(models.Model):
     ja_esteve_preso = models.CharField(max_length=3, choices=c_sim_nao, blank=True)
     prisao_justificativa = models.CharField(max_length=50, blank=True, null=True)
     prisao_familiar = models.CharField(max_length=3, choices=c_sim_nao, blank=True)
-    numero_do_processo = models.CharField(max_length=255, blank=True)
+    numero_do_processo = models.CharField(max_length=30, blank=False)
     juiz_de_origem = models.CharField(max_length=50, blank=True)
     medida_aplicada = models.CharField(max_length=50, blank=True)
     tipo_penal = models.CharField(max_length=50, blank=True)
@@ -244,8 +244,8 @@ class InformacoesComplementares(models.Model):
 class AcompCentral(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_acompanhamento_central')
-    tecnico_responsavel = models.CharField(max_length=200, verbose_name='Técnico responsavel:')
-    evolucao_percepcoes = models.CharField(max_length=300, verbose_name='Evolução/ Demanda/ Percepções:')
+    tecnico_responsavel = models.CharField(max_length=80, verbose_name='Técnico responsavel:')
+    evolucao_percepcoes = models.CharField(max_length=400, verbose_name='Evolução/ Demanda/ Percepções:')
     data_registro = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -254,6 +254,12 @@ class AcompCentral(models.Model):
     def save(self, *args, **kwargs):
         self.tecnico_responsavel = self.tecnico_responsavel.upper()
         super().save(*args, **kwargs)
+
+class ArmTime(models.Model):
+
+    cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
+    time = models.IntegerField()
+
     
         
 

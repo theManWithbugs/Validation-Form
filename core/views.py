@@ -391,6 +391,7 @@ def notfound_view(request):
     template_name='commons/include/not_found.html'
     return render(request, template_name)
 
+#-------------------------------------------------------------------------------------------------------#
 def buscar_acmform_view (request):
     form = BuscarCidadaoForm(request.GET or None)
 
@@ -423,46 +424,72 @@ def buscar_acmform_view (request):
 
     return render(request, 'commons/include/acomp_busca.html', context)
 
-def capturar_acmform_view(request, cpf):
-    try:
-        cidadao = Cidadao.objects.get(cpf=cpf)
-    except Cidadao.DoesNotExist:
-        return redirect('not_found_page')  # Supondo que você tenha uma página de "não encontrado"
-    
+
+#Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
+#-------------------------------------------------------------------------------------------------------#    
+
+#Capturar os dados aqui
+def register_acmform_view(request):
     if request.method == 'POST':
+        form = BuscarCidadaoForm(request.POST)
+        if form.is_valid():
+            cpf = form.cleaned_data['cpf']
+            request.session['cpf'] = cpf
+            return redirect('acomp_central_form')
+        else:
+            return HttpResponse('Não foi possível prosseguir')
+    else:
+        form = BuscarCidadaoForm()
+    
+    return render(request, 'commons/include/acomp_reg.html', {'form': form})
+
+#-------------------------------------------------------------------------------------------------------#  
+
+#Receber e realizar o processamento 
+def acomp_central_form(request):
+    cpf = request.session.get('cpf')
+    if not cpf:
+        return redirect('not_found_page')
+    
+    cidadao = get_object_or_404(Cidadao, cpf=cpf)
+
+    if request.method == 'POST': 
         form = AcompCentralForm(request.POST)
         if form.is_valid():
-            acomp_central = form.save()
-            return redirect('sucess_page')  # Supondo que você tenha uma página de sucesso
-        else:
-            messages.error(request, 'Formulário inválido!')
+            acomp_central = form.save(commit=False)
+            acomp_central.cidadao = cidadao
+            acomp_central.save()
+            messages.success(request, 'Dados salvos com sucesso!')
+            return redirect('sucess_page')
     else:
         form = AcompCentralForm()
 
+    return render(request, 'commons/include/acomp_regtwo.html', {'acomp_central': form})
+
+#-------------------------------------------------------------------------------------------------------#
+
+def calcular_tem_view(request):
+    form = ArmTime(request.GET or None)
+    cpf = request.GET.get('cpf')  
+    
+    time = None
+    if cpf:  # Verifica se cpf não está vazio
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+            time = cidadao.time.first()
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+    else:
+        messages.error(request, 'CPF não fornecido.')
+
     context = {
-        'formulario': form,
+        'form': form,
+        'time': time
     }
 
-    return render(request, 'template_name.html', context)  # Substitua 'template_name.html' pelo nome do seu template
-    
+    return render(request, 'commons/include/tempo_rest.html', context)
 
-def register_acmform_view(request):
-    if request.method == 'POST':
-        cpf = request.POST.get('cpf')
-        if cpf:
-            try:
-                # Se o CPF já existe, você pode querer mostrar uma mensagem ou redirecionar
-                Cidadao.objects.get(cpf=cpf)
-                messages.error(request, 'O CPF já está registrado.')
-                return redirect('some_page')  # Redirecionar para uma página apropriada
-            except Cidadao.DoesNotExist:
-                # Registrar um novo cidadão
-                Cidadao.objects.create(cpf=cpf)
-                return redirect('capturar_acmform_view', cpf=cpf)  # Redireciona para capturar_acmform_view
-        else:
-            messages.error(request, 'CPF não fornecido')
     
-    return render(request, 'commons/include/acomp_reg.html')  # Substitua pelo caminho do seu template
 
         
 

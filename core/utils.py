@@ -75,6 +75,15 @@ def calcular_sexo():
 
 
     
+
+
+
+
+    
+
+
+
+    
     
 
     

@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <title>Cadastro | Registro</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #004085;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'commons/include/navbar.html' %}
+    <div class="container p-4" style="border: solid 1px; background-color: aliceblue; border-radius: 20px;">
+        <form method="post">
+            {% csrf_token %}
+            {{ acomp_central.as_p }}
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+</body>
+{% include 'commons/include/footer.html' %}
+</html>

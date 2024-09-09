@@ -103,6 +103,11 @@ class UserChangeFormCustom(UserChangeForm):
         model = User
         fields = ('cpf', 'nome', 'is_active', 'is_staff', 'is_superuser')
 
+class ArmTimeForm(forms.ModelForm):
+    class Meta:
+        model =  ArmTime
+        fields = '__all__'
+
 
 
 

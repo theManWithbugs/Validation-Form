@@ -18,15 +18,17 @@
         }
     </style>
 </head>
+ {% include 'commons/include/navbar_form.html' %}
+{% block content %} 
 <body>
     {% include 'commons/include/navbar_form.html' %}
     <div class="container">
         <div class="bg-white p-3 rounded">
-            <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Registrar Formulario de Acomapnhamento(CPF)</h3>
+            <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Registrar Formulario de Acompanhamento(CPF)</h3>
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <div class="d-flex justify-content-center w-100">
-                            <form class="d-flex w-100" method="post">
+                            <form class="d-flex w-100" method="post" action="{% url 'register_acmform_view' %}">
                                 {% csrf_token %}
                                 <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill" maxlength="11">
                                 <button type="submit" class="btn btn-outline-success flex-shrink-1" style="margin-left: 5px;">Buscar</button>
@@ -42,4 +44,5 @@
     <script src="{% static 'js/all.min.js' %}"></script>
 </body>
 {% include 'commons/include/footer.html' %}
+{% endblock content %}
 </html>
