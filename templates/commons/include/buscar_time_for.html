@@ -13,35 +13,26 @@
             }
         </style>
     </head>
-
-{% include 'commons/include/navbar.html' %}
 {% block content %}
     <body>
 
-        <div class="row">
-            <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
-                <div class="card">
-                    <div class="card-header"></div>
-                        <div class="card-body">
-                                <h4 class="card-title">CALCULAR TEMPO RESTANTE</h4>
-                                <p class="card-text">Tempo total:</p>
-                                <form action="{% url 'calcular_temp' %}">
+        <div class="d-flex justify-content-center">
+                <div class="card bg-success" style="width: 700px; padding: 20px; color: white;">
+                        <div class="card-body text-center">
+                                <h2 class="card-title mb-4">BUSCAR NOVAMENTE</h2>
+                                <form action="{% url 'calcular_time' %}" method="post">
                                         {% csrf_token %}
-                                        <input type="text" name='cpf'>
-                                        <button type="submit">Calcular</button>
+                                        <label>CPF:</label>
+                                        <input type="text" name='cpf' placeholder="Digite o CPF">
+                                        <button type="submit" class="btn btn-dark">Buscar</button>
                                 </form>
                         </div>
-                    <div class="card-footer text-muted"></div>
                 </div>
-            </div>
         </div>
-
-        {{ form.as_p }}
         
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/all.min.js' %}"></script>
     </body>
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
 </html>

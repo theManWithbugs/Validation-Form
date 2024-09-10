@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVO CADASTRO|CADASTRO</title>
+    <title>HOME | CADASTRO</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
@@ -17,7 +17,9 @@
 <div class="container mt-5 p-2" style="border: solid 1px #ddd; background-color: rgb(244, 245, 245); border-radius: 15px;">
     <div class="row justify-content-center">
         <div class="col-md-8 form-container">
-            <h2 class="text-center">Formulário de Cadastro de Cidadão</h2>
+            <div class="p-4 rounded-3 mb-4" style="background-color: #000000; color: rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 20px;">
+                <h2 class="text-center" style="border-bottom: 2px solid rgb(255, 255, 255);">Formulário de Cadastro de Cidadão</h2>
+            </div>
             <form method="post" action="{% url 'form1' %}">
                 {% csrf_token %}
                 

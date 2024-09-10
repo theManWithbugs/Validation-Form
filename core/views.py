@@ -14,9 +14,6 @@ from django.db.models import Count
 from .models import Cidadao, HistoricoSaude
 from .utils import *
 
-# variaveis de ambiente
-progName = 'CADASTRO'
-iten_rage_page = 30  # registros por página
 
 def login_n(request):
     if request.method == 'POST':
@@ -43,7 +40,6 @@ def login_n(request):
 @login_required
 def home(request):
     template_name = 'commons/home.html'
-    formName = 'home'
     
     total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
 
@@ -55,8 +51,6 @@ def home(request):
                 )
 
     context = {
-        'progName': 'CADASTRO',  # Substitua por um valor real se necessário
-        'formName': formName,
         'total_usuarios': total_usuarios,  # Adicione o total de usuários ao contexto
         'drogas_ms': drogas_ms
     }
@@ -286,6 +280,16 @@ def excluir_form(request):
 
     return render(request, 'commons/include/busca_form.html', context)
 
+@login_required
+def capturar_cpf(request):
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf')
+        if cpf:
+            return redirect('atualizar_dados', cpf=cpf)
+        else:
+            messages.error(request, 'CPF não fornecido')
+    return render(request, 'commons/include/capturar_cpf.html')
+
 #view para atualizar dados do formulario
 @login_required
 def atualizar_dados(request, cpf):
@@ -309,8 +313,7 @@ def atualizar_dados(request, cpf):
             form_historico_saude.save()
             form_historico_criminal.save()
             form_informacoes_complementares.save()
-            messages.success(request, 'Dados atualizados com sucesso')
-            return redirect('base')
+            return redirect('sucess_page')
         else:
             messages.error(request, 'Há erros no formulário. Por favor, corrija-os.')
 
@@ -327,16 +330,6 @@ def atualizar_dados(request, cpf):
         'form_informacoes_complementares': form_informacoes_complementares,
         'cidadao': cidadao
     })
-
-@login_required
-def capturar_cpf(request):
-    if request.method == 'POST':
-        cpf = request.POST.get('cpf')
-        if cpf:
-            return redirect('atualizar_dados', cpf=cpf)
-        else:
-            messages.error(request, 'CPF não fornecido')
-    return render(request, 'commons/include/capturar_cpf.html')
 
 # Aqui nesta pagina ficam as estatisticas para análise de dados
 def analise_view(request):
@@ -391,6 +384,8 @@ def notfound_view(request):
     template_name='commons/include/not_found.html'
     return render(request, template_name)
 
+
+
 #-------------------------------------------------------------------------------------------------------#
 def buscar_acmform_view (request):
     form = BuscarCidadaoForm(request.GET or None)
@@ -424,7 +419,6 @@ def buscar_acmform_view (request):
 
     return render(request, 'commons/include/acomp_busca.html', context)
 
-
 #Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
 #-------------------------------------------------------------------------------------------------------#    
 
@@ -437,21 +431,21 @@ def register_acmform_view(request):
             request.session['cpf'] = cpf
             return redirect('acomp_central_form')
         else:
-            return HttpResponse('Não foi possível prosseguir')
+            return redirect('not_found_page')
+    
     else:
         form = BuscarCidadaoForm()
     
     return render(request, 'commons/include/acomp_reg.html', {'form': form})
 
-#-------------------------------------------------------------------------------------------------------#  
-
 #Receber e realizar o processamento 
 def acomp_central_form(request):
     cpf = request.session.get('cpf')
-    if not cpf:
+
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+    except Cidadao.DoesNotExist:
         return redirect('not_found_page')
-    
-    cidadao = get_object_or_404(Cidadao, cpf=cpf)
 
     if request.method == 'POST': 
         form = AcompCentralForm(request.POST)
@@ -468,26 +462,42 @@ def acomp_central_form(request):
 
 #-------------------------------------------------------------------------------------------------------#
 
-def calcular_tem_view(request):
-    form = ArmTime(request.GET or None)
-    cpf = request.GET.get('cpf')  
-    
-    time = None
-    if cpf:  # Verifica se cpf não está vazio
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
-            time = cidadao.time.first()
-        except Cidadao.DoesNotExist:
+def calcular_time_view(request):
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf')  
+        
+        if cpf: #verifica se o cpf não está vazio
+            return redirect('exibir_time', cpf=cpf)
+        else:
             return redirect('not_found_page')
     else:
-        messages.error(request, 'CPF não fornecido.')
+        messages.error(request, '')
 
+    return render(request, 'commons/include/buscar_time.html')
+
+def exibir_time(request, cpf):
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+        time_list = cidadao.time.first()
+
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')
+    
     context = {
-        'form': form,
-        'time': time
-    }
+        'cidadao': cidadao,
+        'time_list': time_list,
+        }
+    
+    return render(request, 'commons/include/exibir_time.html', context)
 
-    return render(request, 'commons/include/tempo_rest.html', context)
+
+
+
+
+
+
+
+
 
     
 
