@@ -10,12 +10,11 @@
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/estatisticas.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
-        <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+
     </head>
 
     <body>
-        {% include 'commons/include/navbar_form.html' %}
+        {% include 'commons/include/navbar.html' %}
         {% block content %}
         <div class="container py-5">
             <div class="row row-cols-1 row-cols-md-4 g-4">
@@ -49,8 +48,8 @@
                             <div class="display-4 text-warning mb-2">
                                 <i class="bi bi-star"></i>
                             </div>
-                            <h2 class="card-title mb-3">4.8</h2>
-                            <p class="card-text text-muted">Average Rating</p>
+                            <h2 class="card-title mb-3"></h2>
+                            <p class="card-text text-muted"></p>
                         </div>
                     </div>
                 </div>
@@ -61,8 +60,8 @@
                             <div class="display-4 text-danger mb-2">
                                 <i class="bi bi-clock-history"></i>
                             </div>
-                            <h2 class="card-title mb-3">98.3%</h2>
-                            <p class="card-text text-muted">Uptime</p>
+                            <h2 class="card-title mb-3"></h2>
+                            <p class="card-text text-muted"></p>
                         </div>
                     </div>
                 </div>

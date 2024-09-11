@@ -73,6 +73,15 @@ def calcular_sexo():
 
     return porcentagem_masculino, porcentagem_feminino
 
+def reduzir_tempo(cpf, horas_a_subtrair):
+    try:
+        arm_time = ArmTime.objects.get(cidadao__cpf=cpf)
+        arm_time.time -= horas_a_subtrair
+        arm_time.save()
+        return True
+    except ArmTime.DoesNotExist:
+        return False
+
 
     
 

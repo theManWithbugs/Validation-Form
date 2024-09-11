@@ -17,17 +17,20 @@
     <body>
 
         <div class="d-flex justify-content-center">
-                <div class="card bg-success" style="width: 700px; padding: 20px; color: white;">
-                        <div class="card-body text-center">
-                                <h2 class="card-title mb-4">BUSCAR NOVAMENTE</h2>
-                                <form action="{% url 'calcular_time' %}" method="post">
-                                        {% csrf_token %}
-                                        <label>CPF:</label>
-                                        <input type="text" name='cpf' placeholder="Digite o CPF">
-                                        <button type="submit" class="btn btn-dark">Buscar</button>
-                                </form>
-                        </div>
+            <div class="card" style="width: 700px; padding: 20px;">
+                <div class="card-header"></div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title mb-4">BUSCAR NOVAMENTE</h3>
+                            <form action="{% url 'exibir_time' %}" method="post">
+                                    {% csrf_token %}
+                                    <label>CPF:</label>
+                                    <input type="text" name='cpf'>
+                                     <button type="submit" class="btn btn-dark">Buscar</button>
+                             </form>
+                    </div>
+                <div class="card-footer text-muted">
                 </div>
+            </div>
         </div>
         
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

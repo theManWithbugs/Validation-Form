@@ -19,7 +19,7 @@
 
     </head>
 
-{% include 'commons/include/navbar_form.html' %}
+{% include 'commons/include/navbar.html' %}
 {% block content %}
     <body style="margin-top: 80px;">
 
@@ -29,7 +29,7 @@
 
         <div class="d-flex justify-content-center mt-5">
             <div class="card" style="width: 700px; padding: 20px; border-radius: 25px;">
-                <div class="card-header" style="color: rgb(255, 0, 0);"><h4>INFORMAÇÕES ECONTRADAS ABAIXO:</h4></div>
+                <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;"><h4><strong>INFORMAÇÕES ECONTRADAS ABAIXO:</strong></h4></div>
                 <div class="card-body text-center">
                     <h4 class="card-title">NOME: {{ cidadao.nome }} </h4>
                     <h4 class="card-title">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
@@ -42,13 +42,11 @@
                             Tempo total restante: <strong>Dado não existente no momento</strong>
                         </p>
                     {% endif %}
-                    <form action="post">
-                        {% csrf_token %}
-                        <input type="text" name="tempo" class="mb-2" placeholder="Digite o numero inteiro">
-                        <button type="submit" class="btn btn-dark">Reduzir</button>
-                    </form>
                 </div>
-                <div class="card-footer text-muted"></div>
+                <div class="d-flex justify-content-center">
+                    <input type="text" name="subtrair_horas">
+                    <a class="btn btn-primary">Atualizar</a>
+                </div>
             </div>
         </div>
         

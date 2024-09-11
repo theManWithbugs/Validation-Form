@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from .forms import *
 from .forms import CidadaoForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.db.models import Count
@@ -385,7 +385,6 @@ def notfound_view(request):
     return render(request, template_name)
 
 
-
 #-------------------------------------------------------------------------------------------------------#
 def buscar_acmform_view (request):
     form = BuscarCidadaoForm(request.GET or None)
@@ -462,26 +461,21 @@ def acomp_central_form(request):
 
 #-------------------------------------------------------------------------------------------------------#
 
-def calcular_time_view(request):
+def exibir_time(request):
+    cidadao = None
+    time_list = None
+
     if request.method == 'POST':
         cpf = request.POST.get('cpf')  
-        
-        if cpf: #verifica se o cpf não está vazio
-            return redirect('exibir_time', cpf=cpf)
-        else:
+
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+            time_list = cidadao.time.first()
+
+        except Cidadao.DoesNotExist:
             return redirect('not_found_page')
     else:
         messages.error(request, '')
-
-    return render(request, 'commons/include/buscar_time.html')
-
-def exibir_time(request, cpf):
-    try:
-        cidadao = Cidadao.objects.get(cpf=cpf)
-        time_list = cidadao.time.first()
-
-    except Cidadao.DoesNotExist:
-        return redirect('not_found_page')
     
     context = {
         'cidadao': cidadao,
@@ -490,6 +484,38 @@ def exibir_time(request, cpf):
     
     return render(request, 'commons/include/exibir_time.html', context)
 
+
+#view não está sendo utilizada no momento
+#-------------------------------------------------------------------------------------------------------#
+#
+#def atualizar_tempo(request):
+   #if request.method == 'POST':
+    #   cpf = request.POST.get('cpf')
+    #   subtrair_horas = request.POST.get('subtrair_horas')
+
+    #   if not subtrair_horas:
+    #       return HttpResponseBadRequest('Erro: dado não fornecido!')
+
+    #   try:
+    #       subtrair_horas = int(subtrair_horas)
+    #   except ValueError:
+    #       return HttpResponseBadRequest('Deve ser inserido um número válido')
+
+    #   arm_time = get_object_or_404(ArmTime, cidadao__cpf=cpf)
+    #   arm_time.time -= subtrair_horas  
+    #   arm_time.save()
+
+    #   return redirect('sucess_page')
+
+    #context = {
+    #    'tempo_atual': 'Informação de tempo não disponível.',
+    #}
+
+    #return render(request, 'commons/include/exibir_time.html', context)
+
+        
+        
+    
 
 
 

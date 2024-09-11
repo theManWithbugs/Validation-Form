@@ -114,15 +114,6 @@
                 {% else %}
                     <p>Informações complementares não disponíveis.</p>
                 {% endif %}
-
-            <div class="info-item">
-                {% if form_acomp_central %}
-                    <p><strong>Tecnico responsavel pelo acolhimento:</strong> {{ form_acomp_central.tecnico_responsavel }} </p>
-                    <p><strong>Evolução/Demanadas/Percepções:</strong> {{ form_acomp_central.evolucao_percepcoes }} </p>
-                {% else %}
-                    <p>Formulario de acompanhamento indisponivel</p>
-                {% endif %}
-            </div>
  
                 <form method="post" action="{% url 'excluir_form' %}">
                     {% csrf_token %}
