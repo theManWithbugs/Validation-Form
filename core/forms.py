@@ -82,9 +82,12 @@ class AcompCentralForm(forms.ModelForm):
 
 #Essa classe é usada para buscar o cidadão pelo cpf
 class BuscarCidadaoForm(forms.Form):
+    nome = models.CharField(max_length=80)
     cpf = forms.CharField(label='CPF', max_length=11, required=True)
 
-#-------------------------------------------------------------------#
+class BuscarNomeForm(forms.Form):
+    nome = forms.CharField(max_length=80, required=True)
+
 class AlterarDadosForm(forms.ModelForm):
     class Meta:
         model = Cidadao

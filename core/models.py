@@ -101,6 +101,32 @@ class Cidadao(models.Model):
         self.escolaridade = self.escolaridade.upper()
         super().save(*args, **kwargs)
 
+
+    #metodo utilizado para controlar a conversão de dado para JSON quando armazenado na sessão
+    def to_dict(self):
+        return {
+            'cpf': self.cpf,
+            'nome': self.nome,
+            'nome_social': self.nome_social,
+            'endereco': self.endereco,
+            'moradia_situacao': self.moradia_situacao,
+            'moradia_tipo': self.moradia_tipo,
+            'cidade': self.cidade,
+            'telefone': self.telefone,
+            'estado': self.estado,
+            'data_nascimento': self.data_nascimento.strftime('%Y-%m-%d'),  # Formata a data para string
+            'idade': self.idade,
+            'naturalidade': self.naturalidade,
+            'sexo': self.sexo,
+            'mae': self.mae,
+            'estado_civil': self.estado_civil,
+            'remuneracao': self.remuneracao,
+            'renda_individual': self.renda_individual,
+            'cor_raca': self.cor_raca,
+            'escolaridade': self.escolaridade,
+            'data_entrada': self.data_entrada.strftime('%Y-%m-%d')  # Formata a data para string
+        }
+
 # FORMULÁRIO 2
 class HistoricoSaude(models.Model):
 
@@ -162,6 +188,20 @@ class HistoricoSaude(models.Model):
         self.tratamento = self.tratamento.upper()
         super().save(*args, **kwargs)
 
+    def to_dict(self):
+        return {
+        'cidadao': self.cidadao.cpf,
+        'saude': self.saude,
+        'saude_just': self.saude_just,
+        'tratamento_psi': self.tratamento_psi,
+        'tratamento_psi_jus': self.tratamento_psi_jus,
+        'medicacao_controlada': self.medicacao_controlada,
+        'medicacao_controlada_jus': self.medicacao_controlada_jus,
+        'deficiencia': self.deficiencia,
+        'drogas_uso': self.drogas_uso,
+        'tratamento': self.tratamento
+        }
+
 # FORMULÁRIO 3
 class HistoricoCriminal(models.Model):
 
@@ -191,6 +231,24 @@ class HistoricoCriminal(models.Model):
         self.violencia_dome_nome_vitima = self.violencia_dome_nome_vitima.upper()
         self.grau_de_parentesco = self.grau_de_parentesco.upper()
         super().save(*args, **kwargs)
+
+    def to_dict(self):
+        return {
+            'cidadao': self.cidadao.cpf,
+            'ja_esteve_preso': self.ja_esteve_preso,
+            'prisao_justificativa': self.prisao_justificativa,
+            'prisao_familiar': self.prisao_familiar,
+            'numero_do_processo': self.numero_do_processo,
+            'juiz_de_origem': self.juiz_de_origem,
+            'medida_aplicada': self.medida_aplicada,
+            'tipo_penal': self.tipo_penal,
+            'violencia_domestica': self.violencia_domestica,
+            'violencia_dome_nome_vitima': self.violencia_dome_nome_vitima,
+            'grau_de_parentesco': self.grau_de_parentesco,
+            'reincidencia': self.reincidencia,
+            'sugestao_de_trabalho': self.sugestao_de_trabalho,
+            'sugest_encaminhamento': self.sugest_encaminhamento
+        }
 
 # FORMULÁRIO 4
 class InformacoesComplementares(models.Model):
@@ -240,6 +298,21 @@ class InformacoesComplementares(models.Model):
         self.ocupacao = self.ocupacao.upper()
         self.analise_descritiva = self.analise_descritiva.upper()
         super().save(*args, **kwargs)
+
+    def to_dict(self):
+        return {
+            'cidadao': self.cidadao.cpf,
+            'quantas_pessoas': self.quantas_pessoas,
+            'nome_familiar': self.nome_familiar,
+            'parentesco': self.parentesco,
+            'idade_familiar': self.idade_familiar,
+            'escolaridade_familiar': self.escolaridade_familiar,
+            'ocupacao': self.ocupacao,
+            'analise_descritiva': self.analise_descritiva,
+            'tip_penal': self.tip_penal,
+            'medida_cumprimento': self.medida_cumprimento,
+            'motivo_saida': self.motivo_saida
+        }
 
 class AcompCentral(models.Model):
 

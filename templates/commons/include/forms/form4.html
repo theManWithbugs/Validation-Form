@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CADASTRO | INFORMAÇÕES TECNICAS</title>
+    <title>HOME | INFORMAÇÕES TECNICAS</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
-
 
 </head>
 
@@ -17,16 +16,14 @@
 {% block content %}
 <body>
 
-
-
     <div class="container mt-5" style="border: solid 1px; padding: 20px; background-color: rgb(244, 245, 245); border-radius: 15px;">
         <div class="row justify-content-center">
             <div class="col-md-8 form-container">
-                <h2 class="text-center mb-4">Formulário de informações tecnicas</h2>
-                <form method="post" action="{% url 'form3' %}">
+                <h2 class="text-center mb-4">Formulário: informações complementares</h2>
+                <form method="post" action="{% url 'form4' %}">
                     {% csrf_token %}
-                    {{ formulario_tecnico.as_p }}
-                    <button type="submit" class="btn btn-primary btn-block">PROSEGUIR</button>
+                    {{ formulario_complementar.as_p }}
+                    <button type="submit" class="btn btn-success btn-block">PROSEGUIR</button>
                 </form>
             </div>
         </div>

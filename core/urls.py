@@ -19,6 +19,7 @@ urlpatterns = [
     path('base/editar_dados',views.capturar_cpf, name='capturar_dados'),
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
     path('base/not_found', views.notfound_view, name='not_found_page'),
+    path('base/missing_data/', views.missing_data_view, name='missing_data'),
     path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
     path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
     path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
     path('base/exibir_time/', views.exibir_time, name='exibir_time'),
+    path('base/buscar_nome/', views.buscar_nome_view, name='buscar_nome'),
     ]
 
 

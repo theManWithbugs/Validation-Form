@@ -22,71 +22,71 @@
 
 {% include 'commons/include/navbar.html' %}
 {% block content %}
-    <body>
+<body>
        
-<div class="container">
-
         <div class="container">
 
-            <div class="bg-white p-3 rounded">
-                <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Buscar formulario de acompanhamento(CPF)</h3>
-                <nav class="navbar navbar-light bg-light">
-                    <div class="container-fluid">
-                        <div class="d-flex justify-content-center w-100">
-                                <form class="d-flex w-100" method="get" action="{% url 'acmform' %}">
-                                    <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill" maxlength="11">
-                                    <button type="submit" class="btn btn-outline-success flex-shrink-1" style="margin-left: 5px;">Enviar</button>
-                                </form>
-                        </div>
+                <div class="container">
+
+                    <div class="bg-white p-3 rounded">
+                        <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Buscar formulario de acompanhamento(CPF)</h3>
+                        <nav class="navbar navbar-light bg-light">
+                            <div class="container-fluid">
+                                <div class="d-flex justify-content-center w-100">
+                                        <form class="d-flex w-100" method="get" action="{% url 'acmform' %}">
+                                            <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill" maxlength="11">
+                                            <button type="submit" class="btn btn-outline-success flex-shrink-1" style="margin-left: 5px;">Enviar</button>
+                                        </form>
+                                </div>
+                            </div>
+                        </nav>
+                    </div> 
+                </div>
+
+                {% if form_acomp_central %}
+                <div style="margin-top: 20px; border: solid 1px #cce5ff; border-radius: 8px; background-color: #e6f0ff; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            
+                    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h1 style="text-align: center; color: #004085;">Fichas de Acompanhamento</h1>
+                        <h4 style="text-align: center; color: #004085;">Número do processo: {{ historico_criminal.numero_do_processo }}</h4>
+                        <h4 style="text-align: center; color: #004085;">Nome: {{ cidadao.nome }}</h4>
                     </div>
-                </nav>
-            </div> 
+            
+                    <table style="width: 100%; border-collapse: collapse; border: solid 1px #dee2e6;">
+                        <thead>
+                            <tr style="background-color: #007bff; color: white;">
+                                <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Técnico Responsavel</th>
+                                <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Evolução/Demandas/Percepções</th>
+                                <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Data de registro</th>
+
+                                <!-- Adicione mais colunas conforme necessário -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for form in form_acomp_central %}
+                                <tr style="background-color: #f9f9f9;">
+                                    <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.tecnico_responsavel }}</td>
+                                    <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.evolucao_percepcoes }}</td>
+                                    <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.data_registro }}</td>
+                                    <!-- Adicione mais colunas conforme necessário -->
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" style="padding: 10px; text-align: center; color: #6c757d;">Nenhum formulário encontrado para o CPF fornecido.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
         </div>
-
-        {% if form_acomp_central %}
-        <div style="margin-top: 20px; border: solid 1px #cce5ff; border-radius: 8px; background-color: #e6f0ff; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h1 style="text-align: center; color: #004085;">Fichas de Acompanhamento</h1>
-                <h4 style="text-align: center; color: #004085;">Número do processo: {{ historico_criminal.numero_do_processo }}</h4>
-                <h4 style="text-align: center; color: #004085;">Nome: {{ cidadao.nome }}</h4>
-            </div>
-    
-            <table style="width: 100%; border-collapse: collapse; border: solid 1px #dee2e6;">
-                <thead>
-                    <tr style="background-color: #007bff; color: white;">
-                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Técnico Responsavel</th>
-                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Evolução/Demandas/Percepções</th>
-                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Data de registro</th>
-
-                        <!-- Adicione mais colunas conforme necessário -->
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for form in form_acomp_central %}
-                        <tr style="background-color: #f9f9f9;">
-                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.tecnico_responsavel }}</td>
-                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.evolucao_percepcoes }}</td>
-                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.data_registro }}</td>
-                            <!-- Adicione mais colunas conforme necessário -->
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="2" style="padding: 10px; text-align: center; color: #6c757d;">Nenhum formulário encontrado para o CPF fornecido.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% endif %}
-
-</div>
-
 
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/all.min.js' %}"></script>
     </body>
+
 {% endblock content %}
 {% include 'commons/include/footer.html' %}
 </html>

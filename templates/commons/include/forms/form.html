@@ -8,6 +8,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
+
 </head>
 {% include 'commons/include/navbar_form.html' %}
 
@@ -17,6 +18,7 @@
 <div class="container mt-5 p-2" style="border: solid 1px #ddd; background-color: rgb(244, 245, 245); border-radius: 15px;">
     <div class="row justify-content-center">
         <div class="col-md-8 form-container">
+            <h2 class="text-center mb-4">Formulario: Cidadao</h2>
             <form method="post" action="{% url 'form1' %}">
                 {% csrf_token %}
                 
@@ -50,7 +52,7 @@
 
                 {% endfor %}
 
-                <button type="submit" class="btn btn-primary btn-block">PROSEGUIR</button>
+                <button type="submit" class="btn btn-success btn-block">PROSEGUIR</button>
             </form>
         </div>
     </div>

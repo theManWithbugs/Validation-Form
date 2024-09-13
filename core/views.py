@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from itertools import count
 from django.conf import settings
 from django.contrib import messages
@@ -64,10 +65,16 @@ def form1_view(request):
     if request.method == 'POST':
         form = CidadaoForm(request.POST)
         if form.is_valid():
-            cidadao = form.save()
-            # Armazena o cpf do cidadão na sessão para que possa ser utilizado em uma requisição futura
-            request.session['cidadao_cpf'] = cidadao.cpf
-            # Marca o formulário como completo
+            # Obter os dados do formulário
+            form_data = form.cleaned_data
+            
+            # Converter datas para string
+            for field in form_data:
+                if isinstance(form_data[field], (date, datetime)):
+                    form_data[field] = form_data[field].isoformat()  # Usa o formato ISO para datas e datetimes
+
+            # Salvar dados no session
+            request.session['cidadao_form_data'] = form_data
             request.session['form1_complete'] = True
             return redirect('form2')
         else:
@@ -75,24 +82,25 @@ def form1_view(request):
     else:
         form = CidadaoForm()
     
-    return render(request, 'commons/include/form.html', {'formulario': form})
+    return render(request, 'commons/include/forms/form.html', {'formulario': form})
 
 @login_required
 def form2_view(request):
-    cidadao_cpf = request.session.get('cidadao_cpf')
-    if not cidadao_cpf:
-        messages.error(request, 'Dados do cidadão não encontrados.')
+    if not request.session.get('form1_complete'):
+        messages.error(request, 'Formulario 1 não preenchido')
         return redirect('form1')
-    
-    cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
 
     if request.method == 'POST':
         form = HistoricoSaudeForm(request.POST)
         if form.is_valid():
-            historico_saude = form.save(commit=False)
-            historico_saude.cidadao = cidadao
-            historico_saude.save()
-            # Marca o formulário como completo
+            form_data = form.cleaned_data
+            
+            # Converter datas para string
+            for field in form_data:
+                if isinstance(form_data[field], (date, datetime)):
+                    form_data[field] = form_data[field].isoformat()
+
+            request.session['historico_saude_form_data'] = form_data
             request.session['form2_complete'] = True
             return redirect('form3')
         else:
@@ -100,67 +108,77 @@ def form2_view(request):
     else:
         form = HistoricoSaudeForm()
 
-    return render(request, 'commons/include/form2.html', {'formulario_saude': form})
+    return render(request, 'commons/include/forms/form2.html', {'formulario_saude': form})
 
 @login_required
 def form3_view(request):
-    cidadao_cpf = request.session.get('cidadao_cpf')
-    if not cidadao_cpf:
-        messages.error(request, 'Dados do cidadão não encontrados.')
-        return redirect('form1')
-    
-    cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
+    if not request.session.get('form2_complete'):
+        messages.error(request, 'Formulario 2 não preenchido')
+        return redirect('form2')
 
     if request.method == 'POST':
         form = HistoricoCriminalForm(request.POST)
         if form.is_valid():
-            historico_criminal = form.save(commit=False)
-            historico_criminal.cidadao = cidadao
-            try:
-                historico_criminal.save()
-                # Marca o formulário como completo
-                request.session['form3_complete'] = True
-                return redirect('form4')
-            except IntegrityError:
-                messages.error(request, 'Já existe um registro de histórico criminal para este cidadão.')
+            form_data = form.cleaned_data
+            
+            # Converter datas para string
+            for field in form_data:
+                if isinstance(form_data[field], (date, datetime)):
+                    form_data[field] = form_data[field].isoformat()
+
+            request.session['historico_criminal_form_data'] = form_data
+            request.session['form3_complete'] = True
+            return redirect('form4')
         else:
             messages.error(request, 'Por favor, corrija os erros abaixo.')
     else:
         form = HistoricoCriminalForm()
 
-    return render(request, 'commons/include/form3.html', {'formulario_tecnico': form})
+    return render(request, 'commons/include/forms/form3.html', {'formulario_tecnico': form})
 
 @login_required
 def form4_view(request):
-    cidadao_cpf = request.session.get('cidadao_cpf')
-    if not cidadao_cpf:
-        messages.error(request, 'Dados do cidadão não encontrados.')
+    if not (request.session.get('form1_complete') and
+            request.session.get('form2_complete') and
+            request.session.get('form3_complete')):
+        messages.error(request, 'É necessário que todos os formulários sejam preenchidos!')
         return redirect('form1')
     
-    cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
-
-    # Verifica se todos os formulários anteriores foram preenchidos
-    if not (request.session.get('form1_complete') and 
-            request.session.get('form2_complete') and 
-            request.session.get('form3_complete')):
-        messages.error(request, 'Por favor, complete todos os formulários anteriores antes de enviar.')
-        return redirect('form1')
-
     if request.method == 'POST':
         form = InformacoesComplementaresForm(request.POST)
         if form.is_valid():
-            informacoes_complementares = form.save(commit=False)
+            cidadao_data = request.session.get('cidadao_form_data')
+            historico_saude_data = request.session.get('historico_saude_form_data')
+            historico_criminal_data = request.session.get('historico_criminal_form_data')
+
+            if not all([cidadao_data, historico_saude_data, historico_criminal_data]):
+                messages.error(request, 'Restam dados anteriores não preenchidos!')
+                return redirect('missing_data')
+            
+            # Cria os objetos para serem salvos no banco de dados
+            cidadao = Cidadao.objects.create(**cidadao_data)
+
+            HistoricoSaude.objects.create(cidadao=cidadao, **historico_saude_data)
+
+            HistoricoCriminal.objects.create(cidadao=cidadao, **historico_criminal_data)
+
+            # Cria e salva o último objeto que diz respeito ao formulário 4
+            informacoes_complementares = form.save(commit=False) 
             informacoes_complementares.cidadao = cidadao
             informacoes_complementares.save()
-            # Marca o formulário como completo
+
+            # Limpa os dados da sessão
+            request.session.pop('cidadao_form_data', None)
+            request.session.pop('historico_saude_form_data', None)
+            request.session.pop('historico_criminal_form_data', None)
             request.session['form4_complete'] = True
             return redirect('sucess_page')
         else:
-            messages.error(request, 'Por favor, corrija os erros abaixo.')
+            messages.error(request, 'Formulario inválido!')
     else:
         form = InformacoesComplementaresForm()
-        
-    return render(request, 'commons/include/form4.html', {'formulario_complementar': form})
+
+    return render(request, 'commons/include/forms/form4.html', {'formulario_complementar': form})
 
 def form_acomp_view(request):
     cidadao_cpf = request.session.get('cidadao_cpf')
@@ -195,43 +213,40 @@ def form_acomp_view(request):
     })
        
 #-------------------------------------------------------------------------------------------------------#  
-#View de busca de dados, usa como principal parametro o cpf pois é o elemento que interliga as tabelas
 @login_required
 def busca_form_view(request):
-    # Instancia o formulário com os dados da requisição GET, se disponíveis, ou um formulário vazio
     form = BuscarCidadaoForm(request.GET or None)
-    
-    # Inicializa as variáveis que armazenarão as informações do cidadão e seus históricos
+
     cidadao = None
     historico_saude = None
     historico_criminal = None
     informacoes_complementares = None
     form_acomp = None
 
-    # Verifica se o formulário é válido
     if form.is_valid():
-        # Extrai o CPF do formulário
-        cpf = form.cleaned_data['cpf']
+        nome = form.cleaned_data.get('nome')
+        cpf = form.cleaned_data.get('cpf')
 
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
-
-        except Cidadao.DoesNotExist:
-            return redirect('not_found_page')
-
+        if nome:
+            cidadao_queryset = Cidadao.objects.filter(nome__icontains=nome)
+        elif cpf:
+            cidadao_queryset = Cidadao.objects.filter(cpf=cpf)
         else:
-            # Recupera o primeiro histórico de saúde associado ao cidadão
-            historico_saude = cidadao.historicos_saude.first()  
-            # Recupera o primeiro histórico criminal associado ao cidadão
-            historico_criminal = cidadao.historicos_criminais.first()  
-            # Recupera a primeira informação complementar associada ao cidadão
-            informacoes_complementares = cidadao.informacoes_complementares.first()
-            #Recupera as informações do formulario de acompanhamento na central
-            form_acomp = cidadao.form_acompanhamento_central.first()
-    else:
-        messages.error(request, '')
+            cidadao_queryset = Cidadao.objects.none()
 
-    # Prepara o contexto para o template, incluindo o formulário e as informações recuperadas
+        if cidadao_queryset.exists():
+            cidadao = cidadao_queryset.first()
+
+            historico_saude = cidadao.historicos_saude.first()
+            historico_criminal = cidadao.historicos_criminais.first()
+            informacoes_complementares = cidadao.informacoes_complementares.first()
+            form_acomp = cidadao.form_acompanhamento_central.first()
+        else:
+            return redirect('not_found_page')
+    else:
+        messages.error(request, 'Erro na validação do formulário.')
+        print(form.errors)
+
     context = {
         'form': form,
         'cidadao': cidadao,
@@ -240,9 +255,50 @@ def busca_form_view(request):
         'informacoes_complementares': informacoes_complementares,
         'form_acomp_central': form_acomp,
     }
-    
-    # Renderiza o template 'busca_form.html' com o contexto preparado
+
     return render(request, 'commons/include/busca_form.html', context)
+
+
+def buscar_nome_view(request):
+    form = BuscarNomeForm(request.GET or None)
+
+    cidadao = None
+    historico_saude = None
+    historico_criminal= None
+    informacoes_complementares = None
+
+    if form.is_valid():
+        nome = request.POST.get('nome')
+        nome = form.cleaned_data['nome']
+
+        if nome:
+            cidadao__queryset = Cidadao.objects.filter(nome__icontains=nome)
+        else:
+            cidadao__queryset = Cidadao.objects.none()
+
+        if cidadao__queryset.exists():
+
+            cidadao = cidadao__queryset.first()
+
+            historico_saude = cidadao.historicos_saude.first()
+            historico_criminal = cidadao.historicos_criminais.first()
+            informacoes_complementares = cidadao.informacoes_complementares.first()
+        
+        else:
+            return redirect('not_found_page')
+    else:
+        messages.error(request, 'Erro ao validar o formulario')
+
+    context = {
+        'form': form,
+        'cidadao': cidadao,
+        'historico_saude': historico_saude,
+        'historico_criminal': historico_criminal,
+        'informacoes_complementares': informacoes_complementares,
+    }
+
+    return render(request, 'commons/include/buscar_nome.html', context)
+
 
 #-------------------------------------------------------------------------------------------------------#
 @login_required
@@ -361,11 +417,6 @@ def base_view(request):
     return render(request, 'base.html')
 
 @login_required
-def sucess_page_view(request):
-    template_name = 'commons/include/sucess_page.html'
-    return render(request, template_name)
-
-@login_required
 def usuario_view(request):
     return render(request, 'account/perfil.html')
 
@@ -380,10 +431,17 @@ def footer_view(request):
     template_name = 'commons/include/footer.html'
     return render(request, template_name)
 
-def notfound_view(request):
-    template_name='commons/include/not_found.html'
+@login_required
+def sucess_page_view(request):
+    template_name = 'commons/include/add_pages/sucess_page.html'
     return render(request, template_name)
 
+def notfound_view(request):
+    template_name='commons/include/add_pages/not_found.html'
+    return render(request, template_name)
+
+def missing_data_view(request):
+    return render(request, 'commons/include/add_pages/missing_data.html')
 
 #-------------------------------------------------------------------------------------------------------#
 def buscar_acmform_view (request):
@@ -464,54 +522,56 @@ def acomp_central_form(request):
 def exibir_time(request):
     cidadao = None
     time_list = None
-
+    
     if request.method == 'POST':
-        cpf = request.POST.get('cpf')  
+        cpf = request.POST.get('cpf')
+        horas_a_subtrair = request.POST.get('horas_a_subtrair')
+        
+        if not cpf or not horas_a_subtrair:
+            return HttpResponse("Parâmetros 'cpf' e 'horas_a_subtrair' não recebidos")
+        
+        try:
+            horas_a_subtrair = float(horas_a_subtrair)
+        except ValueError:
+            return HttpResponseBadRequest("Horas a subtrair deve ser um número!")
 
+        sucesso = reduzir_tempo(cpf, horas_a_subtrair)
+
+        if sucesso:
+            messages.success(request, "O tempo foi reduzido com sucesso.")
+        else:
+            messages.error(request, "CPF não encontrado ou ocorreu um erro.")
+        
+        # Redirecionar após a operação
+        return redirect('exibir_time')
+
+    # GET request
+    cpf = request.GET.get('cpf')
+    if cpf:
         try:
             cidadao = Cidadao.objects.get(cpf=cpf)
-            time_list = cidadao.time.first()
-
+            time_list = cidadao.time.first()  # Supondo que 'time' é um related_name
         except Cidadao.DoesNotExist:
             return redirect('not_found_page')
-    else:
-        messages.error(request, '')
-    
+
     context = {
         'cidadao': cidadao,
         'time_list': time_list,
-        }
-    
+    }
+
     return render(request, 'commons/include/exibir_time.html', context)
 
 
-#view não está sendo utilizada no momento
-#-------------------------------------------------------------------------------------------------------#
-#
-#def atualizar_tempo(request):
-   #if request.method == 'POST':
-    #   cpf = request.POST.get('cpf')
-    #   subtrair_horas = request.POST.get('subtrair_horas')
 
-    #   if not subtrair_horas:
-    #       return HttpResponseBadRequest('Erro: dado não fornecido!')
 
-    #   try:
-    #       subtrair_horas = int(subtrair_horas)
-    #   except ValueError:
-    #       return HttpResponseBadRequest('Deve ser inserido um número válido')
 
-    #   arm_time = get_object_or_404(ArmTime, cidadao__cpf=cpf)
-    #   arm_time.time -= subtrair_horas  
-    #   arm_time.save()
+    
 
-    #   return redirect('sucess_page')
 
-    #context = {
-    #    'tempo_atual': 'Informação de tempo não disponível.',
-    #}
 
-    #return render(request, 'commons/include/exibir_time.html', context)
+
+
+
 
         
         

@@ -10,14 +10,15 @@
 
 <style>
 
-body {
-    background-color: rgb(20, 104, 104);
-    background-image: url("{% static '/img/brasaoacre.png' %}");
-    background-size: 40%;
-    background-position: center; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    }
+    body {
+        background-color: rgb(20, 104, 104);
+        background-image: url("{% static '/img/brasaoacre.png' %}");
+        background-size: 40%;
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-attachment: fixed; 
+        }
+
 </style>
 
 
@@ -28,7 +29,7 @@ body {
             <main role="main" class="flex-fill">
                     <section class="container mt-5">
                             {% include 'commons/include/alert_error_message.html' %}
-
+                        
                             {% block content %}
                             {% endblock content %}
                     </section>
