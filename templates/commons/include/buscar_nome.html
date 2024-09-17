@@ -48,100 +48,35 @@
                     </nav>
                 </div>
             </div>
-        
 
-        <div style="background-color:  #ffffff; border-radius: 20px;">
-        {% if cidadao %}
-                <h2 class="text-center" style="margin-top: 40px;">{{ cidadao.nome }}</h2>
-                
-                <div class="section-title">
-                    <h3>Informações Pessoais</h3>
-                </div>
-                <div class="info-item">
-                    <p><strong>CPF:</strong> {{ cidadao.cpf }}</p>
-                    <p><strong>Nome Social:</strong> {{ cidadao.nome_social }}</p>
-                    <p><strong>Endereço:</strong> {{ cidadao.endereco }}</p>
-                    <p><strong>Cidade:</strong> {{ cidadao.cidade }}</p>
-                    <p><strong>Telefone:</strong> {{ cidadao.telefone }}</p>
-                    <p><strong>Estado:</strong> {{ cidadao.estado }}</p>
-                    <p><strong>Data de Nascimento:</strong> {{ cidadao.data_nascimento }}</p>
-                    <p><strong>Idade:</strong> {{ cidadao.idade }}</p>
-                    <p><strong>Naturalidade:</strong> {{ cidadao.naturalidade }}</p>
-                    <p><strong>Sexo:</strong> {{ cidadao.sexo }}</p>
-                    <p><strong>Mãe:</strong> {{ cidadao.mae }}</p>
-                    <p><strong>Estado Civil:</strong> {{ cidadao.estado_civil }}</p>
-                    <p><strong>Remuneração:</strong> {{ cidadao.remuneracao }}</p>
-                    <P><strong>Renda individual:</strong> {{ cidadao.renda_individual }} </p>
-                    <p><strong>Cor/Raça:</strong> {{ cidadao.cor_raca }}</p>
-                    <p><strong>Escolaridade:</strong> {{ cidadao.escolaridade }}</p>
-                </div>
+    </div>
 
-                <div class="section-title">
-                    <h3>Histórico de Saúde</h3>
-                </div>
-                <div class="info-item">
-                    {% if historico_saude %}
-                        <p><strong>Saúde:</strong> {{ historico_saude.saude }}</p>
-                        <p><strong>Tratamento Psiquiátrico:</strong> {{ historico_saude.tratamento_psiquiatrico }}</p>
-                        <p><strong>Medicação Controlada:</strong> {{ historico_saude.medicacao_controlada }}</p>
-                        <p><strong>Deficiência:</strong> {{ historico_saude.deficiencia }}</p>
-                        <p><strong>Drogas em Uso:</strong> {{ historico_saude.drogas_uso }}</p>
-                        <p><strong>Tratamento:</strong> {{ historico_saude.tratamento }}</p>
-                    {% else %}
-                        <p>Histórico de saúde não disponível.</p>
-                    {% endif %}
-                </div>
 
-                <div class="section-title">
-                    <h3>Histórico Criminal</h3>
-                </div>
-                <div class="info-item">
-                    {% if historico_criminal %}
-                        <p><strong>Já Esteve Preso:</strong> {{ historico_criminal.ja_esteve_preso }}</p>
-                        <p><strong>Prisão Justificativa:</strong> {{ historico_criminal.prisao_justificativa }}</p>
-                        <p><strong>Prisão Familiar:</strong> {{ historico_criminal.prisao_familiar }}</p>
-                        <p><strong>Número do Processo:</strong> {{ historico_criminal.numero_do_processo }}</p>
-                        <p><strong>Juiz de Origem:</strong> {{ historico_criminal.juiz_de_origem }}</p>
-                        <p><strong>Medida Aplicada:</strong> {{ historico_criminal.medida_aplicada }}</p>
-                        <p><strong>Tipo Penal:</strong> {{ historico_criminal.tipo_penal }}</p>
-                        <p><strong>Violência Doméstica:</strong> {{ historico_criminal.violencia_domestica }}</p>
-                        <p><strong>Nome da Vítima:</strong> {{ historico_criminal.violencia_dome_nome_vitima }}</p>
-                        <p><strong>Grau de Parentesco:</strong> {{ historico_criminal.grau_de_parentesco }}</p>
-                        <p><strong>Reincidência:</strong> {{ historico_criminal.reincidencia }}</p>
-                        <p><strong>Sugestão de Trabalho:</strong> {{ historico_criminal.sugestao_de_trabalho }}</p>
-                        <p><strong>Sugestão de Encaminhamento:</strong> {{ historico_criminal.sugest_encaminhamento }}</p>
-                    {% else %}
-                        <p>Histórico criminal não disponível.</p>
-                    {% endif %}
-                </div>
+    <div class="container">
 
-                <div class="section-title">
-                    <h3>Informações Complementares</h3>
-                </div>
-                <div class="info-item">
-                    {% if informacoes_complementares %}
-                        <p><strong>Quantas Pessoas:</strong> {{ informacoes_complementares.quantas_pessoas }}</p>
-                        <p><strong>Nome Familiar:</strong> {{ informacoes_complementares.nome_familiar }}</p>
-                        <p><strong>Parentesco:</strong> {{ informacoes_complementares.parentesco }}</p>
-                        <p><strong>Idade Familiar:</strong> {{ informacoes_complementares.idade_familiar }}</p>
-                        <p><strong>Escolaridade Familiar:</strong> {{ informacoes_complementares.escolaridade_familiar }}</p>
-                        <p><strong>Ocupação:</strong> {{ informacoes_complementares.ocupacao }}</p>
-                        <p><strong>Análise Descritiva:</strong> {{ informacoes_complementares.analise_descritiva }}</p>
-                        <p><strong>Tecnico responsavel pelo acolhimento:</strong> {{ informacoes_complementares.tecnico_responsavel }}</p>
-                        <p><strong>Tipo penal:</strong> {{ informacoes_complementares.tip_penal }} </p>
-                        <p><strong>Medida de cumprimento:</strong> {{ informacoes_complementares.medida_cumprimento }} </p>
-                        <p><strong>Data de entrada:</strong> {{ cidadao.data_entrada }}</p>
-                    {% else %}
-                        <p>Informações complementares não disponíveis.</p>
-                    {% endif %}
+            <div class="container bg-dark mb-5" style="border: solid 2px; border-radius: 15px; width: 85%;">
+                <h3 class="d-flex justify-content-center mb-3 mt-3" style="color: aliceblue;">Resultados aproximados:</h3>
+                    <div class="d-flex justify-content-center">
+                        {% if objs %}
+                            <ul style="width: 90%;">
+                                {% for obj in objs %}
+                                <div class="mt-4 bg-light" style="border: solid 1px; border-radius: 5px;">
+                                    <li class="d-flex justify-content-center" style="font-size: larger;">{{ obj.nome }}</li>
+                                    <strong class="d-flex justify-content-center" style="color: crimson; font-size: larger;">CPF: {{ obj.cpf }}</strong>
+                                    <a class="btn btn-primary d-flex justify-content-center" style="border: solid 1px;" href="#">MAIS INFORMAÇÕES</a>
+                                </div>
+                                {% endfor %}
+                            </ul>
+                    </div>
 
-                    <form method="post" action="{% url 'excluir_form' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                        <button class="btn btn-primary" type="submit" style="background-color: red; margin-top: 40px; margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
-                    </form>
+                    <div class="d-flex justify-content-center">
+                                {% include 'commons/include/pagination.html' %}
+                            {% else %}
+                                <p>Nenhum resultado encontrado no momento</p>
+                            {% endif %}
+                    </div>
+            </div>
 
-        </div>
     </div>
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

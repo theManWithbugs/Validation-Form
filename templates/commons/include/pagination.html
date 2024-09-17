@@ -1,9 +1,13 @@
+<!-- É importante ressaltar que: ("O atributo("&nome={{ search }}") "nome" no caso é a variavel chave utilizada para a paginação, 
+tal variavel é recebida pelo usuario no input, para este caso especifico foi utilizado a variavel nome na qual  deve receber alterações de acordo com o contexto atual.)
+-->
+
 <div class="py-0 my-0">
     <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm justify-content-end my-0 mb-1 py-0">
             {% if objs.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ objs.previous_page_number }}{% if search %}&txtsearch={{ search }}{% endif %}">
+                    <a class="page-link" href="?page={{ objs.previous_page_number }}{% if search %}&nome={{ search }}{% endif %}">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </a>
                 </li>
@@ -17,7 +21,7 @@
 
             {% if objs.number|add:'-5' > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ objs.number|add:'-5' }}{% if search %}&txtsearch={{ search }}{% endif %}">&hellip;</a>
+                    <a class="page-link" href="?page={{ objs.number|add:'-5' }}{% if search %}&nome={{ search }}{% endif %}">&hellip;</a>
                 </li>
             {% endif %}
 
@@ -28,20 +32,20 @@
                     </li>
                 {% elif i > objs.number|add:'-5' and i < objs.number|add:'3' %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ i }}{% if search %}&txtsearch={{ search }}{% endif %}">{{ i }}</a>
+                        <a class="page-link" href="?page={{ i }}{% if search %}&nome={{ search }}{% endif %}">{{ i }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {% if objs.paginator.num_pages > objs.number|add:'3' %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ objs.number|add:'3' }}{% if search %}&txtsearch={{ search }}{% endif %}">&hellip;</a>
+                    <a class="page-link" href="?page={{ objs.number|add:'3' }}{% if search %}&nome={{ search }}{% endif %}">&hellip;</a>
                 </li>
             {% endif %}
 
             {% if objs.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ objs.next_page_number }}{% if search %}&txtsearch={{ search }}{% endif %}">
+                    <a class="page-link" href="?page={{ objs.next_page_number }}{% if search %}&nome={{ search }}{% endif %}">
                         <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </a>
                 </li>

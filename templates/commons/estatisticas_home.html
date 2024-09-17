@@ -2,7 +2,6 @@
 <!doctype html>
 <html lang="pt-br">
     <head>
-        <title>HOME | ESTATISTICAS</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,11 +11,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
     </head>
-    {% include 'commons/include/navbar.html' %}
-    {% block content %}
-    <body>
 
-        <div class="container">
+    <body>
+        {% block content %}
+
+    <div class="container">
 
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 <div class="col">
@@ -66,21 +65,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
 
 
-        <div class="container d-flex justify-content-center mt-3" style="border: solid 1px; background-color: aliceblue; width: 30%;"> 
-            <ul>
-                <h1>Tipificação penal</h1>
-                {% for tipo, quantidade in resultado_tipo_penal.items %}
-                    <li>{{ tipo }}: {{ quantidade }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-       
-
-
-        
+        <!--
           <div class="container mt-3 mb-4">
             <div class="row">
                 <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
@@ -96,10 +84,10 @@
                 </div>
             </div>
         </div>
-    
+        -->
     
 
-      
+        {% endblock content %}
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/all.min.js' %}"></script>
@@ -108,6 +96,4 @@
         <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
 
     </body>
-    {% endblock content %}
-    {% include 'commons/include\footer.html' %}
 </html>

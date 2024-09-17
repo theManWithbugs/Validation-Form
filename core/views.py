@@ -14,6 +14,7 @@ from django.contrib.auth import logout as auth_logout
 from django.db.models import Count
 from .models import Cidadao, HistoricoSaude
 from .utils import *
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def login_n(request):
@@ -214,7 +215,7 @@ def form_acomp_view(request):
        
 #-------------------------------------------------------------------------------------------------------#  
 @login_required
-def busca_form_view(request):
+def busca_cpf_view(request):
     form = BuscarCidadaoForm(request.GET or None)
 
     cidadao = None
@@ -224,15 +225,8 @@ def busca_form_view(request):
     form_acomp = None
 
     if form.is_valid():
-        nome = form.cleaned_data.get('nome')
         cpf = form.cleaned_data.get('cpf')
-
-        if nome:
-            cidadao_queryset = Cidadao.objects.filter(nome__icontains=nome)
-        elif cpf:
-            cidadao_queryset = Cidadao.objects.filter(cpf=cpf)
-        else:
-            cidadao_queryset = Cidadao.objects.none()
+        cidadao_queryset = Cidadao.objects.filter(cpf=cpf)
 
         if cidadao_queryset.exists():
             cidadao = cidadao_queryset.first()
@@ -256,7 +250,7 @@ def busca_form_view(request):
         'form_acomp_central': form_acomp,
     }
 
-    return render(request, 'commons/include/busca_form.html', context)
+    return render(request, 'commons/include/busca_cpf.html', context)
 
 
 def buscar_nome_view(request):
@@ -267,25 +261,35 @@ def buscar_nome_view(request):
     historico_criminal= None
     informacoes_complementares = None
 
+    #inicia a lista como vazia para evitar erros
+    objs = []
+
+    #recebe a variavel nome do input
+    nome = request.GET.get('nome', '')
+
     if form.is_valid():
-        nome = request.POST.get('nome')
+        #limpa os dados 
         nome = form.cleaned_data['nome']
 
+        #verifica se nome não está vazio
         if nome:
             cidadao__queryset = Cidadao.objects.filter(nome__icontains=nome)
+            paginator = Paginator(cidadao__queryset, 10)
+            page = request.GET.get('page')
+
+            try:
+                objs = paginator.page(page)
+            except PageNotAnInteger:
+                objs = paginator.page(1)
+            except EmptyPage:
+                objs = paginator.page(paginator.num_pages)
+
+            if objs.object_list.exists():
+                cidadao = objs.object_list.all()
+            else:
+                return redirect('not_found_page')
         else:
-            cidadao__queryset = Cidadao.objects.none()
-
-        if cidadao__queryset.exists():
-
-            cidadao = cidadao__queryset.first()
-
-            historico_saude = cidadao.historicos_saude.first()
-            historico_criminal = cidadao.historicos_criminais.first()
-            informacoes_complementares = cidadao.informacoes_complementares.first()
-        
-        else:
-            return redirect('not_found_page')
+            messages.error(request, 'Nenhum nome fornecido para a busca')
     else:
         messages.error(request, 'Erro ao validar o formulario')
 
@@ -295,10 +299,11 @@ def buscar_nome_view(request):
         'historico_saude': historico_saude,
         'historico_criminal': historico_criminal,
         'informacoes_complementares': informacoes_complementares,
+        'objs': objs,
+        'search': nome,
     }
 
     return render(request, 'commons/include/buscar_nome.html', context)
-
 
 #-------------------------------------------------------------------------------------------------------#
 @login_required
@@ -391,6 +396,7 @@ def atualizar_dados(request, cpf):
 def analise_view(request):
     aumento_percentual =  calcular_porcent()
     template_name = 'commons/include/estatisticas.html'
+    resultado_tipo_penal = tipo_penal()
 
     porcentagem_masculino, porcentagem_feminino = calcular_sexo()
 
@@ -407,10 +413,21 @@ def analise_view(request):
         'porcentagem_mulheres': porcentagem_feminino,
         'aumento_percentual': aumento_percentual,
         'total_usuarios': total_usuarios,
-        'drogas_ms': drogas_ms
+        'drogas_ms': drogas_ms,
+        'resultado_tipo_penal': resultado_tipo_penal,
     }
 
     return render(request, template_name, context)
+
+def analise_view_home(request):
+    total_usuarios = Cidadao.objects.count()
+
+    context = {
+        'total_usuarios': total_usuarios
+    }
+
+    return render(request, 'commons/estatisticas_home.html', context)
+
 
 @login_required
 def base_view(request):

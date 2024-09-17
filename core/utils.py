@@ -73,6 +73,18 @@ def calcular_sexo():
 
     return porcentagem_masculino, porcentagem_feminino
 
+def tipo_penal():
+    tipos = [
+        'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
+        'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
+    ]
+    resultado = {}
+    
+    for tipo in tipos:
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo).count()
+
+    return resultado
+
 def reduzir_tempo(cpf, horas_a_subtrair):
     try:
         arm_time = ArmTime.objects.get(cidadao__cpf=cpf)
