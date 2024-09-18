@@ -110,6 +110,7 @@ class ArmTimeForm(forms.ModelForm):
     class Meta:
         model =  ArmTime
         fields = '__all__'
+        exclude = ['cidadao']
 
 
 

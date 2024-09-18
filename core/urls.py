@@ -22,12 +22,12 @@ urlpatterns = [
     path('base/missing_data/', views.missing_data_view, name='missing_data'),
     path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
-    path('base/', views.analise_view_home, name='estatisticas_home'),
     path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
     path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),
     path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
     path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
     path('base/exibir_time/', views.exibir_time, name='exibir_time'),
+    path('base/exibir_time/add_time/', views.add_time_view, name='add_time'),
     path('base/buscar_nome/', views.buscar_nome_view, name='buscar_nome'),
     ]
 

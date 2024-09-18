@@ -24,7 +24,7 @@ def login_n(request):
             cpf = form.cleaned_data['cpf']
             senha = form.cleaned_data['senha']
 
-            user = authenticate(request, username = cpf, password=senha)
+            user = authenticate(request, username = cpf, password = senha)
             if user is not None:
                 login(request, user)
                 return redirect('base')
@@ -42,19 +42,22 @@ def login_n(request):
 @login_required
 def home(request):
     template_name = 'commons/home.html'
-    
+    aumento_percentual = calcular_porcent()
+
+   
     total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
 
     drogas_ms = (HistoricoSaude.objects
                  .values('drogas_uso')  # Agrupar pelos valores de drogas_uso
                  .annotate(quantidade=Count('drogas_uso'))  # Contar a quantidade de cada droga
                  .order_by('-quantidade')  # Ordenar pelo total em ordem decrescente
-                 [:3]  # Selecionar os 3 principais
+                 [:5]  # Selecionar os 3 principais
                 )
 
     context = {
         'total_usuarios': total_usuarios,  # Adicione o total de usuários ao contexto
-        'drogas_ms': drogas_ms
+        'drogas_ms': drogas_ms,
+        'aumento_percentual': aumento_percentual,
     }
 
     return render(request, template_name, context)
@@ -265,6 +268,8 @@ def buscar_nome_view(request):
     objs = []
 
     #recebe a variavel nome do input
+    #caso a variavel nome não tenha nenhum valor associado,
+    # será definida como uma string vazia para evitar erros
     nome = request.GET.get('nome', '')
 
     if form.is_valid():
@@ -290,6 +295,7 @@ def buscar_nome_view(request):
                 return redirect('not_found_page')
         else:
             messages.error(request, 'Nenhum nome fornecido para a busca')
+
     else:
         messages.error(request, 'Erro ao validar o formulario')
 
@@ -359,6 +365,7 @@ def atualizar_dados(request, cpf):
     except Cidadao.DoesNotExist:
         return redirect('not_found_page')
 
+    #é realizado a criação de variaveis e em seguida é atribuido valores a cada instância de modelo
     if request.method == 'POST':
         form_cidadao = AlterarDadosForm(request.POST, instance=cidadao)
         form_historico_saude = HistoricoSaudeForm(request.POST, instance=HistoricoSaude.objects.filter(cidadao=cidadao).first())
@@ -397,15 +404,17 @@ def analise_view(request):
     aumento_percentual =  calcular_porcent()
     template_name = 'commons/include/estatisticas.html'
     resultado_tipo_penal = tipo_penal()
+    resultado = tipo_penal_quant()
 
     porcentagem_masculino, porcentagem_feminino = calcular_sexo()
 
     total_usuarios = Cidadao.objects.count()
 
+
     drogas_ms = (HistoricoSaude.objects
                  .values('drogas_uso')
                  .annotate(quantidade=Count('drogas_uso'))
-                [:3]
+                [:5]
                 )
     
     context = {
@@ -415,15 +424,18 @@ def analise_view(request):
         'total_usuarios': total_usuarios,
         'drogas_ms': drogas_ms,
         'resultado_tipo_penal': resultado_tipo_penal,
+        'resultado_tip_quant': resultado,
     }
 
     return render(request, template_name, context)
 
 def analise_view_home(request):
     total_usuarios = Cidadao.objects.count()
+    aumento_percentual = calcular_porcent()
 
     context = {
-        'total_usuarios': total_usuarios
+        'aumento_percentual_tip': aumento_percentual, 
+        'total_usuarios': total_usuarios, 
     }
 
     return render(request, 'commons/estatisticas_home.html', context)
@@ -577,6 +589,38 @@ def exibir_time(request):
     }
 
     return render(request, 'commons/include/exibir_time.html', context)
+
+def add_time_view(request):
+    template_name = 'commons/include/adicionar_time.html'
+    cpf = request.session.get('cpf')
+    form = ArmTimeForm(request.POST)
+    
+    # Tenta obter o cidadão com o CPF da sessão
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')
+
+    if request.method == 'POST':
+        form = ArmTimeForm(request.POST)
+
+        if form.is_valid():
+            #define form como uma instancia de cidadao
+            form.instance.cidadao = cidadao  
+            form.save()
+            return redirect('sucess_page')
+        else:
+            # Retornar com erros de validação
+            return render(request, template_name, {'cidadao': cidadao, 'form': form})
+
+    # Se não for uma requisição POST, renderize o formulário vazio
+    form = ArmTimeForm()
+    context = {
+        'cidadao': cidadao,
+        'form': form,
+    }
+    return render(request, template_name, context)
+
 
 
 

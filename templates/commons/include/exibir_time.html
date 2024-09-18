@@ -20,7 +20,8 @@
      -->
 
     {% if not cidadao %}
-        <div class="d-flex justify-content-center mt-5">
+    
+        <div class="d-flex justify-content-center mt-4">
             <div class="card" style="width: 700px; height: 200px; padding: 20px; border-radius: 25px;">
                 <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;">
                     <h4><strong>BUSCAR TEMPO RESTANTE(CPF)</strong></h4>
@@ -34,6 +35,7 @@
                 </div>
             </div>
         </div>
+
     {% endif %}
 
     <!-- Exibição dos dados e formulário para atualizar o tempo -->
@@ -41,36 +43,45 @@
         do cidadão e gera um formulario para atualizar o tempo
     -->
     {% if cidadao %}
-    <div class="d-flex justify-content-center">
-        <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
-                <h4><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
-            </div>
-            <div class="card-body text-center">
-                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
-                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
-                {% if time_list %}
-                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                        Tempo total restante: <strong>{{ time_list.time }} horas</strong>
-                    </p>
-                {% else %}
-                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                        Tempo total restante: <strong>Dado não existente no momento</strong>
-                    </p>
-                {% endif %}
-            </div>
-            <div class="d-flex justify-content-center mt-4">
-                <form method="post" style="width: 100%; max-width: 400px;">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                        <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Atualizar</button>
-                </form>
+        <div class="d-flex justify-content-center">
+            <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
+                    <h4><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
+                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
+                    {% if time_list %}
+                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                            Tempo total restante: <strong>{{ time_list.time }} horas</strong>
+                        </p>
+                    {% else %}
+                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                            Tempo total restante: <strong>Dado não existente no momento</strong>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <form method="post" style="width: 100%; max-width: 400px;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                            <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="container mt-4" style="width: 38%; margin: auto;">
+            <div class="card bg-dark" style="border: 1px solid #007bff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+                <div class="card-body text-center">
+                    <h2 style="font-weight: bold; font-size: 1.5rem; color: aliceblue; margin-bottom: 20px;">VINCULAR VALOR DE TEMPO(ATUAL)</h2>
+                    <a class="btn btn-primary" style="margin-top: 5px; padding: 10px 20px; font-size: 1rem;" href="{% url 'add_time' %}">Clique aqui</a>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     

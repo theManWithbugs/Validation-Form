@@ -1,4 +1,5 @@
 from datetime import timedelta
+from itertools import count
 from django.forms import ValidationError
 from .models import *
 import re
@@ -83,11 +84,32 @@ def tipo_penal():
     for tipo in tipos:
         resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo).count()
 
+    total = sum(resultado.values())
+
+    if total > 0:
+        porcentagens = {tipo: (count / total) * 100 for tipo, count in resultado.items()}
+    else:
+        porcentagens = {tipo: 0 for tipo in tipos}
+
+    sorted_porcentagens = sorted(porcentagens.items(), key=lambda x: x[1], reverse=True)
+
+    return sorted_porcentagens
+
+def tipo_penal_quant():
+    tipos = [
+        'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
+        'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
+    ]
+    resultado = {}
+
+    for tipo in tipos:
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo).count()
+
     return resultado
 
 def reduzir_tempo(cpf, horas_a_subtrair):
     try:
-        arm_time = ArmTime.objects.get(cidadao__cpf=cpf)
+        arm_time = ArmTime.objects.filter(cidadao__cpf=cpf).first()
         arm_time.time -= horas_a_subtrair
         arm_time.save()
         return True
