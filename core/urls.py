@@ -27,7 +27,6 @@ urlpatterns = [
     path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
     path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
     path('base/exibir_time/', views.exibir_time, name='exibir_time'),
-    path('base/exibir_time/add_time/', views.add_time_view, name='add_time'),
     path('base/buscar_nome/', views.buscar_nome_view, name='buscar_nome'),
     ]
 

@@ -22,10 +22,10 @@
                         <div class="card h-100 text-center shadow">
                             <div class="card-body">
                                 <div class="display-4 text-primary mb-2">
-                                    <i class="bi bi-people"></i>
+                                    <i class="bi bi-file-earmark"></i>
                                 </div>
                                 <h2 class="card-title mb-3">{{ total_usuarios }}</h2>
-                                <p class="card-text text-muted">Usuarios registrados</p>
+                                <p class="card-text text-muted">Formularios cadastrados</p>
                             </div>
                         </div>
                     </div>
@@ -45,11 +45,11 @@
                     <div class="col">
                         <div class="card h-100 text-center shadow">
                             <div class="card-body">
-                                <div class="display-4 text-warning mb-2">
-                                    <i class="bi bi-star"></i>
+                                <div class="display-4 text-info mb-2">
+                                    <i class="bi bi-people"></i>
                                 </div>
-                                <h2 class="card-title mb-3"></h2>
-                                <p class="card-text text-muted"></p>
+                                <h2 class="card-title mb-3"> {{ total_usuarios_site }} </h2>
+                                <p class="card-text text-muted">Quantidade de usuarios</p>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                                 <div class="display-4 text-danger mb-2">
                                     <i class="bi bi-clock-history"></i>
                                 </div>
-                                <h2 class="card-title mb-3"></h2></p>
+                                <h2 class="card-title mb-3">Dados em breve</h2></p>
                             </div>
                         </div>
                     </div>
@@ -102,6 +102,26 @@
                 {% endfor %}
             </ul>
         </div>
+
+        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; color: aliceblue; width: 40%; border-radius: 15px;">
+            <ul>
+                <h3>Medida de cumprimento</h3>
+                {% for tipo, quantidade in resultado_medida.items %}
+                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}: {{ quantidade }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; color: aliceblue; width: 40%; border-radius: 15px;">
+            <ul>
+                <h3>Medida de cumprimento: saida</h3>
+                {% for tipo, quantidade in resultado_cumprimento_saida.items %}
+                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}: {{ quantidade }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
     
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>

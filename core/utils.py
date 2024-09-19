@@ -95,6 +95,31 @@ def tipo_penal():
 
     return sorted_porcentagens
 
+def medida_cumprimento_calc():
+    tipos = [
+        'COMPARECIMENTO BIMESTRAL', 'COMPARECIMENTO MENSAL', 'COMPARECIMENTO QUINZENAL',
+        'COMPARECIMENTO SEMANAL', 'COMPARECIMENTO TRIMESTRAL', 'GRUPO REFLEXIVO', 'PSC'
+    ]
+
+    resultado_medida = {}
+
+    for tipo in tipos:
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo).count()
+    
+    return resultado_medida
+
+def medida_cumprimento_saida():
+    tipos = [
+        'NAO DEFINIDO', 'CUMPRIMENTO INTEGRAL', 'DESCUMPRIMENTO', 'PRISAO', 'OUTRO'
+    ]
+
+    resultado_medida_saida = {}
+
+    for tipo in tipos:
+        resultado_medida_saida[tipo] = InformacoesComplementares.objects.filter(motivo_saida=tipo).count()
+    
+    return resultado_medida_saida
+
 def tipo_penal_quant():
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
@@ -110,6 +135,8 @@ def tipo_penal_quant():
 def reduzir_tempo(cpf, horas_a_subtrair):
     try:
         arm_time = ArmTime.objects.filter(cidadao__cpf=cpf).first()
+        if arm_time is None:
+            return False
         arm_time.time -= horas_a_subtrair
         arm_time.save()
         return True

@@ -43,6 +43,7 @@
         do cidadão e gera um formulario para atualizar o tempo
     -->
     {% if cidadao %}
+
         <div class="d-flex justify-content-center">
             <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
@@ -74,17 +75,8 @@
             </div>
         </div>
 
-        <div class="container mt-4" style="width: 38%; margin: auto;">
-            <div class="card bg-dark" style="border: 1px solid #007bff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
-                <div class="card-body text-center">
-                    <h2 style="font-weight: bold; font-size: 1.5rem; color: aliceblue; margin-bottom: 20px;">VINCULAR VALOR DE TEMPO(ATUAL)</h2>
-                    <a class="btn btn-primary" style="margin-top: 5px; padding: 10px 20px; font-size: 1rem;" href="{% url 'add_time' %}">Clique aqui</a>
-                </div>
-            </div>
-        </div>
     {% endif %}
 
-    
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/all.min.js' %}"></script>
