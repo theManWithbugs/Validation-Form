@@ -142,6 +142,7 @@ def form3_view(request):
 
     return render(request, 'commons/include/forms/form3.html', {'formulario_tecnico': form})
 
+
 @login_required
 def form4_view(request):
     if not (request.session.get('form1_complete') and
@@ -185,6 +186,42 @@ def form4_view(request):
         form = InformacoesComplementaresForm()
 
     return render(request, 'commons/include/forms/form4.html', {'formulario_complementar': form})
+
+def form_violencia_domest(request):
+    form = ViolenDomestForm()
+    cidadao = None  
+
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf')
+        
+        if cpf:
+            try:
+                cidadao = Cidadao.objects.get(cpf=cpf)
+                form = ViolenDomestForm(initial={'cpf': cpf})  
+            except Cidadao.DoesNotExist:
+                messages.error(request, 'Cidadão não encontrado!')
+        else:
+            form = ViolenDomestForm(request.POST)
+            if form.is_valid(): 
+                if cidadao:  
+                    form_violen =  form.save(commit=False)
+                    form_violen.cidadao = cidadao
+                    form_violen.save()
+                    return redirect('sucess_page')
+                else:
+                    messages.error(request, 'Cidadão não foi encontrado. Verifique o CPF.')
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"Erro no campo {field}: {error}")
+
+    context = {
+        'form': form,
+        'cidadao': cidadao,
+    }
+
+    return render(request, 'commons/include/forms/form_violen.html', context)
+
 
 @login_required
 def form_acomp_view(request):

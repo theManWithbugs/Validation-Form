@@ -6,81 +6,66 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
 </head>
-
-{% include 'commons/include/navbar.html' %}
-{% block content %}
 <body style="margin-top: 80px;" class="text-bg-secondary">
 
+{% include 'commons/include/navbar.html' %}
+
+{% block content %}
+
     <!-- Formulário para solicitar CPF -->
-
-    <!--if not cidadao = verifica se a variavel não está definida(ou é falsa), caso seja dessa forma exibe
-        um formulario para que seja recebido o cpf, ou seja se CPF não foi fornecido que sempre vai ser o caso ao
-        se entrar na pagina já que primeiro a pagina é renderizada, dessa forma isso se entra como primeira
-        chamada na pagina
-     -->
-
-    {% if not cidadao %}
-    
-        <div class="d-flex justify-content-center mt-4">
-            <div class="card" style="width: 700px; height: 200px; padding: 20px; border-radius: 25px;">
-                <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;">
-                    <h4><strong>BUSCAR TEMPO RESTANTE(CPF)</strong></h4>
-                </div>
-                <div class="card-body text-center mt-3">
-                    <form method="get">
-                        <label for="cpf">DIGITE O CPF:</label>
-                        <input type="text" name="cpf">
-                        <button type="submit" class="btn btn-primary">Consultar</button>
-                    </form>
-                </div>
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card" style="width: 700px; height: 200px; padding: 20px; border-radius: 25px;">
+            <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;">
+                <h4><strong>BUSCAR TEMPO RESTANTE(CPF)</strong></h4>
+            </div>
+            <div class="card-body text-center mt-3">
+                <form method="get">
+                    <label for="cpf">DIGITE O CPF:</label>
+                    <input type="text" name="cpf">
+                    <button type="submit" class="btn btn-primary">Consultar</button>
+                </form>
             </div>
         </div>
+    </div>
 
-    {% endif %}
-
-    <!-- Exibição dos dados e formulário para atualizar o tempo -->
-    <!--Abaixo é verificado se a variavel cidadao está definida(ou é verdadeira), se estiver exibe as informações 
-        do cidadão e gera um formulario para atualizar o tempo
-    -->
     {% if cidadao %}
-
-        <div class="d-flex justify-content-center">
-            <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
-                    <h4><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
-                </div>
-                <div class="card-body text-center">
-                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
-                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
-                    {% if time_list %}
-                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                            Tempo total restante: <strong>{{ time_list.time }} horas</strong>
-                        </p>
-                    {% else %}
-                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                            Tempo total restante: <strong>Dado não existente no momento</strong>
-                        </p>
-                    {% endif %}
-                </div>
-                <div class="d-flex justify-content-center mt-4">
-                    <form method="post" style="width: 100%; max-width: 400px;">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                            <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Atualizar</button>
-                    </form>
-                </div>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
+                <h4><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
+            </div>
+            <div class="card-body text-center">
+                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
+                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
+                {% if time_list %}
+                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                        Tempo total restante: <strong>{{ time_list.time }} horas</strong>
+                    </p>
+                {% else %}
+                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                        Tempo total restante: <strong>Dado não existente no momento</strong>
+                    </p>
+                {% endif %}
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <form method="post" style="width: 100%; max-width: 400px;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                        <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+                </form>
             </div>
         </div>
-
+    </div>
     {% endif %}
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/all.min.js' %}"></script>
-</body>
+
 {% endblock content %}
 {% include 'commons/include/footer.html' %}
+</body>
 </html>

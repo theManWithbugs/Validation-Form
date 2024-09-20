@@ -249,6 +249,15 @@ c_motivo_saida = (
     ('OUTRO', 'OUTRO'),
 )
 
+c_frequencia = (
+    ('', 'Selecione'),
+    ('NAO', 'NÃO'),
+    ('MUITAS VEZES NA SEMANA' 'MUITAS VEZES NA SEMANA'),
+    ('UMA VEZ NA SEMANA', 'UMA VEZ NA SEMANA'),
+    ('RARAMENTE', 'RARAMENTE'),
+    ('NUNCA', 'NUNCA'),
+)
+
 
 
 

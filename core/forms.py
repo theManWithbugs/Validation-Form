@@ -112,6 +112,13 @@ class ArmTimeForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['cidadao']
 
+class ViolenDomestForm(forms.ModelForm):
+    class Meta:
+        model = ViolenDomest
+        fields='__all__'
+        exclude = ['data_form_viole', 'cidadao']
+       
+
 
 
 

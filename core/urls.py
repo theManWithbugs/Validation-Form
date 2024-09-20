@@ -10,6 +10,7 @@ urlpatterns = [
     path('base/formulario2/', views.form2_view, name='form2'),
     path('base/formulario3/', views.form3_view, name='form3'),
     path('base/formulario4/', views.form4_view, name='form4'),
+    path('base/formulario4/form_violen_domes/', views.form_violencia_domest, name='form_violen'),
     path('base/busca/', views.busca_cpf_view, name='busca'),
     path('base/edit_form/', views.edit_form_view, name='edit_view'),
     path('footer/', views.footer_view, name='footer'),

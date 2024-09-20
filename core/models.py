@@ -333,6 +333,126 @@ class ArmTime(models.Model):
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
     time = models.IntegerField(default='', verbose_name='Tempo:')
 
+class ViolenDomest(models.Model):
+
+    cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_violencia_domes')
+    data_form_viole = models.DateField(auto_now_add=True)
+    enteados = models.CharField(
+                                default='Selecione',
+                                choices=c_sim_nao,
+                                max_length=9,
+                                verbose_name='Tem enteados?'
+                                 )
+    
+    religiao = models.CharField(
+                                default='Selecione',
+                                choices=c_sim_nao,
+                                max_length=9,
+                                verbose_name='Pratica alguma religião? Qual?'
+                                )
+    
+    trab_vitima = models.CharField(max_length=80, blank=True, null=True, verbose_name='A vitima trabalhava qual era a profissão?')
+    dependencia_fin = models.CharField(
+                                        default='Selecione',
+                                        choices=c_sim_nao,
+                                        max_length=80,
+                                        verbose_name='A vitima dependia financeiramente de você?'
+                                        )
+    
+    autor_alcool = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='O autor faz uso de álcool?',
+                                    max_length=9
+                                    )
+    
+    uso_drogas_viole = models.CharField(
+                                        default='Selecione',
+                                        choices=c_sim_nao,
+                                        verbose_name='O autor faz uso de drogas? Qual?',
+                                        max_length=9
+                                        )
+    
+    raça_ident = models.CharField(
+                                    default='Selecione',
+                                    choices=c_raca_cor,
+                                    verbose_name='Com qual cor/raça você se identifica?',
+                                    max_length=8
+                                )
+
+    filhos_agress = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='Os filhos já presenciaram alguma agressão?',
+                                    max_length=9
+                                    )
+    
+    ameacar_suicidio = models.CharField(
+                                        default='Selecione',
+                                        choices=c_sim_nao,
+                                        verbose_name='O autor já tentou ou ameçou suicidar-se?',
+                                        max_length=9
+                                        )
+    
+    dificul_finan = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='O autor está desempregado ou possui dificuldades financeira graves?',
+                                    max_length=9
+                                    )
+    
+    acesso_armas = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='O autor tem acesso a armas de fogo?',
+                                    max_length=9
+                                    )
+    
+    relacao_vit = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name ='Que tipo de relação mantém atualmente com a vitima?',
+                                    max_length=9
+                                    )
+    
+    reconhe_violencia = models.CharField(
+                                        default='Selecione',
+                                        choices=c_sim_nao,
+                                        verbose_name='Você reconhece que usou de violência(física, psicológica, entre outras) em relação à vitima?',
+                                        max_length=9
+                                        )
+    
+    arrepen = models.CharField(
+                                default='Selecione',
+                                choices=c_sim_nao,
+                                verbose_name='Você se sente arrependido?',
+                                max_length=9
+                                )
+    
+    sentim_vitim = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='Qual seu sentimento em relação à vitima?',
+                                    max_length=300,
+                                    )
+    
+    passagen_ant = models.CharField(
+                                    default='Selecione',
+                                    choices=c_sim_nao,
+                                    verbose_name='Já passou por esse grupo que trata sobre violência doméstica?',
+                                    max_length=9
+                                    )
+    
+    def __str__(self):
+        return f"Historico Violência domestica {self.cidadao.cpf}"
+
+
+    
+  
+
+    
+    
+
     
         
 
