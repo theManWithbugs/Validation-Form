@@ -242,6 +242,7 @@ c_tip_penal = (
 )
 
 c_motivo_saida = (
+    ('ATIVO', 'ATIVO'),
     ('NAO DEFINIDO', 'NÃO DEFINIDO'),
     ('CUMPRIMENTO INTEGRAL', 'CUMPRIMENTO INTEGRAL'),
     ('DESCUMPRIMENTO', 'DESCUMPRIMENTO'),

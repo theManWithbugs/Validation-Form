@@ -74,6 +74,11 @@ def calcular_sexo():
 
     return porcentagem_masculino, porcentagem_feminino
 
+def contar_ativos():
+    ativos = InformacoesComplementares.objects.filter(motivo_saida='ATIVO').count()
+
+    return ativos
+
 def tipo_penal():
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
@@ -110,7 +115,7 @@ def medida_cumprimento_calc():
 
 def medida_cumprimento_saida():
     tipos = [
-        'NAO DEFINIDO', 'CUMPRIMENTO INTEGRAL', 'DESCUMPRIMENTO', 'PRISAO', 'OUTRO'
+        'NAO DEFINIDO', 'ATIVO', 'CUMPRIMENTO INTEGRAL', 'DESCUMPRIMENTO', 'PRISAO', 'OUTRO'
     ]
 
     resultado_medida_saida = {}

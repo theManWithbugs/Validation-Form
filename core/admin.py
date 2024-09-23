@@ -2,7 +2,7 @@ from django.contrib import admin
 from core.models import Cidadao, User, HistoricoCriminal, HistoricoSaude
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import InformacoesComplementares, User
+from .models import *
 from .forms import UserCreationFormCustom, UserChangeFormCustom
 
 # Register your models here.
@@ -10,6 +10,9 @@ admin.site.register(Cidadao)
 admin.site.register(HistoricoSaude)
 admin.site.register(HistoricoCriminal)
 admin.site.register(InformacoesComplementares)
+admin.site.register(AcompCentral)
+admin.site.register(ViolenDomest)
+admin.site.register(ArmTime)
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeFormCustom

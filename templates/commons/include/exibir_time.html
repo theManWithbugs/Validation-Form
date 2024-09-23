@@ -14,7 +14,7 @@
 
     <!-- Formulário para solicitar CPF -->
     <div class="d-flex justify-content-center mt-4">
-        <div class="card" style="width: 700px; height: 200px; padding: 20px; border-radius: 25px;">
+        <div class="card" style="width: 700px; height: 250px; padding: 20px; border-radius: 25px;">
             <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;">
                 <h4><strong>BUSCAR TEMPO RESTANTE(CPF)</strong></h4>
             </div>
@@ -24,6 +24,12 @@
                     <input type="text" name="cpf">
                     <button type="submit" class="btn btn-primary">Consultar</button>
                 </form>
+                <div class="container d-flex justify-content-center mt-4">
+                    <a href="{% url 'buscar_nome' %}" class="btn btn-warning" style="width: 30%;">
+                        OBTER (CPF)
+                        <i class="fas fa-download" style="margin-left: 4px;"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

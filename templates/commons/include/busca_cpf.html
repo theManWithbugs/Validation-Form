@@ -138,7 +138,10 @@
                         <form method="post" action="{% url 'excluir_form' %}">
                             {% csrf_token %}
                             <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                            <button class="btn btn-primary" type="submit" style="background-color: red; margin-top: 40px; margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
+                            <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
+                                <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
+                            </h5>
+                            <button class="btn btn-primary" type="submit" style="background-color: red; margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
                         </form>
                     </div>
 

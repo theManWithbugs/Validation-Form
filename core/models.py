@@ -36,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 # FORMULÁRIO 1
 class Cidadao(models.Model):
 
-    cpf = models.CharField(max_length=11, primary_key=True, verbose_name='Cpf:')
+    cpf = models.CharField(max_length=11, primary_key=True, verbose_name='Cpf:', unique=True)
     nome = models.CharField(max_length=80, verbose_name='Nome completo:')
     nome_social = models.CharField(max_length=80, blank=True, null=True, verbose_name='Nome social:', default='Não definido')
     endereco = models.CharField(max_length=80, verbose_name='Endereço:')
@@ -336,6 +336,7 @@ class ArmTime(models.Model):
 class ViolenDomest(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_violencia_domes')
+    process_referente = models.CharField(max_length=30, blank=False, verbose_name='A qual processo isso se refere?', unique=True)
     data_form_viole = models.DateField(auto_now_add=True)
     enteados = models.CharField(
                                 default='Selecione',

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ValidationError
 from .forms import *
 from .forms import CidadaoForm
@@ -38,15 +39,20 @@ def login_n(request):
 
     return render(request, 'account/login_n.html', {'form': form})
 
+#essa view é usada para verificar se o usuario logado possui is_staff igual a true
+#tal referncia pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
+#para esse caso foi usado o atributo is staff, e caso o ususario não seja é redirecionado para a pagina 
+def is_staff(user):
+    return user.is_staff
 
 @login_required
 def home(request):
     template_name = 'commons/home.html'
     aumento_percentual = calcular_porcent()
 
-   
     total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
     total_usuarios_site = User.objects.count()
+    ativos = contar_ativos()
 
     drogas_ms = (HistoricoSaude.objects
                  .values('drogas_uso')  # Agrupar pelos valores de drogas_uso
@@ -60,6 +66,7 @@ def home(request):
         'drogas_ms': drogas_ms,
         'aumento_percentual': aumento_percentual,
         'total_usuarios_site': total_usuarios_site,
+        'ativos': ativos,
     }
 
     return render(request, template_name, context)
@@ -185,35 +192,37 @@ def form4_view(request):
     else:
         form = InformacoesComplementaresForm()
 
-    return render(request, 'commons/include/forms/form4.html', {'formulario_complementar': form})
+    return render(request, 'commons/include/forms/form4.html', {'formulario_complementar': form,})
 
-def form_violencia_domest(request):
-    form = ViolenDomestForm()
-    cidadao = None  
-
+@login_required
+def capturar_dados_viole(request):
     if request.method == 'POST':
         cpf = request.POST.get('cpf')
-        
         if cpf:
-            try:
-                cidadao = Cidadao.objects.get(cpf=cpf)
-                form = ViolenDomestForm(initial={'cpf': cpf})  
-            except Cidadao.DoesNotExist:
-                messages.error(request, 'Cidadão não encontrado!')
+            return redirect('form_violen', cpf)
         else:
-            form = ViolenDomestForm(request.POST)
-            if form.is_valid(): 
-                if cidadao:  
-                    form_violen =  form.save(commit=False)
-                    form_violen.cidadao = cidadao
-                    form_violen.save()
-                    return redirect('sucess_page')
-                else:
-                    messages.error(request, 'Cidadão não foi encontrado. Verifique o CPF.')
-            else:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"Erro no campo {field}: {error}")
+            return redirect('not_found_page')
+        
+    return render(request, 'commons/include/cap_viol.html')
+
+@login_required
+def form_violencia_domest(request, cpf):
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')
+
+    if request.method == 'POST':
+        form = ViolenDomestForm(request.POST)
+        if form.is_valid():
+            form_violen = form.save(commit=False)
+            form_violen.cidadao = cidadao
+            form_violen.save()
+            return redirect('sucess_page')
+        else:
+            messages.error(request, 'Formulário inválido!')
+    else:
+        form = ViolenDomestForm(initial={'cpf': cidadao.cpf})
 
     context = {
         'form': form,
@@ -221,7 +230,6 @@ def form_violencia_domest(request):
     }
 
     return render(request, 'commons/include/forms/form_violen.html', context)
-
 
 @login_required
 def form_acomp_view(request):
@@ -353,6 +361,7 @@ def buscar_nome_view(request):
 
 #-------------------------------------------------------------------------------------------------------#
 @login_required
+@user_passes_test(is_staff, login_url='permission_denied')
 def excluir_form(request):
     form = BuscarCidadaoForm(request.POST or None)
     cidadao = None
@@ -457,6 +466,7 @@ def analise_view(request):
     resultado = tipo_penal_quant()
     resultado_medida = medida_cumprimento_calc()
     resultado_cumprimento_saida = medida_cumprimento_saida()
+    ativos = contar_ativos()
 
 
     porcentagem_masculino, porcentagem_feminino = calcular_sexo()
@@ -483,6 +493,7 @@ def analise_view(request):
         'resultado_medida': resultado_medida,
         'total_usuarios_site': total_usuarios_site,
         'resultado_cumprimento_saida': resultado_cumprimento_saida,
+        'ativos': ativos,
     }
 
     return render(request, template_name, context)
@@ -533,6 +544,10 @@ def notfound_view(request):
 @login_required
 def missing_data_view(request):
     return render(request, 'commons/include/add_pages/missing_data.html')
+
+@login_required
+def permission_denied_view(request):
+    return render(request, 'commons/include/add_pages/permiss.html')
 
 #-------------------------------------------------------------------------------------------------------#
 @login_required

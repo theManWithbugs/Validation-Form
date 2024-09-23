@@ -1,136 +1,144 @@
 {% load static %}
 <!doctype html>
 <html lang="pt-br">
-    <head>
-        <title>HOME | ESTATISTICAS</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css/estatisticas.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-
-    </head>
-    {% include 'commons/include/navbar.html' %}
-    {% block content %}
-    <body>
-
-        <div class="container">
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <div class="col">
-                        <div class="card h-100 text-center shadow">
-                            <div class="card-body">
-                                <div class="display-4 text-primary mb-2">
-                                    <i class="bi bi-file-earmark"></i>
-                                </div>
-                                <h2 class="card-title mb-3">{{ total_usuarios }}</h2>
-                                <p class="card-text text-muted">Formularios cadastrados</p>
-                            </div>
+<head>
+    <title>HOME | ESTATISTICAS</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/estatisticas.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+{% include 'commons/include/navbar.html' %}
+{% block content %}
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow">
+                    <div class="card-body">
+                        <div class="display-4 text-primary mb-2">
+                            <i class="bi bi-file-earmark"></i>
                         </div>
-                    </div>
-                    
-                    <div class="col">
-                        <div class="card h-100 text-center shadow">
-                            <div class="card-body">
-                                <div class="display-4 text-success mb-2">
-                                    <i class="bi bi-graph-up"></i>
-                                </div>
-                                <h2 class="card-title mb-3">{{ aumento_percentual }}</h2>
-                                <p class="card-text text-muted">Aumento mensal</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col">
-                        <div class="card h-100 text-center shadow">
-                            <div class="card-body">
-                                <div class="display-4 text-info mb-2">
-                                    <i class="bi bi-people"></i>
-                                </div>
-                                <h2 class="card-title mb-3"> {{ total_usuarios_site }} </h2>
-                                <p class="card-text text-muted">Quantidade de usuarios</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col">
-                        <div class="card h-100 text-center shadow">
-                            <div class="card-body">
-                                <div class="display-4 text-danger mb-2">
-                                    <i class="bi bi-clock-history"></i>
-                                </div>
-                                <h2 class="card-title mb-3">Dados em breve</h2></p>
-                            </div>
-                        </div>
+                        <h2 class="card-title mb-3">{{ total_usuarios }}</h2>
+                        <p class="card-text text-muted">Formularios cadastrados</p>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow">
+                    <div class="card-body">
+                        <div class="display-4 text-success mb-2">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h2 class="card-title mb-3">{{ aumento_percentual }}</h2>
+                        <p class="card-text text-muted">Aumento mensal</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow">
+                    <div class="card-body">
+                        <div class="display-4 text-info mb-2">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h2 class="card-title mb-3">{{ total_usuarios_site }}</h2>
+                        <p class="card-text text-muted">Quantidade de usuarios</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center shadow">
+                    <div class="card-body">
+                        <div class="display-4 text-warning mb-2">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <h2 class="card-title mb-3">{{ ativos }}</h2>
+                        <p class="card-text text-muted">Ativos no momento</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        
-        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; width: 50%; color: aliceblue;">
-            <ul>
-                <h1 class="mb-2">Porcentagem geral de (Homens | Mulheres)</h1>
-                    <p class="card-text" style="font-size: larger; margin-left: 30%; color: red;">Porcentagem Homens: {{ porcentagem_homens|floatformat:2 }}%;</p>
-                    <p class="card-text" style="font-size: larger; margin-left: 30%; color: red;">Porcentagem Mulheres: {{ porcentagem_mulheres|floatformat:2 }}%</p>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h1 class="mb-3">Porcentagem geral de (Homens | Mulheres)</h1>
+                        <p>Porcentagem Homens: <span class="text-danger">{{ porcentagem_homens|floatformat:2 }}%</span></p>
+                        <p>Porcentagem Mulheres: <span class="text-danger">{{ porcentagem_mulheres|floatformat:2 }}%</span></p>
+                        <h4 class="mt-3">Lista de drogas utilizadas e quantidade de usuarios</h4>
+                        <ul class="list-unstyled">
+                            {% for droga in drogas_ms %}
+                                <li>{{ droga.drogas_uso }}: {{ droga.quantidade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-                    <br>
-                    <h4 class="d-flex justify-content-center">Lista de drogas utilizadas e quantidade de usuarios</h4>
-
-                {% for droga in drogas_ms %}
-                    <li class="card-text" style="font-size: larger; margin-left: 30%;">Tipo de droga: {{ droga.drogas_uso }}: {{ droga.quantidade}}</li>
-                {% endfor %}
-            </ul>
+            <div class="col-md-6">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h1 class="mb-3">Tipificação penal porcentagem</h1>
+                        <ul class="list-unstyled">
+                            {% for tipo, porcentagem in resultado_tipo_penal %}
+                                <li>{{ tipo }}: {{ porcentagem|floatformat:2 }}%</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h3 class="mb-3">Tipificação penal: dados númericos</h3>
+                        <ul class="list-unstyled">
+                            {% for tipo, quantidade in resultado_tip_quant.items %}
+                                <li>{{ tipo }}: {{ quantidade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; width: 50%; color: aliceblue;">
-            <ul>
-                <h1 class="mb-3">Tipificação penal porcentagem</h1>
-                {% for tipo, porcentagem in resultado_tipo_penal %}
-                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}:  {{ porcentagem|floatformat:2 }}% </li>
-                {% endfor %}
-            </ul>
+            <div class="col-md-4">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h3>Medida de cumprimento</h3>
+                        <ul class="list-unstyled">
+                            {% for tipo, quantidade in resultado_medida.items %}
+                                <li>{{ tipo }}: {{ quantidade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-md-4">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h3>Medida de cumprimento: saída</h3>
+                        <ul class="list-unstyled">
+                            {% for tipo, quantidade in resultado_cumprimento_saida.items %}
+                                <li>{{ tipo }}: {{ quantidade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; color: aliceblue; width: 40%; border-radius: 15px;">
-            <ul>
-                <h3 class="mb-3">Tipificação penal: dados númericos</h3>
-                {% for tipo, quantidade in resultado_tip_quant.items %}
-                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}: {{ quantidade }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; color: aliceblue; width: 40%; border-radius: 15px;">
-            <ul>
-                <h3>Medida de cumprimento</h3>
-                {% for tipo, quantidade in resultado_medida.items %}
-                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}: {{ quantidade }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="container d-flex justify-content-center mt-3 bg-dark" style="border: solid 1px; background-color: aliceblue; color: aliceblue; width: 40%; border-radius: 15px;">
-            <ul>
-                <h3>Medida de cumprimento: saida</h3>
-                {% for tipo, quantidade in resultado_cumprimento_saida.items %}
-                    <li style="margin-left: 30%; font-size: larger;">{{ tipo }}: {{ quantidade }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-
-    
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
-
-    </body>
-    {% endblock content %}
-    {% include 'commons/include\footer.html' %}
-</html>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+</body>
+{% endblock content %}
+{% include 'commons/include/footer.html' %}

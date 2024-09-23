@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>not_permission</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <style>
+            body {
+                background-color: aliceblue;
+                background-image: url("{% static '/img/permission_denied-removebg-preview.png' %}");
+                background-size: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+        </style>
+      
+    </head>
+
+{% include 'commons/include/navbar.html' %}
+{% block content %}
+    <body style="margin-top: 80px;">
+
+        <div class="vh-100 d-flex justify-content-center align-items-center">
+            <div class="card col-md-4 p-5" style="background: rgba(255, 255, 255, 0.5);">
+                <div class="mb-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-danger" width="85" height="80" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M4.293 4.293a1 1 0 0 1 1.414 0L8 7.586l2.293-2.293a1 1 0 0 1 1.414 1.414L9.414 9l2.293 2.293a1 1 0 0 1-1.414 1.414L8 10.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L6.586 9 4.293 6.707a1 1 0 0 1 0-1.414z" />
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h1>Permissão negada!</h1>
+                    <p><strong>Você não tem permissão para fazer isso, se deseja realizar tal ação solicite a um administrador</strong></p>
+                    <a href="{% url 'base' %}" class="btn" style="background-color: blue; color: white;">Retornar para página inicial</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/all.min.js' %}"></script>
+    </body>
+{% endblock content %}
+{% include 'commons/include/footer.html' %}
+</html>
+
