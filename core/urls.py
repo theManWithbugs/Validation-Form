@@ -2,6 +2,9 @@ from django.conf.urls.static import static
 from django.urls import path
 from core import views
 from django.conf import settings
+from core.views import custom_404_view
+
+handler404 = custom_404_view
 
 urlpatterns = [
     path('', views.login_n, name='login_new'),
@@ -10,7 +13,11 @@ urlpatterns = [
     path('base/formulario2/', views.form2_view, name='form2'),
     path('base/formulario3/', views.form3_view, name='form3'),
     path('base/formulario4/', views.form4_view, name='form4'),
+    path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
+    path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
     path('base/capturar_dados_viole', views.capturar_dados_viole, name='capturar_violen'),
+    path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),
+    path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
     path('base/formulario4/form_violen_domes/<str:cpf>/', views.form_violencia_domest, name='form_violen'),
     path('base/busca/', views.busca_cpf_view, name='busca'),
     path('base/edit_form/', views.edit_form_view, name='edit_view'),
@@ -25,12 +32,9 @@ urlpatterns = [
     path('base/sucess_page/', views.sucess_page_view, name='sucess_page'),
     path('base/permission_denied/', views.permission_denied_view, name='permission_denied'),
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
-    path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
-    path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),
-    path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
-    path('acomp-central-form/', views.acomp_central_form, name='acomp_central_form'),
     path('base/exibir_time/', views.exibir_time, name='exibir_time'),
     path('base/buscar_nome/', views.buscar_nome_view, name='buscar_nome'),
+    path('base/buscar_nome/more_info/<str:cpf>/', views.more_info_view, name='more_info'),
     ]
 
 

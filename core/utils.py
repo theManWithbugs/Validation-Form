@@ -148,6 +148,43 @@ def reduzir_tempo(cpf, horas_a_subtrair):
     except ArmTime.DoesNotExist:
         return False
 
+def contar_faixa_etaria():
+    faixa_etarias = {
+        "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24).count(),
+        "25 a 29": Cidadao.objects.filter(idade__gte=25, idade__lte=29).count(),
+        "30 a 34": Cidadao.objects.filter(idade__gte=30, idade__lte=34).count(),
+        "35 a 59": Cidadao.objects.filter(idade__gte=35, idade__lte=34).count(),
+    }
+    
+    return faixa_etarias
+
+def contar_faixa_etaria_porcentagem():
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24).count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29).count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34).count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39).count()  
+
+    total = media1 + media2 + media3 + media4
+
+    if total > 0:
+        porcentagens = {
+            '18-24': (media1 / total) * 100,
+            '25-29': (media2 / total) * 100,
+            '30-34': (media3 / total) * 100,
+            '35-39': (media4 / total) * 100,
+        }
+    else:
+        porcentagens = {
+            '18-24': 0,
+            '25-29': 0,
+            '30-34': 0,
+            '35-39': 0,
+        }
+
+    return porcentagens
+
+    
+
 
     
 

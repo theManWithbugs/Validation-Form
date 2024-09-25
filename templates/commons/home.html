@@ -57,42 +57,40 @@
 
 <div class="card" style="border-radius: 12px; margin-top: 20px; background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto; border: solid 1px black;">
     <div class="card-body text-center">
-        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: #333;">Opções principais</h4>
-        <div class="d-flex justify-content-center gap-2 mt-4">
-            <a href="{% url 'form1' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">NOVO CADASTRO
+        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: white; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">Opções principais</h4>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{% url 'form1' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">NOVO CADASTRO
                 <i class="bi bi-file-earmark-plus"></i>
             </a>
-            <a href="{% url 'busca' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">CONSULTAR DADOS
+            <a href="{% url 'busca' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">CONSULTAR DADOS
                 <i class="bi bi-search"></i>
             </a>
-            <a href="{% url 'capturar_dados' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">EDITAR DADOS
+            <a href="{% url 'capturar_dados' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">EDITAR DADOS
                 <i class="bi bi-pencil"></i>
             </a>
-            <a href="{% url 'capturar_violen' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">VIOLÊNCIA
+            <a href="{% url 'capturar_violen' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">VIOLÊNCIA
                 <i class="bi bi-shield-fill-x"></i>
             </a>
-        </div>
+        </div>    
     </div>
 </div>
 
 <div class="card" style="border-radius: 12px; margin-top: 20px; background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto; border: solid 1px black;">
     <div class="card-body text-center">
-        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: #333;">Formulario de Acompanhamento na Central</h4>
-        <div class="d-flex justify-content-center gap-2 mt-4">
-            <a href="{% url 'register_acmform_view' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">CADASTRAR
+        <h4 class="card-title" style="font-size: 28px; font-weight: 700; color: white; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">Formulario de acompanhamento na central</h4>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{% url 'register_acmform_view' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">CADASTRAR
                 <i class="bi bi-person-plus"></i>
             </a>
-            <a href="{% url 'acmform' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">FICHA-ACMP
+            <a href="{% url 'acmform' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">FICHA-ACMP
                 <i class="bi bi-file-earmark-text"></i>
             </a>
-            <a href="{% url 'exibir_time' %}" class="btn btn-custom" style="background-color: #4CA64C; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background-color 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.backgroundColor='#3D9A3D'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#4CA64C'; this.style.transform='scale(1)'">VER TEMPO RESTANTE
+            <a href="{% url 'exibir_time' %}" class="btn btn-custom" style="background: linear-gradient(135deg, #0056b3, #4caf50); border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; color: #fff; transition: background 0.3s ease, transform 0.3s ease; text-decoration: none;" onmouseover="this.style.background='linear-gradient(135deg, #004494, #3dab3c)'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='linear-gradient(135deg, #0056b3, #4caf50)'; this.style.transform='scale(1)'">VER TEMPO RESTANTE
                 <i class="bi bi-clock"></i>
             </a>
-        </div>
+        </div>              
     </div>
 </div>
-
-
 
 {% endblock content %}
 

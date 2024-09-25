@@ -81,12 +81,15 @@
                     </div>
                     <div class="info-item">
                         {% if historico_saude %}
-                            <p><strong>Saúde:</strong> {{ historico_saude.saude }}</p>
-                            <p><strong>Tratamento Psiquiátrico:</strong> {{ historico_saude.tratamento_psiquiatrico }}</p>
-                            <p><strong>Medicação Controlada:</strong> {{ historico_saude.medicacao_controlada }}</p>
-                            <p><strong>Deficiência:</strong> {{ historico_saude.deficiencia }}</p>
-                            <p><strong>Drogas em Uso:</strong> {{ historico_saude.drogas_uso }}</p>
-                            <p><strong>Tratamento:</strong> {{ historico_saude.tratamento }}</p>
+                            <p><strong>Se apresenta problema de saúde qual?:</strong> {{ historico_saude.saude }}</p>
+                            <p><strong>Apresenta problemas de saude?:</strong> {{ historico_saude.saude_just }}</p>
+                            <p><strong>Faz ou fez tratamento psiquiatrico?:</strong> {{ historico_saude.tratamento_psi }}</p>
+                            <p><strong>Especifique o tratamento psiquiatrico::</strong> {{ historico_saude.tratamento_psi_jus }}</p>
+                            <p><strong>Faz uso de alguma medicação controlada?:</strong> {{ historico_saude.medicacao_controlada }}</p>
+                            <p><strong>Especifique o tipo de medicação controlada::</strong> {{ historico_saude.medicacao_controlada_jus }}</p>
+                            <p><strong>É portador de alguma deficiência:</strong> {{ historico_saude.deficiencia }}</p>
+                            <p><strong>Faz ou já fez uso de::</strong> {{ historico_saude.drogas_uso }}</p>
+                            <p><strong>Já procurou tratamento?:</strong> {{ historico_saude.tratamento }}</p>
                         {% else %}
                             <p>Histórico de saúde não disponível.</p>
                         {% endif %}
@@ -141,7 +144,7 @@
                             <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
                                 <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
                             </h5>
-                            <button class="btn btn-primary" type="submit" style="background-color: red; margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
+                            <button class="btn btn-danger" type="submit" style="margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
                         </form>
                     </div>
 

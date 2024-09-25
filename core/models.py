@@ -82,6 +82,10 @@ class Cidadao(models.Model):
                                 default='selecione'
                                     )
     data_entrada = models.DateField(auto_now_add=True)
+    class Meta:
+        indexes = [
+            models.Index(fields=['nome']),
+        ]
 
     def __str__(self):
         return self.nome
@@ -206,19 +210,24 @@ class HistoricoSaude(models.Model):
 class HistoricoCriminal(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='historicos_criminais')
-    ja_esteve_preso = models.CharField(max_length=3, choices=c_sim_nao, blank=True)
-    prisao_justificativa = models.CharField(max_length=50, blank=True, null=True)
-    prisao_familiar = models.CharField(max_length=3, choices=c_sim_nao, blank=True)
-    numero_do_processo = models.CharField(max_length=30, blank=False)
-    juiz_de_origem = models.CharField(max_length=50, blank=True)
-    medida_aplicada = models.CharField(max_length=50, blank=True)
-    tipo_penal = models.CharField(max_length=50, blank=True)
+    ja_esteve_preso = models.CharField(max_length=3, choices=c_sim_nao, blank=True, verbose_name='Já esteve preso?:')
+    prisao_justificativa = models.CharField(max_length=50, blank=True, null=True, verbose_name='Por qual motivo esteve preso?:')
+    prisao_familiar = models.CharField(max_length=3, choices=c_sim_nao, blank=True, verbose_name='Alguém da sua familia já esteve preso?:')
+    numero_do_processo = models.CharField(max_length=30, blank=False, verbose_name='Número do processo:')
+    juiz_de_origem = models.CharField(max_length=50, blank=True, verbose_name='Juiz de origem:')
+    medida_aplicada = models.CharField(max_length=50, blank=True, verbose_name='Medida aplicada:')
+    tipo_penal = models.CharField(max_length=50, blank=True, verbose_name='Tipo penal:')
     violencia_domestica = models.CharField(max_length=50, blank=True, verbose_name='Em caso de violência domestica:')
     violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True, verbose_name='Nome da vitima de violência domestica:')
     grau_de_parentesco = models.CharField(max_length=50, blank=True, verbose_name='Grau de parentesco da vitima:')
     reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True, verbose_name='Relata reincidência?:') 
     sugestao_de_trabalho = models.CharField(max_length=36, choices=c_sugestao_trabalho, blank=True, null=True)
     sugest_encaminhamento = models.CharField(max_length=36, choices=c_sugestao_encaminhamento, blank=True, null=True, verbose_name='Sugestão de encaminhamento:')
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['numero_do_processo']),
+        ]
 
     def __str__(self):
         return f"Histórico Criminal do Cidadão {self.cidadao.cpf}"
@@ -333,6 +342,14 @@ class ArmTime(models.Model):
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
     time = models.IntegerField(default='', verbose_name='Tempo:')
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['time']),
+        ]
+    
+    def __str__(self):
+        return self.time
+
 class ViolenDomest(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_violencia_domes')
@@ -346,9 +363,9 @@ class ViolenDomest(models.Model):
                                  )
     
     religiao = models.CharField(
-                                default='Selecione',
-                                choices=c_sim_nao,
-                                max_length=9,
+                                blank=True,
+                                null=True,
+                                max_length=80,
                                 verbose_name='Pratica alguma religião? Qual?'
                                 )
     
@@ -431,8 +448,8 @@ class ViolenDomest(models.Model):
                                 )
     
     sentim_vitim = models.CharField(
-                                    default='Selecione',
-                                    choices=c_sim_nao,
+                                    blank=True,
+                                    null=True,
                                     verbose_name='Qual seu sentimento em relação à vitima?',
                                     max_length=300,
                                     )

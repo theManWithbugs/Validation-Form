@@ -51,11 +51,22 @@ class CidadaoForm(forms.ModelForm):
     class Meta:
         model = Cidadao
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CidadaoForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
+
 class HistoricoSaudeForm(forms.ModelForm):
     class Meta:
         model = HistoricoSaude
         fields = '__all__'
         exclude = ['cidadao']  
+
+    def __init__(self, *args, **kwargs):
+        super(HistoricoSaudeForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
  
 class HistoricoCriminalForm(forms.ModelForm):
     class Meta:
@@ -63,12 +74,22 @@ class HistoricoCriminalForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['cidadao']   
 
+    def __init__(self, *args, **kwargs):
+        super(HistoricoCriminalForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
+
 
 class InformacoesComplementaresForm(forms.ModelForm):
     class Meta:
         model = InformacoesComplementares
         fields = '__all__'
         exclude = ['cidadao']  
+
+    def __init__(self, *args, **kwargs):
+        super(InformacoesComplementaresForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
 
 class AcompCentralForm(forms.ModelForm):
     class Meta:
@@ -79,6 +100,11 @@ class AcompCentralForm(forms.ModelForm):
             'tecnico_responsavel': forms.TextInput(attrs={'class': 'form-control'}),
             'evolucao_percepcoes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(AcompCentralForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
 
 #Essa classe é usada para buscar o cidadão pelo cpf
 class BuscarCidadaoForm(forms.Form):
@@ -92,6 +118,11 @@ class AlterarDadosForm(forms.ModelForm):
     class Meta:
         model = Cidadao
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(AlterarDadosForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
 
 class UserCreationFormCustom(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -117,6 +148,11 @@ class ViolenDomestForm(forms.ModelForm):
         model = ViolenDomest
         fields='__all__'
         exclude = ['data_form_viole', 'cidadao']
+
+    def __init__(self, *args, **kwargs):
+        super(ViolenDomestForm, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
        
 
 

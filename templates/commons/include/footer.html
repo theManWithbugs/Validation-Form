@@ -1,8 +1,18 @@
 {% load static %}
 
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    p {
+        font-family: 'Roboto', sans-serif;
+        font-size: larger;
+    }
+</style>
+
 <footer class="bg-primary text-light text-center py-4 mt-5" style="border: solid 1px black">
     <div class="container">
-        <p class="mb-1">&copy; 2024-<strong>DDMS</strong>-Divisão de Desenvolvimento e Manutenção de Sistemas</p>
+        <p class="mb-1">&copy; 2024-<strong>DDMS</strong>-Divisão de Desenvolvimento e Manutenção de Sistemas
+            <img src="{% static '/img/imgnavbar.png' %}" class="img-fluid" alt="Logo" style="height: 40px;"></p>
         <p class="mb-0">Rio Branco ACRE</p>
     </div>
 </footer>

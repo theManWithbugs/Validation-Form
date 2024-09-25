@@ -62,7 +62,7 @@
                                 <div class="mt-4 bg-light" style="border: solid 1px; border-radius: 5px;">
                                     <li class="d-flex justify-content-center" style="font-size: larger;">{{ obj.nome }}</li>
                                     <strong class="d-flex justify-content-center" style="color: crimson; font-size: larger;">CPF: {{ obj.cpf }}</strong>
-                                    <a class="btn btn-primary d-flex justify-content-center" style="border: solid 1px;" href="#">MAIS INFORMAÇÕES</a>
+                                    <a class="btn btn-primary d-flex justify-content-center" style="border: solid 1px;" value="{{ obj.cpf }}" href="{% url 'more_info' obj.cpf %}">MAIS INFORMAÇÕES</a>
                                 </div>
                                 {% endfor %}
                             </ul>

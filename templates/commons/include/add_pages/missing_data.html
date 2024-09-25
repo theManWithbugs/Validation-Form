@@ -2,13 +2,17 @@
 <!doctype html>
 <html lang="pt-br">
     <head>
-        <title>Title</title>
+        <title></title>
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
         <style>
-            body {
-                background-color: black;
-                margin-top: 60px;
+                body {
+                background-color: aliceblue;
+                background-image: url("{% static '/img/missing_data.jpg' %}");
+                background-size: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
             }
         </style>
        
@@ -18,20 +22,17 @@
       
         <div class="container-fluid">
             <div class="vh-100 d-flex justify-content-center align-items-center">
-                <div class="card col-md-4 p-5 text-center" style="background: white;">
+                <div class="card col-md-4 p-5 text-center" style="background: rgba(255, 255, 255, 0.8);">
                     <div class="mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="85" height="80"
-                            fill="currentColor" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="85" height="80" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                            <path
-                                d="M8 4.5a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0v-4A.75.75 0 0 1 8 4.5z" />
-                            <path
-                                d="M8 11.25a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z" />
+                            <path d="M8 4.5a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0v-4A.75.75 0 0 1 8 4.5z" />
+                            <path d="M8 11.25a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z" />
                         </svg>
                     </div>
                     <h1 class="mb-3">Dados Não Encontrados</h1>
                     <p><strong>Não foi possível encontrar os dados solicitados. Verifique as informações e tente novamente.</strong></p>
-                    <a href="{% url 'form1' %}" class="btn btn-outline-warning">Retornar ao formulário</a>
+                    <a href="{% url 'form1' %}" class="btn" style="background-color: yellow; color: black;">Retornar ao formulário</a>
                 </div>
             </div>
         </div>
@@ -41,5 +42,4 @@
         <script src="{% static 'js/all.min.js' %}"></script>
 
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
 </html>

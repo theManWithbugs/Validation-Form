@@ -16,7 +16,7 @@ from django.db.models import Count
 from .models import Cidadao, HistoricoSaude
 from .utils import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.shortcuts import render
 
 def login_n(request):
     if request.method == 'POST':
@@ -40,7 +40,7 @@ def login_n(request):
     return render(request, 'account/login_n.html', {'form': form})
 
 #essa view é usada para verificar se o usuario logado possui is_staff igual a true
-#tal referncia pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
+#tal referência pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
 #para esse caso foi usado o atributo is staff, e caso o ususario não seja é redirecionado para a pagina 
 def is_staff(user):
     return user.is_staff
@@ -54,16 +54,8 @@ def home(request):
     total_usuarios_site = User.objects.count()
     ativos = contar_ativos()
 
-    drogas_ms = (HistoricoSaude.objects
-                 .values('drogas_uso')  # Agrupar pelos valores de drogas_uso
-                 .annotate(quantidade=Count('drogas_uso'))  # Contar a quantidade de cada droga
-                 .order_by('-quantidade')  # Ordenar pelo total em ordem decrescente
-                 [:3]  # Selecionar os 3 principais
-                )
-
     context = {
         'total_usuarios': total_usuarios,  # Adicione o total de usuários ao contexto
-        'drogas_ms': drogas_ms,
         'aumento_percentual': aumento_percentual,
         'total_usuarios_site': total_usuarios_site,
         'ativos': ativos,
@@ -201,8 +193,8 @@ def capturar_dados_viole(request):
         if cpf:
             return redirect('form_violen', cpf)
         else:
-            return redirect('not_found_page')
-        
+            messages.error(request, '')
+
     return render(request, 'commons/include/cap_viol.html')
 
 @login_required
@@ -258,7 +250,7 @@ def form_acomp_view(request):
     
         form = AcompCentralForm()
 
-    return render(request, 'commons/include/form_acom.html', {
+    return render(request, 'commons/include/forms/form_acom.html', { 
         'formulario_acom': form,
         'cidadao_nome': cidadao.nome,
         'data_entrada': cidadao.data_entrada,
@@ -359,6 +351,28 @@ def buscar_nome_view(request):
 
     return render(request, 'commons/include/buscar_nome.html', context)
 
+def more_info_view(request, cpf):
+    # Tente recuperar o cidadão pelo CPF
+    cidadao = get_object_or_404(Cidadao, cpf=cpf)
+
+    # Carregue os dados relacionados
+    historico_saude = cidadao.historicos_saude.first()
+    historico_criminal = cidadao.historicos_criminais.first()
+    informacoes_complementares = cidadao.informacoes_complementares.first()
+    form_acomp = cidadao.form_acompanhamento_central.first()
+
+    # Prepare o contexto para o template
+    context = {
+        'cidadao': cidadao,
+        'historico_saude': historico_saude,
+        'historico_criminal': historico_criminal,
+        'informacoes_complementares': informacoes_complementares,
+        'form_acomp_central': form_acomp,
+        'cpf': cpf,
+    }
+
+    return render(request, 'commons/include/more_info.html', context)
+    
 #-------------------------------------------------------------------------------------------------------#
 @login_required
 @user_passes_test(is_staff, login_url='permission_denied')
@@ -467,7 +481,8 @@ def analise_view(request):
     resultado_medida = medida_cumprimento_calc()
     resultado_cumprimento_saida = medida_cumprimento_saida()
     ativos = contar_ativos()
-
+    faixas_etarias = contar_faixa_etaria()
+    faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem()
 
     porcentagem_masculino, porcentagem_feminino = calcular_sexo()
 
@@ -494,6 +509,8 @@ def analise_view(request):
         'total_usuarios_site': total_usuarios_site,
         'resultado_cumprimento_saida': resultado_cumprimento_saida,
         'ativos': ativos,
+        'faixas_etarias': faixas_etarias,
+        'faixas_etarias_porcentagem': faixas_etarias_porcentagem,
     }
 
     return render(request, template_name, context)
@@ -510,6 +527,9 @@ def analise_view_home(request):
 
     return render(request, 'commons/estatisticas_home.html', context)
 
+@login_required
+def custom_404_view(request, exception):
+    return render(request, 'templates/errors/404.html', status=404)
 
 @login_required
 def base_view(request):

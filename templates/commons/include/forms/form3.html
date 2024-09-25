@@ -8,6 +8,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
 
 </head>
@@ -26,7 +27,9 @@
                 <form method="post" action="{% url 'form3' %}">
                     {% csrf_token %}
                     {{ formulario_tecnico.as_p }}
-                    <button type="submit" class="btn btn-success btn-block">PROSEGUIR</button>
+                    <button type="submit" class="btn btn-success btn-block" style="width: 60%; margin-left: 20%;">Continuar
+                        <i class="bi bi-arrow-right" style="margin-left: 4px;"></i>
+                    </button>
                 </form>
             </div>
         </div>
