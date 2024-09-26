@@ -34,6 +34,7 @@ urlpatterns = [
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
     path('base/exibir_time/', views.exibir_time, name='exibir_time'),
     path('base/buscar_nome/', views.buscar_nome_view, name='buscar_nome'),
+    path('base/capturar_dados_viole/buscar_violen/', views.busc_violen, name='buscar_viol'),
     path('base/buscar_nome/more_info/<str:cpf>/', views.more_info_view, name='more_info'),
     ]
 

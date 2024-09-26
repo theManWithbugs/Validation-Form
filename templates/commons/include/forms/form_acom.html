@@ -32,8 +32,6 @@
                     <form method="post"action="{% url 'form_acomp' %}">
                         <div>
                             <ul>
-                                <!-- {{ form.name.label_tag }} -->
-                                <!-- {{ form.name }} -->
                             {% csrf_token %}
                             <h4>Nome do cidadão:  {{ cidadao_nome }} </h4>
                             <h4>Data de Entrada: {{ data_entrada }} </h4> 

@@ -11,9 +11,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        p {
+        p, span {
             font-family: 'Roboto', sans-serif;
             font-size: larger;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Roboto', sans-serif;
         }
     </style>
 
@@ -73,9 +77,11 @@
 
         <div class="row mt-3">
             <div class="col-md-6">
-                <div class="card bg-dark text-light">
+                <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
-                        <h1 class="mb-3">Porcentagem geral de (Homens | Mulheres)</h1>
+                        <h1 class="mb-3">Porcentagem geral de (Homens | Mulheres)
+                            <i class="bi bi-people-fill" style="margin-left: 6px;"></i>
+                        </h1>
                         <p>Porcentagem Homens: <span class="text-danger">{{ porcentagem_homens|floatformat:2 }}%</span></p>
                         <p>Porcentagem Mulheres: <span class="text-danger">{{ porcentagem_mulheres|floatformat:2 }}%</span></p>
                         <h4 class="mt-3">Lista de drogas utilizadas e quantidade de usuarios</h4>
@@ -90,9 +96,11 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card bg-dark text-light">
+                <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
-                        <h1 class="mb-3">Tipificação penal porcentagem</h1>
+                        <h1 class="mb-3">Tipificação penal 
+                            <i class="bi bi-file-earmark-text" style="margin-left: 6px;"></i>
+                        </h1>
                         <ul class="list-unstyled">
                             {% for tipo, porcentagem in resultado_tipo_penal %}
                                 <li class="mt-2">{{ tipo }}: {{ porcentagem|floatformat:2 }}%</li>
@@ -105,9 +113,11 @@
 
         <div class="row mt-3">
             <div class="col-md-4">
-                <div class="card bg-dark text-light">
+                <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
-                        <h3 class="mb-3">Tipificação penal: dados númericos</h3>
+                        <h3 class="mb-3">Tipificação penal: dados númericos
+                            <i class="bi bi-file-earmark-text" style="margin-left: 6px;"></i>
+                        </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_tip_quant.items %}
                                 <li class="mt-2">{{ tipo }}: {{ quantidade }}</li>
@@ -118,9 +128,11 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card bg-dark text-light">
+                <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
-                        <h3>Medida de cumprimento</h3>
+                        <h3>Medida de cumprimento
+                            <i class="bi bi-check-circle" style="margin-left: 6px;"></i>
+                        </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_medida.items %}
                                 <li class="mt-2">{{ tipo }}: {{ quantidade }}</li>
@@ -128,7 +140,9 @@
                         </ul>
                     </div>
                     <div class="container">
-                        <h3>Medida de cumprimento: saída</h3>
+                        <h3>Medida de cumprimento: saída
+                            <i class="bi bi-arrow-right-circle" style="margin-left: 6px;"></i> 
+                        </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_cumprimento_saida.items %}
                                 <li>{{ tipo }}: {{ quantidade }}</li>
@@ -139,9 +153,11 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card bg-dark text-light">
+                <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
-                        <h3>Faixas Etárias</h3>
+                        <h3>Faixas Etárias
+                            <i class="bi bi-people-fill" style="margin-left: 6px;"></i>
+                        </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in faixas_etarias.items %}
                                 <li class="mb-2">De {{ tipo }}: quantidade: {{ quantidade }}</li>
@@ -149,7 +165,9 @@
                         </ul>
                     </div>
                     <div class="container">
-                        <h3>Porcentagem por Faixa Etária</h3>
+                        <h3>Porcentagem Faixa Etária
+                            <i class="bi bi-bar-chart" style="margin-left: 6px;"></i>
+                        </h3>
                         <ul class="list-unstyled">
                             {% for tipo, porcentagem in faixas_etarias_porcentagem.items %}
                                 <li class="mb-2">De {{ tipo }}: porcentagem: {{ porcentagem|floatformat:2 }}%</li>

@@ -385,10 +385,10 @@ class ViolenDomest(models.Model):
                                     )
     
     uso_drogas_viole = models.CharField(
-                                        default='Selecione',
-                                        choices=c_sim_nao,
-                                        verbose_name='O autor faz uso de drogas? Qual?',
-                                        max_length=9
+                                        max_length=80,
+                                        blank= True,
+                                        null=True,
+                                        verbose_name='O autor faz uso de drogas? Qual?'
                                         )
     
     raça_ident = models.CharField(

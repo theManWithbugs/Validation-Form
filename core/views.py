@@ -50,12 +50,12 @@ def home(request):
     template_name = 'commons/home.html'
     aumento_percentual = calcular_porcent()
 
-    total_usuarios = Cidadao.objects.count()  # Contar o total de usuários
+    total_usuarios = Cidadao.objects.count()  
     total_usuarios_site = User.objects.count()
     ativos = contar_ativos()
 
     context = {
-        'total_usuarios': total_usuarios,  # Adicione o total de usuários ao contexto
+        'total_usuarios': total_usuarios,  
         'aumento_percentual': aumento_percentual,
         'total_usuarios_site': total_usuarios_site,
         'ativos': ativos,
@@ -70,7 +70,6 @@ def form1_view(request):
     if request.method == 'POST':
         form = CidadaoForm(request.POST)
         if form.is_valid():
-            # Obter os dados do formulário
             form_data = form.cleaned_data
             
             # Converter datas para string
@@ -265,7 +264,7 @@ def busca_cpf_view(request):
     historico_saude = None
     historico_criminal = None
     informacoes_complementares = None
-    form_acomp = None
+    form_violen = None
 
     if form.is_valid():
         cpf = form.cleaned_data.get('cpf')
@@ -273,11 +272,11 @@ def busca_cpf_view(request):
 
         if cidadao_queryset.exists():
             cidadao = cidadao_queryset.first()
-
             historico_saude = cidadao.historicos_saude.first()
             historico_criminal = cidadao.historicos_criminais.first()
             informacoes_complementares = cidadao.informacoes_complementares.first()
-            form_acomp = cidadao.form_acompanhamento_central.first()
+            form_violen = cidadao.form_violencia_domes.all()
+
         else:
             return redirect('not_found_page')
     else:
@@ -290,7 +289,7 @@ def busca_cpf_view(request):
         'historico_saude': historico_saude,
         'historico_criminal': historico_criminal,
         'informacoes_complementares': informacoes_complementares,
-        'form_acomp_central': form_acomp,
+        'form_violen': form_violen,
     }
 
     return render(request, 'commons/include/busca_cpf.html', context)
@@ -352,23 +351,22 @@ def buscar_nome_view(request):
     return render(request, 'commons/include/buscar_nome.html', context)
 
 def more_info_view(request, cpf):
-    # Tente recuperar o cidadão pelo CPF
+
     cidadao = get_object_or_404(Cidadao, cpf=cpf)
 
-    # Carregue os dados relacionados
     historico_saude = cidadao.historicos_saude.first()
     historico_criminal = cidadao.historicos_criminais.first()
     informacoes_complementares = cidadao.informacoes_complementares.first()
     form_acomp = cidadao.form_acompanhamento_central.first()
+    form_violen = cidadao.form_violencia_domes.all()
 
-    # Prepare o contexto para o template
     context = {
         'cidadao': cidadao,
         'historico_saude': historico_saude,
         'historico_criminal': historico_criminal,
         'informacoes_complementares': informacoes_complementares,
         'form_acomp_central': form_acomp,
-        'cpf': cpf,
+        'form_violen': form_violen,
     }
 
     return render(request, 'commons/include/more_info.html', context)
@@ -606,7 +604,6 @@ def buscar_acmform_view (request):
 #Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
 #-------------------------------------------------------------------------------------------------------#    
 
-#Capturar os dados aqui
 @login_required
 def register_acmform_view(request):
     if request.method == 'POST':
@@ -623,7 +620,6 @@ def register_acmform_view(request):
     
     return render(request, 'commons/include/acomp_reg.html', {'form': form})
 
-#Receber e realizar o processamento 
 @login_required
 def acomp_central_form(request):
     cpf = request.session.get('cpf')
@@ -675,15 +671,13 @@ def exibir_time(request):
             request.session.pop('cpf', None)
             messages.error(request, "CPF não encontrado ou ocorreu um erro.")
         
-        # Redirecionar após a operação
         return redirect('exibir_time')
 
-    # GET request
     cpf = request.GET.get('cpf')
     if cpf:
         try:
             cidadao = Cidadao.objects.get(cpf=cpf)
-            time_list = cidadao.time.first()  # Supondo que 'time' é um related_name
+            time_list = cidadao.time.first()  
         except Cidadao.DoesNotExist:
             return redirect('not_found_page')
 
@@ -693,6 +687,30 @@ def exibir_time(request):
     }
 
     return render(request, 'commons/include/exibir_time.html', context)
+
+def busc_violen(request):
+    form = ViolenDomestBuscaForm(request.GET or None)  
+    process = None
+
+    if request.method == "GET":
+        if form.is_valid():
+            process_number = form.cleaned_data.get('process')  
+            process_ref_queryset = ViolenDomest.objects.filter(process_referente=process_number)
+
+            if process_ref_queryset.exists():
+                process = process_ref_queryset
+            else:
+                messages.error(request, 'Número do processo não localizado!')
+        else:
+            messages.error(request, 'Dados inválidos no formulário!')  
+
+    context = {
+        'form': form,
+        'process': process,
+    }
+
+    return render(request, 'commons/include/buscar_viol.html', context)
+
 
 
 

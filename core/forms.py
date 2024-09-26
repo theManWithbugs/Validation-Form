@@ -153,6 +153,14 @@ class ViolenDomestForm(forms.ModelForm):
         super(ViolenDomestForm, self).__init__(*args, **kwargs)
         for f in self.fields:
             self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
+
+class ViolenDomestBuscaForm(forms.ModelForm):
+    class Meta:
+        model = ViolenDomest
+        fields = '__all__'
+
+
+
        
 
 

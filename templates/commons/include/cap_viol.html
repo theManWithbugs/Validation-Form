@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/capturar_cpf.css' %}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     </head>
 
 {% include 'commons/include/navbar.html' %}
@@ -35,6 +36,22 @@
                 </div>
             </div> 
         </div>
+
+    <div class="container mt-5">
+        <div class="card bg-dark" style="color: white;">
+            <div class="card-header">
+                <h3 class="d-flex justify-content-center" style="color: rgb(121, 215, 243); font-family: 'Roboto', sans-serif;">Realizar busca de processo
+                    <i class="bi bi-arrow-right-circle" style="color: rgb(121, 215, 243); margin-left: 7px;"></i>
+                </h3>
+            </div>
+            <div class="card-body">
+              <p class="card-text" style="font-family: 'Roboto', sans-serif;">Caso deseje realizar uma busca de formularios no que diz respeito a violência domestica desde que se possua o número do processo processo referente,
+                números de processos podem vir a ser localizados ao se realizar uma busca tanto pelo nome quanto pelo cpf.
+              </p>
+              <a href="{% url 'buscar_viol' %}" class="btn btn-success" style="margin-left: 40%;">Clique aqui</a>
+            </div>
+          </div>
+    </div>
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
