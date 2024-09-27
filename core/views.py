@@ -13,10 +13,13 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.db.models import Count
-from .models import Cidadao, HistoricoSaude
+from .models import *
 from .utils import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import *
 
 def login_n(request):
     if request.method == 'POST':
@@ -513,6 +516,38 @@ def analise_view(request):
 
     return render(request, template_name, context)
 
+class HistoricoCriminalList(APIView):
+    def get(self, request):
+        # Obtendo os históricos
+        historicos = HistoricoCriminal.objects.all()
+        serializer = HistoricoCriminalSerializer(historicos, many=True)
+
+        # Chamando a função para calcular porcentagens dos tipos penais
+        tipos_penais_porcentagens = tipo_penal()
+
+        # Chamando a função para calcular medidas de cumprimento
+        medidas_cumprimento = medida_cumprimento_calc()
+
+        # Retornando os dados em um formato que inclua as porcentagens e medidas
+        return Response({
+            'historicos': serializer.data,
+            'tipos_penais_porcentagens': tipos_penais_porcentagens,
+            'medidas_cumprimento': medidas_cumprimento
+        })
+
+class CidadaoList(APIView):
+    def get(self, request):
+        cidadaos = Cidadao.objects.all()
+        serializer = CidadaoSerializer(cidadaos, many=True)
+
+        porcentagem_masculino, porcentagem_feminino = calcular_sexo()
+
+        return Response({
+            'cidadao_data': serializer.data,
+            'porcentagem_masculino': porcentagem_masculino,
+            'porcentagem_feminino': porcentagem_feminino,
+        })
+
 @login_required
 def analise_view_home(request):
     total_usuarios = Cidadao.objects.count()
@@ -702,7 +737,9 @@ def busc_violen(request):
             else:
                 messages.error(request, 'Número do processo não localizado!')
         else:
-            messages.error(request, 'Dados inválidos no formulário!')  
+            messages.error(request, '')  
+    else:
+        form = ViolenDomestBuscaForm()
 
     context = {
         'form': form,
