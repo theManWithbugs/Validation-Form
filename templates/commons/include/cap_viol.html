@@ -45,10 +45,30 @@
                 </h3>
             </div>
             <div class="card-body">
-              <p class="card-text" style="font-family: 'Roboto', sans-serif;">Caso deseje realizar uma busca de formularios no que diz respeito a violência domestica desde que se possua o número do processo processo referente,
-                números de processos podem vir a ser localizados ao se realizar uma busca tanto pelo nome quanto pelo cpf.
-              </p>
-              <a href="{% url 'buscar_viol' %}" class="btn btn-success" style="margin-left: 40%;">Clique aqui</a>
+              <p class="card-text" style="font-family: 'Roboto', sans-serif;">Busca de processos que dizem respeito a violência domestica estão disponiveis ao realizar uma busca
+                tanto pelo cpf quanto pelo nome, na parte inferior do formulario de informações é possível selecionar de acordo com o processo.
+                <br>
+                <br>
+              <a href="{% url 'busca' %}" class="btn btn-success" style="margin-left: 40%;">Redirecionar
+                <i class="bi bi-arrow-right" style="margin-left: 7px;"></i>
+              </a>
+            </div>
+          </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="card bg-dark" style="color: white;">
+            <div class="card-header">
+                <h3 class="d-flex justify-content-center" style="color: red; font-family: 'Roboto', sans-serif;">Alterar status de processo
+                    <i class="bi bi-pencil" style="color: red; margin-left: 7px;"></i>
+                </h3>
+            </div>
+            <div class="card-body">
+              <h5 class="card-text" style="font-family: 'Roboto', sans-serif; color: red;">Caso deseje alterar um status de processo, status de processos variam de acordo com o andamento do processo.</h5>
+              <p style="color: red; font-size: larger;" class="d-flex justify-content-center">(O ACESSO É RESTRITO A PESSOAS AUTORIZADAS!)</p>
+              <a href="{% url 'alterar_process' %}" class="btn btn-warning" style="margin-left: 40%;">CLIQUE AQUI
+                <i class="bi bi-exclamation-triangle" style="margin-left: 7px;"></i>
+              </a>
             </div>
           </div>
     </div>

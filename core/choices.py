@@ -259,6 +259,12 @@ c_frequencia = (
     ('NUNCA', 'NUNCA'),
 )
 
+c_status_process = (
+    ('NAO INFORMADO', 'NAO INFORMADO'),
+    ('ATIVO', 'ATIVO'),
+    ('ARQUIVADO', 'ARQUIVADO'),
+)
+
 
 
 

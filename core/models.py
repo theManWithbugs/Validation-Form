@@ -354,6 +354,13 @@ class ViolenDomest(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_violencia_domes')
     process_referente = models.CharField(max_length=30, blank=False, verbose_name='A qual processo isso se refere?', unique=True)
+    status_process = models.CharField(
+                                    default='NAO INFORMADO',
+                                    choices=c_status_process,
+                                    max_length=13,
+                                    verbose_name='Status do processo'
+                                    )
+    
     data_form_viole = models.DateField(auto_now_add=True)
     enteados = models.CharField(
                                 default='Selecione',
@@ -460,6 +467,13 @@ class ViolenDomest(models.Model):
                                     verbose_name='Já passou por esse grupo que trata sobre violência doméstica?',
                                     max_length=9
                                     )
+    
+    tecnico_responsavel_vio = models.CharField(
+                                            blank=False,
+                                            null=False,
+                                            verbose_name='Tecnico reponsavel:',
+                                            max_length=80
+                                            )
     
     def __str__(self):
         return f"Historico Violência domestica {self.cidadao.cpf}"

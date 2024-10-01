@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>ALTERAR | PROCESS</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        
+    </head>
+
+{% include 'commons/include/navbar.html' %}
+{% block content %}
+    <body style="margin-top: 80px; background-color: rgb(20, 104, 104);">
+
+    <div class="container" style="max-width: 800px;">
+        <div class="container mb-3">
+            <div class="bg-dark p-3 rounded">
+                <h3 style="font-family: 'Times New Roman', Times, serif; color: aliceblue;">Consultar dados(<strong style="color: red;">CPF</strong>)</h3>
+                <nav class="navbar navbar-dark bg-dark">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-center w-100">
+                            <form class="d-flex w-100" method="post" action="{% url 'alterar_process' %}">
+                                {% csrf_token %}
+                                <input type="text" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="80">
+                                <button class="btn btn-outline-success flex-shrink-1" type="submit" style="margin-left: 5px;">Buscar</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+                <div class="container d-flex justify-content-center mt-3">
+                    <a href="{% url 'buscar_nome' %}" class="btn btn-warning" style="width: 30%;">
+                        OBTER (CPF)
+                        <i class="fas fa-download" style="margin-left: 4px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/all.min.js' %}"></script>
+    </body>
+{% endblock content %}
+{% include 'commons/include/footer.html' %}
+</html>

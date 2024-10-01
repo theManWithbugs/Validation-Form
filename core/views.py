@@ -20,6 +20,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+from django.forms import modelformset_factory
 
 def login_n(request):
     if request.method == 'POST':
@@ -701,10 +702,10 @@ def exibir_time(request):
 
         if sucesso:
             request.session.pop('cpf', None)
-            messages.success(request, "Operação realizada com sucesso!")
+            messages.success(request, '')
         else:
             request.session.pop('cpf', None)
-            messages.error(request, "CPF não encontrado ou ocorreu um erro.")
+            messages.error(request, '')
         
         return redirect('exibir_time')
 
@@ -723,30 +724,67 @@ def exibir_time(request):
 
     return render(request, 'commons/include/exibir_time.html', context)
 
-def busc_violen(request):
-    form = ViolenDomestBuscaForm(request.GET or None)  
-    process = None
+@login_required
+def violen_info(request, process_referente):
 
-    if request.method == "GET":
-        if form.is_valid():
-            process_number = form.cleaned_data.get('process')  
-            process_ref_queryset = ViolenDomest.objects.filter(process_referente=process_number)
-
-            if process_ref_queryset.exists():
-                process = process_ref_queryset
-            else:
-                messages.error(request, 'Número do processo não localizado!')
-        else:
-            messages.error(request, '')  
-    else:
-        form = ViolenDomestBuscaForm()
+    model = get_object_or_404(ViolenDomest, process_referente=process_referente)
+    
+    #Acessa o modelo cidadao e sua related name form_violencia_domes
+    cidadao = model.cidadao
+    processos = cidadao.form_violencia_domes.first()  
 
     context = {
-        'form': form,
-        'process': process,
+        'cidadao': cidadao,
+        'processo': model,  
+        'processos': processos, 
     }
 
-    return render(request, 'commons/include/buscar_viol.html', context)
+    return render(request, 'commons/include/process_more.html', context)
+
+@user_passes_test(is_staff, login_url='permission_denied')
+def capturar_cpf_process(request):
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf')
+        if cpf:
+            return redirect('editar_process', cpf=cpf)
+        else:
+            messages.error(request, '')
+    return render(request, 'commons/include/capturar_process.html')
+
+#formset cria uma coleção de formulario baseados em um modelo, que nesse caso é ViolenDomestica
+#ou seja ele exibe todos os formualrios de ViolenDomestica na tela, isso é semelhante a um loop for
+#como extra foi definido como 0, não serão exibidos formularios em branco para preenchimento,
+#apenas formularios já existentes são exibidos na tela.
+ViolenDomestFormSet = modelformset_factory(ViolenDomest, form=ViolenDomestFormTwo, extra=0)
+
+@login_required
+@user_passes_test(is_staff, login_url='permission_denied')
+def editar_process(request, cpf):
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf)
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')
+    
+    if request. method == 'POST':
+        formset = ViolenDomestFormSet(request.POST, queryset=ViolenDomest.objects.filter(cidadao=cidadao))
+
+        if formset.is_valid():
+            formset.save()
+            return redirect('sucess_page')
+        else:
+            messages.error(request ,'Formulario invalido!')
+    else:
+        formset = ViolenDomestFormSet(queryset=ViolenDomest.objects.filter(cidadao=cidadao))
+
+    context = {
+        'violen_domest_formset': formset,
+        'cidadao': cidadao,
+    }
+
+    return render(request, 'commons/include/exibir_edicaoprocss.html', context)
+
+
+
 
 
 

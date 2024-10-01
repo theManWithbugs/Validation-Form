@@ -146,7 +146,7 @@ class ArmTimeForm(forms.ModelForm):
 class ViolenDomestForm(forms.ModelForm):
     class Meta:
         model = ViolenDomest
-        fields='__all__'
+        fields= '__all__'
         exclude = ['data_form_viole', 'cidadao']
 
     def __init__(self, *args, **kwargs):
@@ -154,10 +154,17 @@ class ViolenDomestForm(forms.ModelForm):
         for f in self.fields:
             self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
 
-class ViolenDomestBuscaForm(forms.ModelForm):
+class ViolenDomestFormTwo(forms.ModelForm):
     class Meta:
         model = ViolenDomest
-        fields = '__all__'
+        fields= ('process_referente', 'status_process')
+        exclude = ['data_form_viole', 'cidadao']
+
+    def __init__(self, *args, **kwargs):
+        super(ViolenDomestFormTwo, self).__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
+            self.fields['process_referente'].widget.attrs['readonly'] = 'readonly'
 
 
 

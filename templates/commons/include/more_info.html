@@ -20,7 +20,7 @@
     {% include 'commons/include/navbar.html' %}
 
     <div class="container">
-        <div style="background-color: #ffffff; border-radius: 20px; padding: 20px;">
+        <div style="background-color: #ffffff; padding: 20px;">
             {% if cidadao.cpf %}
                 <h2 class="text-center" style="margin-top: 20px;">{{ cidadao.nome }}</h2>
                 
@@ -109,13 +109,19 @@
                         <p>Informações complementares não disponíveis.</p>
                     {% endif %}
 
+                    <br>
+
                     {% if form_violen %}
-                            {% for items in form_violen %}
-                                <p><strong> Processo número:</strong> {{  items.process_referente }}</p>
-                            {% endfor %}
-                        {% else %}
-                        <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
-                    {% endif %}
+                    <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
+                        {% for items in form_violen %}
+                        <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
+                            <p><strong> Número do processo: ======>> </strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
+                            <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
+                {% endif %}
 
                     <form method="post" action="{% url 'excluir_form' %}">
                         {% csrf_token %}
