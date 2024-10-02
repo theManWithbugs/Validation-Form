@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="pt-br">
     <head>
-        <title>PROCESSO | EDITAR_PROCESS</title>
+        <title>VIOLENC | PROCESSOS</title>
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -37,18 +37,20 @@
                             {% csrf_token %}
                             {{ violen_domest_formset.management_form }}
                             {% for form in violen_domest_formset %}
-                                <div class="mt-5 mb-3">
-                                    <div class="container bg-info" style="border: solid 1px black; color: black; border-radius: 10px;">
-                                        <h3 class="d-flex justify-content-center" style="color: red;">(PROCESSO)</h3>
-                                        {{ form.as_p }} 
+
+                                    <div class="mt-5 mb-3">
+                                        <div class="container bg-info" style="border: solid 1px black; color: black; border-radius: 10px;">
+                                            <h3 class="d-flex justify-content-center" style="color: red;">(PROCESSO)</h3>
+                                            {{ form.as_p }} 
+                                        </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+
+                             {% endfor %}
 
                                 <button type="submit" class="btn btn-success mt-4 mb-3" style="margin-left: 34%; width: 30%;">Salvar
                                     <i class="fas fa-save" style="margin-left: 4px;"></i>
                                 </button>
-                            <br>
+                                <br>
                         </form>
                 </div>
             </div>

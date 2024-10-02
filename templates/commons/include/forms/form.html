@@ -7,8 +7,9 @@
     <title>HOME | CADASTRO</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/form.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{% static 'css/form.css' %}" rel="stylesheet">
 
 </head>
 {% include 'commons/include/navbar_form.html' %}
@@ -23,7 +24,7 @@
             <form method="post" action="{% url 'form1' %}">
                 {% csrf_token %}
                 
-                <!-- Exibição de erros globais caso ocorra -->
+  
                 {% if formulario.non_field_errors %}
                     <div class="errors">
                         <ul>
@@ -34,12 +35,12 @@
                     </div>
                 {% endif %}
                 
-                <!-- Exibição de campos de formulario e erros relacionados -->
+ 
                 {% for field in formulario %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
-                        <!-- Exibe erros específicos para o campo -->
+           
                         {% if field.errors %}
                             <div class="errors">
                                 <ul>

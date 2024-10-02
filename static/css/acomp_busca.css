@@ -1,0 +1,13 @@
+body {
+    margin-top: 80px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1, h4 th, td {
+    font-family: 'Roboto', sans-serif;
+}

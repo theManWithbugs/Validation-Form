@@ -4,22 +4,10 @@
 <head>
     <title>HOME | ESTATISTICAS</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/estatisticas.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        p, span {
-            font-family: 'Roboto', sans-serif;
-            font-size: larger;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
+    <link href="{% static 'css/estatisticas.css/' %}" rel="stylesheet">
 
 </head>
 {% include 'commons/include/navbar.html' %}
@@ -49,13 +37,26 @@
                 chart.container('container_chart');
                 chart.draw();
             });
+            anychart.onDocumentReady(function () {
+                const genderData = [
+                    { name: 'Masculino', value: data.porcentagem_masculino },
+                    { name: 'Feminino', value: data.porcentagem_feminino }
+                ];
+
+                // Criação do gráfico de pizza 3D para gênero
+                const genderChart = anychart.pie3d(genderData);
+                genderChart.title('Porcentagens de Gênero');
+                genderChart.labels().enabled(true).format('{%Value}{groupsSeparator: }%');
+                genderChart.container('container_gender_chart');
+                genderChart.draw();
+            });
         }
         
         window.onload = fetchHistoricos;
     </script>
     
 
-    <div class="container mt-4">
+    <div class="container mt-2">
         <div class="row">
             <div class="col-md-3">
                 <div class="card h-100 text-center shadow">
@@ -74,7 +75,7 @@
                         <div class="display-4 text-success mb-2">
                             <i class="bi bi-graph-up"></i>
                         </div>
-                        <h2 class="card-title mb-3">{{ aumento_percentual }}</h2>
+                        <h2 class="card-title mb-3">{{ aumento_percentual|floatformat:2 }}%</h2>
                         <p class="card-text text-muted">Aumento mensal</p>
                     </div>
                 </div>

@@ -773,6 +773,7 @@ def editar_process(request, cpf):
             return redirect('sucess_page')
         else:
             messages.error(request ,'Formulario invalido!')
+
     else:
         formset = ViolenDomestFormSet(queryset=ViolenDomest.objects.filter(cidadao=cidadao))
 
@@ -782,6 +783,8 @@ def editar_process(request, cpf):
     }
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
+
+
 
 
 

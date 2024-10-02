@@ -326,7 +326,7 @@ class InformacoesComplementares(models.Model):
 class AcompCentral(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_acompanhamento_central')
-    tecnico_responsavel = models.CharField(max_length=80, verbose_name='Técnico responsavel:')
+    tecnico_responsavel = models.CharField(max_length=80, verbose_name='Técnico responsavel:', blank=False, null=False)
     evolucao_percepcoes = models.CharField(max_length=400, verbose_name='Evolução/ Demanda/ Percepções:')
     data_registro = models.DateField(auto_now_add=True)
 

@@ -4,71 +4,54 @@
     <head>
         <title>LOGIN | CIAP</title>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/login.css' %}" rel="stylesheet">
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-        <style>
-                body {
-                background-image: url("{% static '/img/acreImg.png' %}");
-                background-size: cover; 
-                background-position: center;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: contain;
-                background-size: 100% 100%; 
-                margin-top: 20px;
-                }
-        </style>
     </head>
 
+{% block content %}
 <body>
-      
-<main>
-<body>
-    <div id="login">
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <div class="container mt-3">
-                            <div class="d-flex justify-content-center">
-                                <img src="{{ MEDIA_URL }}/media/brasaoacre.png">
+
+    <div style="background-image: url('{{ MEDIA_URL }}media/acreImg.png');" id="img_background">
+         
+        <div id="login">
+            <div class="container">
+                <div id="login-row" class="row justify-content-center align-items-center">
+                    <div id="login-column" class="col-md-6">
+                        <div id="login-box" class="col-md-12">
+                            <div class="container mt-3">
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{ MEDIA_URL }}/media/brasaoacre.png">
+                                </div>
                             </div>
+                            <form id="login-form" class="form" method="post" style="color: aliceblue;">
+                                {% csrf_token %}
+                                <h3 class="text-center text-info" style="font-family: 'Times New Roman', Times, serif;">Centro integrado de alternativas penais</h3>
+                                <div class="form-group mb-2">
+                                    {{ form.cpf.errors }}
+                                    {{ form.cpf.label_tag }}
+                                    {{ form.cpf }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.senha.errors }}
+                                    {{ form.senha.label_tag }}
+                                    {{ form.senha }}
+                                </div>
+                                <br>
+                                <div class="form-group d-flex justify-content-center">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Entrar" style="width: 30%;">
+                                </div>
+                            </form>
                         </div>
-                        <form id="login-form" class="form" method="post" style="color: aliceblue;">
-                            {% csrf_token %}
-                            <h3 class="text-center text-info" style="font-family: 'Times New Roman', Times, serif;">Centro integrado de alternativas penais</h3>
-                            <div class="form-group">
-                                {{ form.cpf.errors }}
-                                {{ form.cpf.label_tag }}
-                                {{ form.cpf }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.senha.errors }}
-                                {{ form.senha.label_tag }}
-                                {{ form.senha }}
-                            </div>
-                            <div class="form-group d-flex justify-content-center">
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Entrar">
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
 
-</main>
-        
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    </body>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+{% endblock content %}
 </html>
 
