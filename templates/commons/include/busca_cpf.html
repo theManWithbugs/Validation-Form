@@ -1,21 +1,13 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>HOME | BUSCA</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block css %}
     <link href="{% static 'css/busca.css' %}" rel="stylesheet">
-
-</head>
-
-{% include 'commons/include/navbar.html' %}
+{% endblock %}
 
 {% block content %}
-<body>
 
-            <div class="container">
-
-                <div class="container mt-4">
+                <div class="container mt-2">
                     <div class="card border-light shadow-sm rounded">
                         <div class="card-header bg-primary text-white border-bottom-0">
                             <h5 class="mb-0">Alterar Modo</h5>
@@ -50,10 +42,13 @@
                     </div>
                 </div>
 
-            <div style="background-color:  #ffffff; border-radius: 15px;">
-            {% if cidadao %}
-                    <h2 class="text-center" style="margin-top: 40px;">{{ cidadao.nome }}</h2>
+                <br>
+
+                {% if cidadao %}
+                    <h2 class="title_nome d-flex justify-content-center">{{ cidadao.nome }}</h2>
                     
+            <div class="container">
+                
                     <div class="section-title">
                         <h3>Informações Pessoais</h3>
                     </div>
@@ -75,7 +70,9 @@
                         <p><strong>Cor/Raça:</strong> {{ cidadao.cor_raca }}</p>
                         <p><strong>Escolaridade:</strong> {{ cidadao.escolaridade }}</p>
                     </div>
-
+                
+                    <br>
+               
                     <div class="section-title">
                         <h3>Histórico de Saúde</h3>
                     </div>
@@ -94,7 +91,9 @@
                             <p>Histórico de saúde não disponível.</p>
                         {% endif %}
                     </div>
-
+                
+                    <br>
+                
                     <div class="section-title">
                         <h3>Histórico Criminal</h3>
                     </div>
@@ -117,8 +116,10 @@
                             <p>Histórico criminal não disponível.</p>
                         {% endif %}
                     </div>
-
-                    <div class="section-title">
+                
+                    <br>
+                
+                    <div id="title_4">
                         <h3>Informações Complementares</h3>
                     </div>
                     <div class="info-item">
@@ -137,30 +138,33 @@
                         {% else %}
                             <p>Informações complementares não disponíveis.</p>
                         {% endif %}
+                    </div>
+                
 
-                        <br>
-
+                    <br>
                       
                     {% if form_violen %}
-                    <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
-                        {% for items in form_violen %}
-                        <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
-                            <p><strong> Número do processo: ======>> </strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
-                            <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
+                    <div class="violen_process">
+                        <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
+                            {% for items in form_violen %}
+                            <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
+                                <p><strong> Número do processo: ====>></strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
+                                <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
+                        {% endif %}
+            
+                            <form method="post" action="{% url 'excluir_form' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                                <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
+                                    <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
+                                </h5>
+                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
+                            </form>
                         </div>
-                        {% endfor %}
-                    {% else %}
-                    <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
-                    {% endif %}
-        
-                        <form method="post" action="{% url 'excluir_form' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                            <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
-                                <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
-                            </h5>
-                            <button class="btn btn-danger" type="submit" style="margin-left: 40%; margin-bottom: 15px;">Excluir Cidadão</button>
-                        </form>
                     </div>
 
                 {% else %}
@@ -171,10 +175,6 @@
             </div>
         </div>
 
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-</body>
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</html>
+
+

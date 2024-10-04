@@ -1,18 +1,7 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>HOME | ESTATISTICAS</title>
-    <meta charset="utf-8" />
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="{% static 'css/estatisticas.css/' %}" rel="stylesheet">
 
-</head>
-{% include 'commons/include/navbar.html' %}
 {% block content %}
-<body>
     <script>
         // Função para buscar os dados
         async function fetchHistoricos() {
@@ -55,8 +44,7 @@
         window.onload = fetchHistoricos;
     </script>
     
-
-    <div class="container mt-2">
+    <div class="container">
         <div class="row">
             <div class="col-md-3">
                 <div class="card h-100 text-center shadow">
@@ -215,13 +203,5 @@
             </div>
         </div>
     </div>  
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
-</body>
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
+

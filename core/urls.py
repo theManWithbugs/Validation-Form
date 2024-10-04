@@ -38,6 +38,7 @@ urlpatterns = [
     path('base/busca/process_info/<str:process_referente>/', views.violen_info, name='violen_info'),
     path('base/alterar_process/', views.capturar_cpf_process, name='alterar_process'),
     path('base/alterar_process/editar_process/<str:cpf>/', views.editar_process, name='editar_process'),
+    path('base/time_src/', views.time_src_view, name='src_time'),
     ]
 
 

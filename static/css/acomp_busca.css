@@ -1,6 +1,5 @@
 body {
-    margin-top: 80px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgb(20, 104, 104);
 }
 
 .container {
@@ -10,4 +9,18 @@ body {
 
 h1, h4 th, td {
     font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.btn-primary {  
+    width: 120px;
+    margin-top: 15px;
+}
+.card {
+    color: white;
+    height: 180px;
 }

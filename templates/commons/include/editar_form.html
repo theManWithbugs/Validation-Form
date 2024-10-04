@@ -1,24 +1,11 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>HOME | EDITAR DADOS</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block css %}
     <link href="{% static 'css/editar_form.css' %}" rel="stylesheet">
+{% endblock %}
 
-    <style>
-        select {
-            width: 20%;
-        }
-    </style>
-
-</head>
-<body>
-    {% include 'commons/include/navbar_form.html' %}
-
-    {% block content %}
+{% block content %}
     <div class="container" id="box_form">
         <form method="post">
             {% csrf_token %}
@@ -54,17 +41,13 @@
                 {{ form_time.errors }}
             </div>
            
-            <button type="submit" class="btn btn-success mt-4" style="margin-left: 30%; width: 30%;">Salvar
-                <i class="fas fa-save" style="margin-left: 4px;"></i>
+            <button type="submit" class="btn btn-success mt-4">Salvar
+                <i class="fas fa-save"></i>
             </button>
         </form>
     </div>
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-    {% endblock content %}
 
-    {% include 'commons/include/footer.html' %}
-</body>
-</html>
+{% endblock content %}
+
+

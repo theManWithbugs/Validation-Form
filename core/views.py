@@ -676,7 +676,7 @@ def acomp_central_form(request):
     else:
         form = AcompCentralForm()
 
-    return render(request, 'commons/include/acomp_regtwo.html', {'acomp_central': form})
+    return render(request, 'commons/include/acomp_regtwo.html', {'acomp_central': form, 'cidadao': cidadao,})
 
 #-------------------------------------------------------------------------------------------------------#
 
@@ -783,6 +783,11 @@ def editar_process(request, cpf):
     }
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
+
+def time_src_view(request):
+    return render(request, 'commons/include/time_src.html')
+
+
 
 
 

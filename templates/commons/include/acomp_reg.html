@@ -1,16 +1,11 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ACMP | REGISTRO</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block css %}
     <link href="{% static 'css/acomp_busca.css' %}" rel="stylesheet">
-</head>
-{% include 'commons/include/navbar.html' %}
+{% endblock %}
+
 {% block content %} 
-<body>
     <div class="container">
         <div class="bg-white p-3 rounded">
             <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Registrar Formulario de Acompanhamento(CPF)</h3>
@@ -33,11 +28,5 @@
             </div>
         </div> 
     </div>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-</body>
-{% include 'commons/include/footer.html' %}
 {% endblock content %}
-</html>
+

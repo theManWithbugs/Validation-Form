@@ -1,23 +1,34 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>ACMP | INSERÇÃO</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block css %}
     <link href="{% static 'css/acomp_busca.css' %}" rel="stylesheet">
-</head>
-<body>
-    {% include 'commons/include/navbar.html' %}
-    <div class="container p-4" style="border: solid 1px; background-color: aliceblue; border-radius: 20px;">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card bg-dark mx-auto">
+            <div class="card-header">
+                <h3 class="text-center" style="color: yellow; font-family: 'Roboto', sans-serif;">Vincular novamente
+                    <i class="bi bi-exclamation-circle" style="color: yellow; margin-left: 7px;"></i>
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <p class="card-text" style="font-family: 'Roboto', sans-serif;">Retornar para vinculação de ficha ACMP</p>
+                <a href="{% url 'register_acmform_view' %}" class="btn btn-primary">Retornar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4" style="border: solid 1px; background-color: aliceblue; border-radius: 20px;">
+        <h2 class="d-flex justify-content-center"> NOME: {{ cidadao.nome }} </h2>
         <form method="post">
             {% csrf_token %}
             {{ acomp_central.as_p }}
             <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-</body>
-{% include 'commons/include/footer.html' %}
-</html>
+{% endblock content %}
+
+
+

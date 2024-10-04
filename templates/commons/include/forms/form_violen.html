@@ -1,15 +1,11 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>FORM | VIOLÊNCIA</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/form.css' %}" rel="stylesheet">
-</head>
 
-{% include 'commons/include/navbar.html' %}
+{% block css %}
+    <link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<body>
 
     {% if cidadao %}
         <div class="container mt-5" style="border: solid 1px; padding: 20px; background-color: rgb(244, 245, 245); border-radius: 15px; max-width: 1000px;">
@@ -28,10 +24,6 @@
         </div>
     {% endif %}
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-</body>
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</html>
+
+

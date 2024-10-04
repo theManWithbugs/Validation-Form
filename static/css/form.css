@@ -1,12 +1,39 @@
+body {
+    background-color: darkblue;
+}
+
+.container {
+    width: 1000px;
+    border: solid 1px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+button {
+    width: 60%; 
+    margin-top: 15px;
+    margin-left: 20%;
+}
+
 label {
     font-family: 'Times New Roman', Times, serif;
     font-size: larger;
 }
 
-body {
-    margin-top: 80px;
-    background-color: rgb(20, 104, 104);
+.btn-sucess {
+    width: 60%; 
+    margin-left: 20%;
 }
+
+i {
+    margin-left: 4px;
+}
+
+
+
+
+
+
 
 
 

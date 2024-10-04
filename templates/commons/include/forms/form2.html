@@ -1,42 +1,23 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME | HISTORICO SAUDE</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+{% block css %}
     <link href="{% static 'css/form.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+{% endblock %}
 
-</head>
-
-{% include 'commons/include/navbar_form.html' %}  
-    {% block content %}
-<body>
-
-    <div class="container mt-5" style="border: solid 1px; padding: 20px; background-color: rgb(244, 245, 245); border-radius: 15px;">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h2 class="text-center mb-4">Formulario: Histórico de Saúde</h2>
-                <form method="post" action="{% url 'form2' %}">
-                    {% csrf_token %}
-                    {{ formulario_saude.as_p }}
-                    <button type="submit" class="btn btn-success btn-block" style="width: 60%; margin-left: 20%;">Continuar
-                        <i class="bi bi-arrow-right" style="margin-left: 4px;"></i>
+{% block content %}
+    <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h2 class="text-center mb-4">Formulario: Histórico de Saúde</h2>
+                    <form method="post" action="{% url 'form2' %}">
+                        {% csrf_token %}
+                        {{ formulario_saude.as_p }}
+                    <button type="submit" class="btn btn-success btn-block">Continuar
+                        <i class="bi bi-arrow-right"></i>
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-    {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</html>
+{% endblock content %}

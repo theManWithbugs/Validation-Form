@@ -1,47 +1,31 @@
 
-    p {
-        font-family: 'Roboto', sans-serif;
-        font-size: larger;
-    }
+body {
+    background-color: darkblue;
+    filter: brightness(0.9) contrast(1.2);
+}
+
+span {
+    font-family: 'Roboto', sans-serif;
+    font-size: x-large;
+}
     
-    .custom-card {
-        max-width: 600px;
-        margin: 30px auto; 
-        border-radius: 15px;
-        background-color: rgba(255, 255, 255, 0.6); 
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        padding: 25px;
-        border: 1px solid black;
-        text-align: center; 
-    }
+
+.btn-primary {
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+ 
+
+
+
+
     
-    .custom-card h3 {
-        font-family: 'Arial', sans-serif;
-        color: black;
-        font-weight: 600;
-        margin-bottom: 15px;
-        font-size: 1.25em;
-        margin-top: 15px;
-    }
-    
-    .custom-list {
-        margin-top: 20px;
-        list-style-type: disc;
-        padding-left: 0; 
-        display: inline-block; 
-        text-align: left; 
-    }
-    
-    .custom-list li {
-        margin-bottom: 12px;
-        font-size: 18px;
-        color: black;
-    }
-    
-    .no-data {
-        color: #95a5a6;
-        font-style: italic;
-    }
 
 
 

@@ -1,17 +1,15 @@
-body {
-        background-image: url("{% static '/img/acreImg.png' %}");
+    #img_background {
         background-size: cover; 
-        background-position: center;
+        background-position: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: contain;
-        background-size: 100%; 
         margin-top: 20px;
         margin: 0;
         padding: 0;
         height: 100vh;
+        filter: brightness(0.9) contrast(1.2);
     }
-    
+
     #login .container #login-row #login-column #login-box {
         margin-top: 120px;
         max-width: 600px;
@@ -19,9 +17,11 @@ body {
         border: 1px solid #9C9C9C;
         background-color: rgba(10, 10, 10, 0.863);
     }
+
     #login .container #login-row #login-column #login-box #login-form {
         padding: 20px;
     }
+    
     #login .container #login-row #login-column #login-box #login-form #register-link {
         margin-top: -85px;
     }
@@ -34,3 +34,4 @@ body {
     label {
         color: aliceblue;
     }
+

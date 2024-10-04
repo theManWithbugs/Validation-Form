@@ -1,54 +1,28 @@
+
     body {
-        background-image: url("{% static '/img/pixelcut-export.png' %}");
-        background-size: 100%;
-        background-position: center; 
-        background-repeat: no-repeat; 
-        background-attachment: fixed; 
+        background-color: darkblue;
     }
 
-    p {
-        font-family: 'Roboto', sans-serif;
+    label {
+        font-family: 'Times New Roman', Times, serif;
         font-size: larger;
     }
-    
-    .custom-card {
-        max-width: 600px;
-        margin: 30px auto; 
-        border-radius: 15px;
-        background-color: rgba(255, 255, 255, 0.6); /* Branco com 60% de opacidade definida */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        padding: 25px;
-        border: 1px solid black;
-        text-align: center; 
+
+    span {
+        font-size: x-large;
     }
-    
-    .custom-card h3 {
-        font-family: 'Arial', sans-serif;
-        color: black;
-        font-weight: 600;
-        margin-bottom: 15px;
-        font-size: 1.25em;
-        margin-top: 15px;
+
+    .btn-primary {
+        margin-bottom: 10px;
     }
+
+ 
+
+
+
+
     
-    .custom-list {
-        margin-top: 20px;
-        list-style-type: disc;
-        padding-left: 0; 
-        display: inline-block; 
-        text-align: left; 
-    }
-    
-    .custom-list li {
-        margin-bottom: 12px;
-        font-size: 18px;
-        color: black;
-    }
-    
-    .no-data {
-        color: #95a5a6;
-        font-style: italic;
-    }
+
 
 
 
