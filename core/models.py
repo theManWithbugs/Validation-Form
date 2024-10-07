@@ -479,7 +479,13 @@ class ViolenDomest(models.Model):
         return f"Historico Violência domestica {self.cidadao.cpf}"
 
 
-    
+class ActivityLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    cpf_excluido = models.CharField(max_length=11, null=True, blank=True) 
+
+    def __str__(self):
+        return f"{self.user.nome} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')} - CPF: {self.cpf_excluido or 'N/A'}"
   
 
     

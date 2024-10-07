@@ -9,6 +9,7 @@ handler404 = custom_404_view
 urlpatterns = [
     path('', views.login_n, name='login_new'),
     path('base/', views.home, name='base'),
+    path('base/', views.actions_view, name='action'),
     path('base/formulario1/', views.form1_view, name='form1'),
     path('base/formulario2/', views.form2_view, name='form2'),
     path('base/formulario3/', views.form3_view, name='form3'),
@@ -38,7 +39,6 @@ urlpatterns = [
     path('base/busca/process_info/<str:process_referente>/', views.violen_info, name='violen_info'),
     path('base/alterar_process/', views.capturar_cpf_process, name='alterar_process'),
     path('base/alterar_process/editar_process/<str:cpf>/', views.editar_process, name='editar_process'),
-    path('base/time_src/', views.time_src_view, name='src_time'),
     ]
 
 

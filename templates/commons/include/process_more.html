@@ -1,34 +1,10 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
 
-<!doctype html>
-<html lang="pt-br">
-    <head>
-        <title>PROCESS | MORE_INFO</title>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-        <style>
-            body {
-                background-color: rgb(20, 104, 104);
-            }
-
-            p {
-            font-family: 'Roboto', sans-serif;
-            font-size: larger;
-            }
-        </style>
-     
-    </head>
-
-
-{% include 'commons/include/navbar.html' %}
 {% block content %}
-    <body style="margin-top: 80px;">
-
-        <div class="container" style="border: solid 1px; background-color: aliceblue; width: 50%;">
+        <div class="container bg-light">
             <div class="container">
-                <h1 class="text-center" style="margin-top: 20px;">{{ cidadao.nome }}</h1>
+                <h1 class="text-center">{{ cidadao.nome }}</h1>
                 
                 <div class="section-title d-flex justify-content-center">
                     <h2 style="color: crimson;">Informações do processo</h2>
@@ -57,12 +33,7 @@
                     <p><strong> Tecnico responsavel:</strong> {{ processo.tecnico_responsavel_vio }}</p>
                 </div>
             </div>
+            <br>
         </div>
-
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-    </body>
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</html>
+

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <div class="container" style="max-width: 800px;">
+    <div class="container">
         <div class="container mb-3">
             <div class="bg-dark p-3 rounded">
                 <h3 style="font-family: 'Times New Roman', Times, serif; color: aliceblue;">Consultar dados(<strong style="color: red;">CPF</strong>)</h3>
@@ -18,7 +18,7 @@
                     </div>
                 </nav>
                 <div class="container d-flex justify-content-center mt-3">
-                    <a href="{% url 'buscar_nome' %}" class="btn btn-warning" style="width: 30%;">
+                    <a href="{% url 'buscar_nome' %}" class="btn btn-warning" id="bsc_nome_button">
                         OBTER (CPF)
                         <i class="fas fa-download" style="margin-left: 4px;"></i>
                     </a>

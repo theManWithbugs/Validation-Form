@@ -183,6 +183,7 @@ def contar_faixa_etaria_porcentagem():
 
     return porcentagens
 
+
     
 
 

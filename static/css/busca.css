@@ -1,5 +1,5 @@
 body {
-    background-color: wheat;
+    background-color: seashell;
 }
 
 .form-group {
@@ -27,6 +27,10 @@ body {
 
 p {
     font-size: large;
+}
+
+.container {
+    width: 1000px;
 }
 
 

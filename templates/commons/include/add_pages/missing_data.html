@@ -1,28 +1,10 @@
-{% load static %}
-<!doctype html>
-<html lang="pt-br">
-    <head>
-        <title></title>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+{% extends 'commons/include/new_base.html' %}
+{% load static %} 
 
-        <style>
-                body {
-                background-color: aliceblue;
-                background-image: url("{% static '/img/missing_data.jpg' %}");
-                background-size: 100%;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-            }
-        </style>
-       
-{% include 'commons/include/navbar.html' %}
 {% block content %}
-    <body>
-      
         <div class="container-fluid">
             <div class="vh-100 d-flex justify-content-center align-items-center">
-                <div class="card col-md-4 p-5 text-center" style="background: rgba(255, 255, 255, 0.8);">
+                <div class="card col-md-4 p-5 text-center bg-white">
                     <div class="mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="85" height="80" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -36,10 +18,5 @@
                 </div>
             </div>
         </div>
-        
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-
 {% endblock content %}
-</html>
+

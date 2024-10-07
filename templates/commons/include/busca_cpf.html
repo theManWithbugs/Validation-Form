@@ -7,18 +7,18 @@
 
 {% block content %}
 
-                <div class="container mt-2">
-                    <div class="card border-light shadow-sm rounded">
+                <div class="container">
+                    <div class="card shadow-sm rounded bg-dark">
                         <div class="card-header bg-primary text-white border-bottom-0">
-                            <h5 class="mb-0">Alterar Modo</h5>
+                            <h5 class="mb-0 bg-primary">ALTERAR MODO</h5>
                         </div>
                         <div class="card-body text-center">
-                            <h4 class="card-title mb-4">ALTERAR MODO DE BUSCA PARA (<strong style="color: red;">NOME</strong>)</h4>
+                            <h4 class="card-title mb-4 text-white">ALTERAR MODO DE BUSCA PARA (<strong style="color: red;">NOME</strong>)</h4>
                             <a class="btn btn-primary btn-lg" href="{% url 'buscar_nome' %}">
                                 CLIQUE AQUI
                             </a>
                         </div>
-                        <div class="card-footer bg-light text-muted border-top-0 text-center">
+                        <div class="card-footer text-muted border-top-0 text-center">
                         </div>
                     </div>
                 </div>
@@ -26,9 +26,9 @@
                 <br>
 
                 <div class="container">
-                    <div class="bg-white p-3 rounded">
+                    <div class="bg-dark p-3 rounded text-white">
                         <h3 style="font-family: 'Times New Roman', Times, serif;">Consultar Dados(<strong style="color: red;">CPF</strong>)</h3>
-                        <nav class="navbar navbar-light bg-light">
+                        <nav class="navbar navbar-dark bg-dark">
                             <div class="container-fluid">
                                 <div class="d-flex justify-content-center w-100">
                                     <form class="d-flex w-100" method="get" action="{% url 'busca' %}">
@@ -173,7 +173,6 @@
                     {% endif %}
                 {% endif %}
             </div>
-        </div>
 
 {% endblock content %}
 

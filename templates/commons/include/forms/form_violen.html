@@ -6,16 +6,15 @@
 {% endblock %}
 
 {% block content %}
-
     {% if cidadao %}
-        <div class="container mt-5" style="border: solid 1px; padding: 20px; background-color: rgb(244, 245, 245); border-radius: 15px; max-width: 1000px;">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <h2 class="text-center mb-4">Formulário: violência doméstica</h2>
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary" style="margin-left: 25%; width: 40%;">ENVIAR
+                        <button type="submit" class="btn btn-primary">ENVIAR
                             <i class="fas fa-paper-plane" style="margin-left: 4px;"></i>
                         </button>
                     </form>
@@ -23,7 +22,6 @@
             </div>
         </div>
     {% endif %}
-
 {% endblock content %}
 
 

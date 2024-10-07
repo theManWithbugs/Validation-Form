@@ -1,7 +1,7 @@
 
 body {
     background-color: darkblue;
-    filter: brightness(0.9) contrast(1.2);
+    filter: brightness(0.9) contrast(1.0);
 }
 
 span {
@@ -9,10 +9,30 @@ span {
     font-size: x-large;
 }
     
-
 .btn-primary {
     margin-bottom: 10px;
 }
+
+.container {
+    width: 1000px;
+}
+
+#bsc_nome_button {
+    width: 30%;
+}
+
+label {
+    font-size: x-large;
+}
+
+.info-item {
+    font-size: larger;
+}
+
+
+
+
+
 
 
 

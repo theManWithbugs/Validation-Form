@@ -21,6 +21,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from django.forms import modelformset_factory
+from .models import ActivityLog
+from functools import wraps
 
 def login_n(request):
     if request.method == 'POST':
@@ -66,6 +68,10 @@ def home(request):
     }
 
     return render(request, template_name, context)
+
+def actions_view(request): 
+    alteracoes = ActivityLog.objects.all()
+    return render(request, 'commons/include/actions.html', {'alteracoes': alteracoes})
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
 #-------------------------------------------------------------------------------------------------------#         
@@ -388,6 +394,10 @@ def excluir_form(request):
             try:
                 cidadao = Cidadao.objects.get(cpf=cpf)
                 cidadao.delete()
+                ActivityLog.objects.create(
+                    user=request.user,
+                    cpf_excluido=cpf,
+                )
                 messages.success(request, 'Cidadão excluído com sucesso.')
                 return redirect('busca')  
             except Cidadao.DoesNotExist:
@@ -550,24 +560,8 @@ class CidadaoList(APIView):
         })
 
 @login_required
-def analise_view_home(request):
-    total_usuarios = Cidadao.objects.count()
-    aumento_percentual = calcular_porcent()
-
-    context = {
-        'aumento_percentual_tip': aumento_percentual, 
-        'total_usuarios': total_usuarios, 
-    }
-
-    return render(request, 'commons/estatisticas_home.html', context)
-
-@login_required
 def custom_404_view(request, exception):
     return render(request, 'templates/errors/404.html', status=404)
-
-@login_required
-def base_view(request):
-    return render(request, 'base.html')
 
 @login_required
 def usuario_view(request):
@@ -784,8 +778,7 @@ def editar_process(request, cpf):
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
 
-def time_src_view(request):
-    return render(request, 'commons/include/time_src.html')
+
 
 
 

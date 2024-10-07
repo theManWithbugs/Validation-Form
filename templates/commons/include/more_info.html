@@ -1,26 +1,12 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>BUSCA_NOME | MORE</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+{% block css %}
     <link href="{% static 'css/busca.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-    <style>
-        p {
-            font-family: 'Roboto', sans-serif;
-            font-size: larger;
-        }
-    </style>
-</head>
-
-<body style="margin-top: 80px;">
-    {% include 'commons/include/navbar.html' %}
-
+{% block content %}
     <div class="container">
-        <div style="background-color: #ffffff; padding: 20px;">
             {% if cidadao.cpf %}
                 <h2 class="text-center" style="margin-top: 20px;">{{ cidadao.nome }}</h2>
                 
@@ -111,18 +97,18 @@
 
                     <br>
 
+                <div class="violen_process">
                     {% if form_violen %}
-                    <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
-                        {% for items in form_violen %}
-                        <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
-                            <p><strong> Número do processo: ======>> </strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
-                            <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                    <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
-                {% endif %}
-
+                        <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
+                            {% for items in form_violen %}
+                            <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
+                                <p><strong> Número do processo: ======>> </strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
+                                <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
+                    {% endif %}
                     <form method="post" action="{% url 'excluir_form' %}">
                         {% csrf_token %}
                         <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
@@ -136,12 +122,7 @@
             {% else %}
                 <p class="text-center">Cidadão não encontrado.</p>
             {% endif %}
-        </div>
     </div>
+{% endblock content %}
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-</body>
-{% include 'commons/include/footer.html' %}
-</html>
+

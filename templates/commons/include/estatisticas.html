@@ -1,6 +1,10 @@
 {% extends 'commons/include/new_base.html' %}
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static '/css/estatisticas.css' %}">
+{% endblock %}
+    
 {% block content %}
     <script>
         // Função para buscar os dados
@@ -165,7 +169,7 @@
                         </ul>
                     </div>
                     <div class="container">
-                        <h3>Medida de cumprimento: saída
+                        <h3>Medida: saida
                             <i class="bi bi-arrow-right-circle" style="margin-left: 6px;"></i> 
                         </h3>
                         <ul class="list-unstyled">

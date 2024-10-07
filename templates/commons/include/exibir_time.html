@@ -1,18 +1,10 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <title>HOME | TIME-STATICS</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-</head>
-<body style="margin-top: 80px; background-color: rgba(0, 0, 0, 0.3)" >
 
-{% include 'commons/include/navbar.html' %}
 {% block content %}
-
     <!-- Formulário para solicitar CPF -->
-    <div class="d-flex justify-content-center mt-4">
-        <div class="card" style="width: 700px; height: 250px; padding: 20px; border-radius: 25px;">
+    <div class="container mt-4">
+        <div class="card">
             <div class="card-header" style="color: rgb(255, 0, 0); text-align: center;">
                 <h3><strong>BUSCAR TEMPO RESTANTE(CPF)</strong></h3>
             </div>
@@ -33,10 +25,10 @@
     </div>
 
     {% if cidadao %}
-    <div class="d-flex justify-content-center mt-5">
-        <div class="card" style="width: 700px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div class="card-header" style="color: #dc3545; text-align: center; border-bottom: 2px solid #dc3545;">
-                <h4><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="d-flex justify-content-center"><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
             </div>
             <div class="card-body text-center">
                 <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
@@ -52,7 +44,7 @@
                 {% endif %}
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <form method="post" style="width: 100%; max-width: 400px;">
+                <form method="post">
                     {% csrf_token %}
                     <div class="mb-3">
                         <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
@@ -66,26 +58,19 @@
     {% endif %}
 
     <div class="container mt-5">
-            <div class="card bg-dark" style="color: white; max-width: 60%; margin-left: 20%;">
+            <div class="card bg-dark">
                 <div class="card-header">
                     <h3 class="d-flex justify-content-center" style="color: yellow; font-family: 'Roboto', sans-serif;">inserir time apenas disponivel ao editar dados
                         <i class="bi bi-exclamation-circle" style="color: yellow; margin-left: 7px;"></i>
                     </h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text" style="font-family: 'Roboto', sans-serif;">Inserção de tempo relacionado a determinado cidadão só está sendo possível no momento utilizando 
+                    <p class="card-text" style="font-family: 'Roboto', sans-serif; color: white;">Inserção de tempo relacionado a determinado cidadão só está sendo possível no momento utilizando 
                         a opção de edição de dados, nesta função só é possível reduzir do tempo total inserido com base no valor digitado pelo usuario!
                     </p>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/all.min.js' %}"></script>
-
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</body>
-</html>
+

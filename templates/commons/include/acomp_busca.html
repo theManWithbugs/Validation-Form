@@ -1,17 +1,11 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="pt-br">
-    <head>
-        <title>HOME | BUSC_ACOMP</title>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css/acomp_busca.css' %}" rel="stylesheet">
-    </head>
 
-{% include 'commons/include/navbar.html' %}
+    {% block css %}
+        <link href="{% static 'css/acomp_busca.css' %}" rel="stylesheet">
+    {% endblock %}
+
 {% block content %}
-<body>
-       
-        <div class="container">
 
                 <div class="container">
 
@@ -28,7 +22,7 @@
                             </div>
                         </nav>
                         <div class="container d-flex justify-content-center mt-2">
-                            <a href="{% url 'buscar_nome' %}" class="btn btn-warning" style="width: 30%;">
+                            <a href="{% url 'buscar_nome' %}" class="btn btn-warning" id="bsc_nome_button">
                                 OBTER (CPF)
                                 <i class="fas fa-download" style="margin-left: 4px;"></i>
                             </a>
@@ -38,6 +32,7 @@
 
                 {% if form_acomp_central %}
 
+                    <div class="container">
                         <div style="margin-top: 20px; border: solid 1px #cce5ff; border-radius: 8px; background-color: #e6f0ff; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     
                             <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
@@ -71,16 +66,8 @@
                                 </tbody>
                             </table>
                         </div>
-
+                    </div>
             {% endif %}
-
-        </div>
-
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-    </body>
-
 {% endblock content %}
-{% include 'commons/include/footer.html' %}
-</html>
+
+
