@@ -1,12 +1,16 @@
 {% extends 'commons/include/new_base.html' %}
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/editar_process.css' %}">
+{% endblock %}
+
 {% block content %} 
             <div class="container bg-white">
                 <h1 class="text-center" id="title_process_edit">{{ cidadao.nome }}</h1>
                 
                 <div class="section-title d-flex justify-content-center">
-                    <h2 style="color: crimson;">Todos os processos atrelados</h2>
+                    <h2>Todos os processos atrelados</h2>
                 </div>
 
                     <div class="info-item">
@@ -14,12 +18,12 @@
                                 {% csrf_token %}
                                 {{ violen_domest_formset.management_form }}
                                 {% for form in violen_domest_formset %}
-                                    <h3 class="d-flex justify-content-center" style="color: red;">(PROCESSO)</h3>
+                                    <h3 class="d-flex justify-content-center">(PROCESSO)</h3>
                                     {{ form.as_p }}      
-                                    <br>
+                                    <hr>
                                 {% endfor %}
-                                    <button type="submit" class="btn btn-success mt-4 mb-3" style="margin-left: 34%; width: 30%;">Salvar
-                                        <i class="fas fa-save" style="margin-left: 4px;"></i>
+                                    <button type="submit" class="btn btn-success mt-4 mb-3">Salvar
+                                        <i class="fas fa-save"></i>
                                     </button>
                                     <br>
                             </form>

@@ -1,12 +1,13 @@
+{% extends 'commons/include/new_base.html' %}
 {% load static %}
 
 {% block content %}
-<div class="container bg-white mt-5">
-    <h1 class="d-flex justify-content-center">Registro de Atividades</h1>
+<h1 class="d-flex justify-content-center text-white bg-dark">Registro de Atividades</h1>
+<div class="container mt-5 d-flex justify-content-center">
     <table class="table">
         <thead>
             <tr>
-                <th>Usuário:</th>
+                <th>Usuário que realizou:</th>
                 <th>Data e Hora:</th>
                 <th>CPF Excluído:</th>
             </tr>
@@ -15,7 +16,7 @@
             {% for log in alteracoes %}
                 <tr>
                     <td>{{ log.user.nome }}</td>
-                    <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
                     <td>{{ log.cpf_excluido|default:'N/A' }}</td>
                 </tr>
             {% empty %}

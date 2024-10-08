@@ -55,9 +55,29 @@
             </div>
         </div>
     </div>
+
     {% endif %}
 
-    <div class="container mt-5">
+            <div class="bg-white mt-4 text-center w-50" style="margin-left: 25%;">
+                {% if cidadao %}
+                <h1>Detalhes do Cidadão</h1>
+                    <p>Nome: {{ cidadao.nome }}</p>
+                    <p>CPF: {{ cidadao.cpf }}</p>
+                    <h2>Tempos Associados:</h2>
+
+                    <ul>
+                        {% for time in time_list %}
+                            <li>Processo referente: {{ time.process_equal }} | Tempo associado: {{ time.time }}</li>
+                        {% empty %}
+                            <li>Nenhum tempo encontrado.</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Cidadão não encontrado.</p>
+                {% endif %}
+            </div>
+
+    <div class="container mt-3">
             <div class="card bg-dark">
                 <div class="card-header">
                     <h3 class="d-flex justify-content-center" style="color: yellow; font-family: 'Roboto', sans-serif;">inserir time apenas disponivel ao editar dados

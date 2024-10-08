@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ValidationError
 from .forms import *
@@ -22,7 +22,6 @@ from rest_framework.response import Response
 from .serializers import *
 from django.forms import modelformset_factory
 from .models import ActivityLog
-from functools import wraps
 
 def login_n(request):
     if request.method == 'POST':
@@ -70,7 +69,7 @@ def home(request):
     return render(request, template_name, context)
 
 def actions_view(request): 
-    alteracoes = ActivityLog.objects.all()
+    alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:30]
     return render(request, 'commons/include/actions.html', {'alteracoes': alteracoes})
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
@@ -707,7 +706,7 @@ def exibir_time(request):
     if cpf:
         try:
             cidadao = Cidadao.objects.get(cpf=cpf)
-            time_list = cidadao.time.first()  
+            time_list = cidadao.time.all()  
         except Cidadao.DoesNotExist:
             return redirect('not_found_page')
 

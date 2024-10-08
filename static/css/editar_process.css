@@ -1,0 +1,23 @@
+h2 ,h3 {
+     color: red;
+}
+
+.btn-success {
+    margin-left: 34%; 
+    width: 30%;
+} 
+
+i {
+    margin-left: 4px;
+}
+
+.info-item {
+    background-color: silver;
+}
+
+hr {
+    border: none;
+    height: 5px;
+    background-color: black;
+}
+

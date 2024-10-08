@@ -6,11 +6,10 @@
 {% endblock %}
 
 {% block content %}
-
-                <div class="container">
+                <div class="container bg-transparent">
                     <div class="card shadow-sm rounded bg-dark">
                         <div class="card-header bg-primary text-white border-bottom-0">
-                            <h5 class="mb-0 bg-primary">ALTERAR MODO</h5>
+                            <h5 class="mb-0">ALTERAR MODO</h5>
                         </div>
                         <div class="card-body text-center">
                             <h4 class="card-title mb-4 text-white">ALTERAR MODO DE BUSCA PARA (<strong style="color: red;">NOME</strong>)</h4>
@@ -25,7 +24,7 @@
 
                 <br>
 
-                <div class="container">
+                <div class="container bg-transparent">
                     <div class="bg-dark p-3 rounded text-white">
                         <h3 style="font-family: 'Times New Roman', Times, serif;">Consultar Dados(<strong style="color: red;">CPF</strong>)</h3>
                         <nav class="navbar navbar-dark bg-dark">
@@ -45,9 +44,9 @@
                 <br>
 
                 {% if cidadao %}
-                    <h2 class="title_nome d-flex justify-content-center">{{ cidadao.nome }}</h2>
+                    <h2 class="title_nome d-flex justify-content-center text-white">{{ cidadao.nome }}</h2>
                     
-            <div class="container">
+            <div class="container border border-2 py-5" style="width: 1100px;">
                 
                     <div class="section-title">
                         <h3>Informações Pessoais</h3>
@@ -164,8 +163,8 @@
                                 </h5>
                                 <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
                             </form>
-                        </div>
                     </div>
+                    
 
                 {% else %}
                     {% if form.is_valid %}
@@ -173,7 +172,6 @@
                     {% endif %}
                 {% endif %}
             </div>
-
 {% endblock content %}
 
 

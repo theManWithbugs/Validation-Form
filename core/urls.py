@@ -1,4 +1,3 @@
-from django.conf.urls.static import static
 from django.urls import path
 from core import views
 from django.conf import settings
@@ -39,6 +38,7 @@ urlpatterns = [
     path('base/busca/process_info/<str:process_referente>/', views.violen_info, name='violen_info'),
     path('base/alterar_process/', views.capturar_cpf_process, name='alterar_process'),
     path('base/alterar_process/editar_process/<str:cpf>/', views.editar_process, name='editar_process'),
+    path('base/actions/', views.actions_view, name='actions'),
     ]
 
 

@@ -15,7 +15,7 @@
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <img src="{% static '/img/img_ciap.png' %}" class="img-fluid" alt="Logo" style="height: 270px; margin-top: -50px; margin-bottom: -40px;">
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="d-none d-sm-inline">MENU DE OPÇÕES
                             <i class="bi bi-gear" style="margin-left: 5px;"></i>
                         </span>
@@ -49,6 +49,10 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none">
+                                <i class="fs-4 bi-file-earmark-lock"></i><span class="ms-1 d-none d-sm-inline">Relatório de ações</span>
+                            </li>
                         <li>
                             <a href="{% url 'logout' %}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-door-open"></i><span class="ms-1 d-none d-sm-inline">Encerrar seção</span></a>

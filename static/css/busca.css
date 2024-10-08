@@ -1,5 +1,5 @@
 body {
-    background-color: seashell;
+    background-color: darkblue;
 }
 
 .form-group {
@@ -30,8 +30,12 @@ p {
 }
 
 .container {
+    background-color: white;
     width: 1000px;
 }
+
+
+
 
 
 

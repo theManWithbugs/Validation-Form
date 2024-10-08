@@ -341,6 +341,7 @@ class ArmTime(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
     time = models.IntegerField(default='', verbose_name='Tempo:')
+    process_equal = models.CharField(max_length=30)
 
     class Meta:
         indexes = [

@@ -109,7 +109,7 @@
                 <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
                         <h1 class="mb-3">Porcentagem geral de (Homens | Mulheres)
-                            <i class="bi bi-people-fill" style="margin-left: 6px;"></i>
+                            <i class="bi bi-people-fill"></i>
                         </h1>
                         <p>Porcentagem Homens: <span class="text-danger">{{ porcentagem_homens|floatformat:2 }}%</span></p>
                         <p>Porcentagem Mulheres: <span class="text-danger">{{ porcentagem_mulheres|floatformat:2 }}%</span></p>
@@ -128,7 +128,7 @@
                 <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
                         <h1 class="mb-3">Tipificação penal 
-                            <i class="bi bi-file-earmark-text" style="margin-left: 6px;"></i>
+                            <i class="bi bi-file-earmark-text"></i>
                         </h1>
                         <ul class="list-unstyled">
                             {% for tipo, porcentagem in resultado_tipo_penal %}
@@ -145,7 +145,7 @@
                 <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
                         <h3 class="mb-3">Tipificação penal: dados númericos
-                            <i class="bi bi-file-earmark-text" style="margin-left: 6px;"></i>
+                            <i class="bi bi-file-earmark-text"></i>
                         </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_tip_quant.items %}
@@ -160,7 +160,7 @@
                 <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
                         <h3>Medida de cumprimento
-                            <i class="bi bi-check-circle" style="margin-left: 6px;"></i>
+                            <i class="bi bi-check-circle"></i>
                         </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_medida.items %}
@@ -170,7 +170,7 @@
                     </div>
                     <div class="container">
                         <h3>Medida: saida
-                            <i class="bi bi-arrow-right-circle" style="margin-left: 6px;"></i> 
+                            <i class="bi bi-arrow-right-circle"></i> 
                         </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in resultado_cumprimento_saida.items %}
@@ -185,7 +185,7 @@
                 <div class="card" style="background-color: burlywood;">
                     <div class="card-body">
                         <h3>Faixas Etárias
-                            <i class="bi bi-people-fill" style="margin-left: 6px;"></i>
+                            <i class="bi bi-people-fill"></i>
                         </h3>
                         <ul class="list-unstyled">
                             {% for tipo, quantidade in faixas_etarias.items %}
@@ -195,7 +195,7 @@
                     </div>
                     <div class="container">
                         <h3>Porcentagem Faixa Etária
-                            <i class="bi bi-bar-chart" style="margin-left: 6px;"></i>
+                            <i class="bi bi-bar-chart"></i>
                         </h3>
                         <ul class="list-unstyled">
                             {% for tipo, porcentagem in faixas_etarias_porcentagem.items %}
