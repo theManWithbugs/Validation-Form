@@ -2,7 +2,7 @@ from tkinter import CASCADE
 from django.conf import settings
 from django.utils import timezone
 from django.db import models
-from core.choices import *  # Certifique-se de que todas as escolhas estão corretamente definidas
+from core.choices import *  
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class UserManager(BaseUserManager):
@@ -341,7 +341,6 @@ class ArmTime(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
     time = models.IntegerField(default='', verbose_name='Tempo:')
-    process_equal = models.CharField(max_length=30)
 
     class Meta:
         indexes = [
@@ -486,7 +485,7 @@ class ActivityLog(models.Model):
     cpf_excluido = models.CharField(max_length=11, null=True, blank=True) 
 
     def __str__(self):
-        return f"{self.user.nome} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')} - CPF: {self.cpf_excluido or 'N/A'}"
+        return f"{self.user.nome} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')} - CPF: {self.cpf_excluido or 'Empty'} - NOME_EXCLUIDO: {self.nome or 'Empty'}"
   
 
     

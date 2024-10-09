@@ -10,28 +10,28 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <h2>Dados do Cidadão</h2>
+                <h2 class="d-flex justify-content-center">Dados do Cidadão</h2>
                 {{ form_cidadao.as_p }}
 
                 {{ form_cidadao.non_field_errors }}
                 {{ form_cidadao.errors }}
             </div>
             <div class="form-group">
-                <h2>Histórico de Saúde</h2>
+                <h2 class="d-flex justify-content-center">Histórico de Saúde</h2>
                 {{form_historico_saude.as_p }}
 
                 {{ form_historico_saude.non_field_errors }}
                 {{ form_historico_saude.errors }}
             </div>
             <div class="form-group">
-                <h2>Histórico Criminal</h2>
+                <h2 class="d-flex justify-content-center">Histórico Criminal</h2>
                 {{ form_historico_criminal.as_p }}
 
                 {{ form_historico_criminal.non_field_errors }}
                 {{ form_historico_criminal.errors }}
             </div>
             <div class="form-group">
-                <h2>Informações Complementares</h2>
+                <h2 class="d-flex justify-content-center">Informações Complementares</h2>
                 {{form_informacoes_complementares.as_p }}
 
                 {{ form_informacoes_complementares.non_field_errors }}

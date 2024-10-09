@@ -6,9 +6,7 @@
     {% endblock %}
 
 {% block content %}
-
                 <div class="container">
-
                     <div class="bg-white p-3 rounded">
                         <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Buscar formulario de acompanhamento(CPF)</h3>
                         <nav class="navbar navbar-light bg-light">
@@ -30,20 +28,32 @@
                     </div> 
                 </div>
 
+                <br>
+
                 {% if form_acomp_central %}
 
                     <div class="container">
-                        <div style="margin-top: 20px; border: solid 1px #cce5ff; border-radius: 8px; background-color: #e6f0ff; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div>
                     
                             <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                                <h1 style="text-align: center; color: #004085;">Fichas de Acompanhamento</h1>
-                                <h4 style="text-align: center; color: #004085;">Número do processo: {{ historico_criminal.numero_do_processo }}</h4>
-                                <h4 style="text-align: center; color: #004085;">Nome: {{ cidadao.nome }}</h4>
+                                <h1 class="d-flex justify-content-center text-primary">Fichas de Acompanhamento</h1>
+                                <hr>
+                                <h4 class="d-flex justify-content-center text-primary">Nome: {{ cidadao.nome }}</h4>
+                                <h4 class="d-flex justify-content-center text-primary">Número do processo: <div class="text-danger"> {{ historico_criminal.numero_do_processo }} </div> </h4>
+                                {% if violen_domest %}
+                                    <hr>
+                                    <h3 class="d-flex justify-content-center text-primary">Processos por violência domestica abaixo:</h3>
+                                {% endif %}
+                                {% for processos in violen_domest %}
+                                    <h4 class="text-primary mb-2 ms-5"> Número: <div class="text-danger">{{ processos.process_referente }}</div> </h4>
+                                    {% empty %}
+                                    <h4 class="d-flex justify-content-center text-warning">(NÃO POSSUI PROCESSOS POR VIOLENCIA DOMESTICA!)</h4>
+                                {% endfor %}
                             </div>
                     
-                            <table style="width: 100%; border-collapse: collapse; border: solid 1px #dee2e6;">
+                            <table class="w-100">
                                 <thead>
-                                    <tr style="background-color: #007bff; color: white;">
+                                    <tr class="bg-primary text-white">
                                         <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Técnico Responsavel</th>
                                         <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Evolução/Demandas/Percepções</th>
                                         <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Data de registro</th>

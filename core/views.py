@@ -69,7 +69,7 @@ def home(request):
     return render(request, template_name, context)
 
 def actions_view(request): 
-    alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:30]
+    alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:20]
     return render(request, 'commons/include/actions.html', {'alteracoes': alteracoes})
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
@@ -230,39 +230,6 @@ def form_violencia_domest(request, cpf):
     }
 
     return render(request, 'commons/include/forms/form_violen.html', context)
-
-@login_required
-def form_acomp_view(request):
-    cidadao_cpf = request.session.get('cidadao_cpf')
-
-    if not cidadao_cpf:
-        messages.error(request, 'Dados do cidadão não encontrados')
-        return redirect('base/not_found')
-    
-    cidadao = get_object_or_404(Cidadao, cpf=cidadao_cpf)
-
-    if request.method == 'POST':
-        form = AcompCentralForm(request.POST)
-        if form.is_valid():
-            acompcentral = form.save(commit=False)
-            acompcentral.cidadao = cidadao
-            acompcentral.save()
-          
-            request.session['form_acomp_complete'] = True
-        
-            return redirect('sucess_page')
-        else:
-      
-            messages.error(request, 'Por favor, corrija os erros no formulário')
-    else:
-    
-        form = AcompCentralForm()
-
-    return render(request, 'commons/include/forms/form_acom.html', { 
-        'formulario_acom': form,
-        'cidadao_nome': cidadao.nome,
-        'data_entrada': cidadao.data_entrada,
-    })
        
 #-------------------------------------------------------------------------------------------------------#  
 @login_required
@@ -392,6 +359,7 @@ def excluir_form(request):
         if cpf:
             try:
                 cidadao = Cidadao.objects.get(cpf=cpf)
+                
                 cidadao.delete()
                 ActivityLog.objects.create(
                     user=request.user,
@@ -604,6 +572,7 @@ def buscar_acmform_view (request):
     form_acomp = None
     cidadao = None
     historico_criminal = None
+    violen_domest = None
 
     if form.is_valid():
         cpf = form.cleaned_data['cpf']
@@ -617,6 +586,7 @@ def buscar_acmform_view (request):
         else:
             historico_criminal = cidadao.historicos_criminais.first()
             form_acomp = cidadao.form_acompanhamento_central.all()
+            violen_domest = cidadao.form_violencia_domes.all()
 
     else:
         messages.error(request, '')
@@ -626,6 +596,7 @@ def buscar_acmform_view (request):
         'form_acomp_central': form_acomp,
         'cidadao': cidadao,
         'historico_criminal': historico_criminal,
+        'violen_domest':  violen_domest,
     }
 
     return render(request, 'commons/include/acomp_busca.html', context)

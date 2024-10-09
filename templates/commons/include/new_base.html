@@ -50,9 +50,9 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none">
+                            <a href="{% url 'actions' %}" class="mb-0 px-0 align-middle text-decoration-none">
                                 <i class="fs-4 bi-file-earmark-lock"></i><span class="ms-1 d-none d-sm-inline">Relatório de ações</span>
-                            </li>
+                        </li>
                         <li>
                             <a href="{% url 'logout' %}" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-door-open"></i><span class="ms-1 d-none d-sm-inline">Encerrar seção</span></a>
@@ -85,4 +85,7 @@
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    
+    {% block js %}
+    {% endblock %}
 </body>

@@ -13,7 +13,6 @@ urlpatterns = [
     path('base/formulario2/', views.form2_view, name='form2'),
     path('base/formulario3/', views.form3_view, name='form3'),
     path('base/formulario4/', views.form4_view, name='form4'),
-    path('base/form4/form_acomp/', views.form_acomp_view, name='form_acomp'),
     path('base/acmform/', views.register_acmform_view, name='register_acmform_view'),
     path('base/capturar_dados_viole', views.capturar_dados_viole, name='capturar_violen'),
     path('base/buscar_acmform', views.buscar_acmform_view, name='acmform'),

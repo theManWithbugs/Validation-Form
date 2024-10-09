@@ -53,6 +53,8 @@ textarea:focus {
 }
 
 h2 {
+    color: white;
+    background-color: black;
     margin-bottom: 1rem; 
 }
 

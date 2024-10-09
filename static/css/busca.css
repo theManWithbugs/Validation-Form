@@ -34,6 +34,20 @@ p {
     width: 1000px;
 }
 
+.section-title {
+    color: red;
+}
+
+#title_4 {
+    color: red;
+}
+
+hr {
+    border: none;
+    height: 5px;
+    background-color: black;
+}
+
 
 
 

@@ -25,45 +25,46 @@
     </div>
 
     {% if cidadao %}
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="d-flex justify-content-center"><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
-            </div>
-            <div class="card-body text-center">
-                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
-                <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
-                {% if time_list %}
-                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                        Tempo total restante: <strong>{{ time_list.time }} horas</strong>
-                    </p>
-                {% else %}
-                    <p class="card-text" style="font-size: 1.25rem; color: #333;">
-                        Tempo total restante: <strong>Dado não existente no momento</strong>
-                    </p>
-                {% endif %}
-            </div>
-            <div class="d-flex justify-content-center mt-4">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                        <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Atualizar</button>
-                </form>
+    <!--
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="d-flex justify-content-center"><strong>INFORMAÇÕES ENCONTRADAS ABAIXO:</strong></h4>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">NOME: {{ cidadao.nome }}</h4>
+                    <h4 class="card-title" style="font-size: 1.5rem; font-weight: 500;">DATA DE ENTRADA: {{ cidadao.data_entrada }}</h4>
+                    {% if time_list %}
+                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                            Tempo total restante: <strong>{{ time_list.time }} horas</strong>
+                        </p>
+                    {% else %}
+                        <p class="card-text" style="font-size: 1.25rem; color: #333;">
+                            Tempo total restante: <strong>Dado não existente no momento</strong>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                            <input type="number" name="horas_a_subtrair" placeholder="Valor a reduzir" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    -->
 
     {% endif %}
-
-            <div class="bg-white mt-4 text-center w-50" style="margin-left: 25%;">
+            <div class="bg-dark mt-3 text-center w-50 text-white" style="margin-left: 25%;">
                 {% if cidadao %}
                 <h1>Detalhes do Cidadão</h1>
                     <p>Nome: {{ cidadao.nome }}</p>
                     <p>CPF: {{ cidadao.cpf }}</p>
-                    <h2>Tempos Associados:</h2>
+                    <h2>Processos associados:</h2>
 
                     <ul>
                         {% for time in time_list %}
