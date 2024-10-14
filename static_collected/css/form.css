@@ -20,6 +20,15 @@ label {
     font-size: larger;
 }
 
+.btn {
+    width: 60%; 
+    margin-left: 20%;
+}
+
+i {
+    margin-left: 4px;
+}
+
 
 
 

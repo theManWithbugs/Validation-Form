@@ -158,7 +158,7 @@ def contar_faixa_etaria():
     
     return faixa_etarias
 
-def contar_faixa_etaria_porcentagem():
+def contar_faixa_etaria_porcentagem_sta():
     media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24).count() 
     media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29).count() 
     media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34).count()
@@ -180,6 +180,31 @@ def contar_faixa_etaria_porcentagem():
             '30-34': 0,
             '35-39': 0,
         }
+
+    return porcentagens
+
+def contar_faixa_etaria_porcentagem():
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24).count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29).count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34).count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39).count()  
+
+    total = media1 + media2 + media3 + media4
+
+    if total > 0:
+        porcentagens = [
+            ['De 18-24', round((media1 / total) * 100, 2)],
+            ['De 25-29', round((media2 / total) * 100, 2)],
+            ['De 30-34', round((media3 / total) * 100, 2)],
+            ['De 35-39', round((media4 / total) * 100, 2)],
+        ]
+    else:
+        porcentagens = [
+            ['De 18-24', 0.00],
+            ['De 25-29', 0.00],
+            ['De 30-34', 0.00],
+            ['De 35-39', 0.00],
+        ]
 
     return porcentagens
 

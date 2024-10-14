@@ -461,7 +461,7 @@ def analise_view(request):
     resultado_cumprimento_saida = medida_cumprimento_saida()
     ativos = contar_ativos()
     faixas_etarias = contar_faixa_etaria()
-    faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem()
+    faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem_sta()
 
     porcentagem_masculino, porcentagem_feminino = calcular_sexo()
 
@@ -512,18 +512,19 @@ class HistoricoCriminalList(APIView):
             'tipos_penais_porcentagens': tipos_penais_porcentagens,
             'medidas_cumprimento': medidas_cumprimento
         })
-
-class CidadaoList(APIView):
+class FaixasEtarias(APIView):
     def get(self, request):
-        cidadaos = Cidadao.objects.all()
-        serializer = CidadaoSerializer(cidadaos, many=True)
+        # Obtendo as idades dos cidadãos
+        idades = Cidadao.objects.all()
+        serializer = CidadaoSerializer(idades, many=True)
 
-        porcentagem_masculino, porcentagem_feminino = calcular_sexo()
+        # Chamando a função para calcular as faixas etárias
+        faixas_etarias = contar_faixa_etaria_porcentagem()
 
+        # Retornando os dados em um formato que inclua as idades e faixas etárias
         return Response({
-            'cidadao_data': serializer.data,
-            'porcentagem_masculino': porcentagem_masculino,
-            'porcentagem_feminino': porcentagem_feminino,
+            'idades': serializer.data,
+            'faixas_etarias': faixas_etarias,
         })
 
 @login_required
@@ -644,6 +645,8 @@ def acomp_central_form(request):
 
 #-------------------------------------------------------------------------------------------------------#
 
+#-------------------------------------------------------------------------------------------------------#
+#Código está sendo revisado e vai passar por reestrutração ou exclusão 
 @login_required
 def exibir_time(request):
     cidadao = None
@@ -687,6 +690,7 @@ def exibir_time(request):
     }
 
     return render(request, 'commons/include/exibir_time.html', context)
+#-------------------------------------------------------------------------------------------------------#
 
 @login_required
 def violen_info(request, process_referente):

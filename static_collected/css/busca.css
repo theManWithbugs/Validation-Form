@@ -1,17 +1,5 @@
-
-h1, h2, h3 {
-    margin-left: 30px;
-    margin-bottom: 5px;
-    color: #343a40;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.navbar {
-    margin-bottom: 30px;
+body {
+    background-color: darkblue;
 }
 
 .form-group {
@@ -27,21 +15,43 @@ h1, h2, h3 {
     border-radius: .25rem;
 }
 
+.violen_process {
+    margin-left: -1%;
+}
+
+.btn-danger {
+    margin-top: 15px;
+    margin-left: 45%; 
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: large;
+}
+
+.container {
+    background-color: white;
+    width: 1000px;
+}
+
 .section-title {
-    margin-top: 40px;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
+    color: red;
 }
 
-.info-item {
-    margin-top: 5px;
-    margin-bottom: 10px;
+#title_4 {
+    color: red;
 }
 
-.info-item p {
-    margin-left: 30px;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    margin-right: 0px;
+hr {
+    border: none;
+    height: 5px;
+    background-color: black;
 }
+
+
+
+
+
+
+
 

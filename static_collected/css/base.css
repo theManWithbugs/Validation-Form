@@ -1,20 +1,51 @@
+body {
+    background-color: darkblue;
+    filter: brightness(0.9) contrast(1.0);
+}
 
-    body {
-        background-color: darkblue;
-    }
+span {
+    font-family: 'Roboto', sans-serif;
+    font-size: x-large;
+}
+    
+.btn-primary {
+    margin-bottom: 10px;
+}
 
-    label {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: larger;
-    }
+.container {
+    width: 1000px;
+}
 
-    span {
-        font-size: x-large;
-    }
+#bsc_nome_button {
+    width: 30%;
+}
 
-    .btn-primary {
-        margin-bottom: 10px;
-    }
+label {
+    font-size: large;
+}
+
+.info-item {
+    font-size: larger;
+}
+
+#grafico {
+    width: 40%;
+    height: 30%;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 

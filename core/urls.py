@@ -1,13 +1,14 @@
 from django.urls import path
 from core import views
 from django.conf import settings
-from core.views import custom_404_view
+from core.views import FaixasEtarias, custom_404_view
 
 handler404 = custom_404_view
 
 urlpatterns = [
     path('', views.login_n, name='login_new'),
     path('base/', views.home, name='base'),
+    path('faixas-etarias/', FaixasEtarias.as_view(), name='faixas_etarias'),
     path('base/', views.actions_view, name='action'),
     path('base/formulario1/', views.form1_view, name='form1'),
     path('base/formulario2/', views.form2_view, name='form2'),

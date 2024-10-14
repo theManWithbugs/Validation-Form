@@ -1,64 +1,72 @@
-        body {
-            margin-top: 80px;
-            background-color: rgb(20, 104, 104);
-            font-family: 'Arial', sans-serif;
-        }
+label {
+    font-size: 1.1rem;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
 
-        label {
-            font-size: 1.1rem;
-            font-family: 'Arial', sans-serif;
-            color: #333;
-        }
+.form-group {
+    margin-bottom: 2rem; 
+}
 
-        .form-group {
-            margin-bottom: 2rem; /* Aumentado para mais espaçamento entre os grupos de formulário */
-        }
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
+#box_form {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 40px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-        #box_form {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            padding: 40px; /* Aumentado para mais espaço ao redor do formulário */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+.form-group p {
+    margin-bottom: 0.5rem;
+}
 
-        .form-group p {
-            margin-bottom: 0.5rem;
-        }
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 12px; 
+    width: 100%;
+    margin-bottom: 1rem; 
+}
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        textarea {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            padding: 12px; /* Aumentado para mais espaço interno */
-            width: 100%;
-            margin-bottom: 1rem; /* Espaçamento inferior adicionado entre os campos de entrada */
-        }
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        textarea:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
-        }
+h2 {
+    color: white;
+    background-color: black;
+    margin-bottom: 1rem; 
+}
 
-        h2 {
-            margin-top: 2rem; /* Espaçamento superior para os cabeçalhos das seções */
-            margin-bottom: 1rem; /* Espaçamento inferior para os cabeçalhos das seções */
-        }
+.container {
+    max-width: 1000px;
+}
+
+.btn-success {
+    margin-left: 30%; 
+    width: 30%;
+}
+
+i {
+    margin-left: 4px;
+}
