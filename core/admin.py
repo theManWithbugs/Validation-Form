@@ -12,7 +12,6 @@ admin.site.register(HistoricoCriminal)
 admin.site.register(InformacoesComplementares)
 admin.site.register(AcompCentral)
 admin.site.register(ViolenDomest)
-admin.site.register(ArmTime)
 admin.site.register(ActivityLog)
 class UserAdmin(BaseUserAdmin):
     form = UserChangeFormCustom

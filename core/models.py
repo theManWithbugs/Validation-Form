@@ -22,6 +22,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     cpf = models.CharField(max_length=11, unique=True)
     nome = models.CharField(max_length=255, default='')
+    profile_image = models.URLField(max_length=200, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -337,19 +338,6 @@ class AcompCentral(models.Model):
         self.tecnico_responsavel = self.tecnico_responsavel.upper()
         super().save(*args, **kwargs)
 
-class ArmTime(models.Model):
-
-    cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='time')
-    time = models.IntegerField(default='', verbose_name='Tempo:')
-
-    class Meta:
-        indexes = [
-            models.Index(fields=['time']),
-        ]
-    
-    def __str__(self):
-        return self.time
-
 class ViolenDomest(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='form_violencia_domes')
@@ -434,10 +422,10 @@ class ViolenDomest(models.Model):
                                     )
     
     relacao_vit = models.CharField(
-                                    default='Selecione',
-                                    choices=c_sim_nao,
+                                    blank=True,
+                                    null=True,
                                     verbose_name ='Que tipo de relação mantém atualmente com a vitima?',
-                                    max_length=9
+                                    max_length=200
                                     )
     
     reconhe_violencia = models.CharField(
@@ -477,7 +465,6 @@ class ViolenDomest(models.Model):
     
     def __str__(self):
         return f"Historico Violência domestica {self.cidadao.cpf}"
-
 
 class ActivityLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

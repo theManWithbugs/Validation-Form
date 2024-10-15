@@ -44,6 +44,21 @@ def login_n(request):
 
     return render(request, 'account/login_n.html', {'form': form})
 
+def atualizar_perfil_img(request):
+    if request.user.is_authenticated:
+        user = request.user  # Now it's guaranteed to be a User instance
+        if request.method == 'POST':
+            form = UserForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return redirect('perfil')
+        else:
+            form = UserForm(instance=user)
+        
+        return render(request, 'account/perfil.html', {'form': form})
+    else:
+        return redirect('login_new')  # Redirect to login if not authenticated
+
 #essa view é usada para verificar se o usuario logado possui is_staff igual a true
 #tal referência pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
 #para esse caso foi usado o atributo is staff, e caso o ususario não seja é redirecionado para a pagina 
@@ -68,6 +83,7 @@ def home(request):
 
     return render(request, template_name, context)
 
+@login_required
 def actions_view(request): 
     alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:20]
     return render(request, 'commons/include/actions.html', {'alteracoes': alteracoes})
@@ -413,23 +429,18 @@ def atualizar_dados(request, cpf):
         form_historico_saude = HistoricoSaudeForm(request.POST, instance=HistoricoSaude.objects.filter(cidadao=cidadao).first())
         form_historico_criminal = HistoricoCriminalForm(request.POST, instance=HistoricoCriminal.objects.filter(cidadao=cidadao).first())
         form_informacoes_complementares = InformacoesComplementaresForm(request.POST, instance=InformacoesComplementares.objects.filter(cidadao=cidadao).first())
-        form_time = ArmTimeForm(request.POST, instance=ArmTime.objects.filter(cidadao=cidadao).first())
+
 
         if (form_cidadao.is_valid() and
             form_historico_saude.is_valid() and
             form_historico_criminal.is_valid() and
-            form_informacoes_complementares.is_valid() and
-            form_time.is_valid()):
+            form_informacoes_complementares.is_valid()):
 
             form_cidadao.save()
             form_historico_saude.save()
             form_historico_criminal.save()
             form_informacoes_complementares.save()
-
-        #como não existe registro na tabela para time, já que não é solicitado durante a criação de um formulario de registro,
-        #torna-se necessario atribuir a uma instancia que vai criar um id para o time de cidadao
-            form_time.instance.cidadao = cidadao
-            form_time.save()
+            
             return redirect('sucess_page')
         else:
             messages.error(request, 'Há erros no formulário. Por favor, corrija-os.')
@@ -439,14 +450,12 @@ def atualizar_dados(request, cpf):
         form_historico_saude = HistoricoSaudeForm(instance=HistoricoSaude.objects.filter(cidadao=cidadao).first() or HistoricoSaude(cidadao=cidadao))
         form_historico_criminal = HistoricoCriminalForm(instance=HistoricoCriminal.objects.filter(cidadao=cidadao).first() or HistoricoCriminal(cidadao=cidadao))
         form_informacoes_complementares = InformacoesComplementaresForm(instance=InformacoesComplementares.objects.filter(cidadao=cidadao).first() or InformacoesComplementares(cidadao=cidadao))
-        form_time = ArmTimeForm(instance=ArmTime.objects.filter(cidadao=cidadao).first() or ArmTime(cidadao=cidadao) )
 
     return render(request, 'commons/include/editar_form.html', {
         'form_cidadao': form_cidadao,
         'form_historico_saude': form_historico_saude,
         'form_historico_criminal': form_historico_criminal,
         'form_informacoes_complementares': form_informacoes_complementares,
-        'form_time': form_time,
         'cidadao': cidadao
     })
 
@@ -530,10 +539,6 @@ class FaixasEtarias(APIView):
 @login_required
 def custom_404_view(request, exception):
     return render(request, 'templates/errors/404.html', status=404)
-
-@login_required
-def usuario_view(request):
-    return render(request, 'account/perfil.html')
 
 @login_required
 def edit_form_view(request):
@@ -645,53 +650,6 @@ def acomp_central_form(request):
 
 #-------------------------------------------------------------------------------------------------------#
 
-#-------------------------------------------------------------------------------------------------------#
-#Código está sendo revisado e vai passar por reestrutração ou exclusão 
-@login_required
-def exibir_time(request):
-    cidadao = None
-    time_list = None
-    
-    if request.method == 'POST':
-        cpf = request.POST.get('cpf')
-        horas_a_subtrair = request.POST.get('horas_a_subtrair')
-        
-        if not cpf or not horas_a_subtrair:
-            return HttpResponse("Parâmetros 'cpf' e 'horas_a_subtrair' não recebidos")
-        
-        try:
-            horas_a_subtrair = float(horas_a_subtrair)
-        except ValueError:
-            return HttpResponseBadRequest("Horas a subtrair deve ser um número!")
-
-
-        sucesso = reduzir_tempo(cpf, horas_a_subtrair)
-
-        if sucesso:
-            request.session.pop('cpf', None)
-            messages.success(request, '')
-        else:
-            request.session.pop('cpf', None)
-            messages.error(request, '')
-        
-        return redirect('exibir_time')
-
-    cpf = request.GET.get('cpf')
-    if cpf:
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
-            time_list = cidadao.time.all()  
-        except Cidadao.DoesNotExist:
-            return redirect('not_found_page')
-
-    context = {
-        'cidadao': cidadao,
-        'time_list': time_list,
-    }
-
-    return render(request, 'commons/include/exibir_time.html', context)
-#-------------------------------------------------------------------------------------------------------#
-
 @login_required
 def violen_info(request, process_referente):
 
@@ -720,7 +678,7 @@ def capturar_cpf_process(request):
     return render(request, 'commons/include/capturar_process.html')
 
 #formset cria uma coleção de formulario baseados em um modelo, que nesse caso é ViolenDomestica
-#ou seja ele exibe todos os formualrios de ViolenDomestica na tela, isso é semelhante a um loop for
+#ou seja ele exibe todos os formularios de ViolenDomestica na tela, isso é semelhante a um loop for
 #como extra foi definido como 0, não serão exibidos formularios em branco para preenchimento,
 #apenas formularios já existentes são exibidos na tela.
 ViolenDomestFormSet = modelformset_factory(ViolenDomest, form=ViolenDomestFormTwo, extra=0)
@@ -751,6 +709,10 @@ def editar_process(request, cpf):
     }
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
+
+
+
+
 
 
 

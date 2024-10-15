@@ -10,7 +10,7 @@
 {% block content %}
                 <div class="container">
                     <div class="bg-white p-3 rounded">
-                        <h3 style="font-family: 'Times New Roman', Times, serif; margin-left: 30px;">Buscar formulario de acompanhamento(CPF)</h3>
+                        <h3 id="title_search">Buscar formulario de acompanhamento(CPF)</h3>
                         <nav class="navbar navbar-light bg-light">
                             <div class="container-fluid">
                                 <div class="d-flex justify-content-center w-100">
@@ -33,21 +33,21 @@
                 <br>
 
                 {% if form_acomp_central %}
-
                     <div class="container">
                         <div>
                     
-                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                                <h1 class="d-flex justify-content-center text-primary">Fichas de Acompanhamento</h1>
+                            <div id="cabecalho">
+                                <h2 class="d-flex justify-content-center text-primary">FICHAS DE ACOMPANHAMENTO</h2>
                                 <hr>
-                                <h4 class="d-flex justify-content-center text-primary">Nome: {{ cidadao.nome }}</h4>
-                                <h4 class="d-flex justify-content-center text-primary">Número do processo: <div class="text-danger"> {{ historico_criminal.numero_do_processo }} </div> </h4>
+                                <h4 class="d-flex justify-content-center">Nome: <strong class="text-danger"> {{ cidadao.nome }} </strong> </h4>
+                                <h4 class="d-flex justify-content-center">Número do processo:  <strong class="text-danger"> {{ historico_criminal.numero_do_processo }}  </strong> </h4>
                                 {% if violen_domest %}
                                     <hr>
-                                    <h3 class="d-flex justify-content-center text-primary">Processos por violência domestica abaixo:</h3>
+                                    <h3 class="d-flex justify-content-center">Processos por violência domestica abaixo:</h3>
+                                    <br>
                                 {% endif %}
                                 {% for processos in violen_domest %}
-                                    <h4 class="text-primary mb-2 ms-5"> Número: <div class="text-danger">{{ processos.process_referente }}</div> </h4>
+                                    <h4 class="mb-2 ms-5"> Número:  <strong class="text-danger"> {{ processos.process_referente }} </strong></h4>
                                     {% empty %}
                                     <h4 class="d-flex justify-content-center text-warning">(NÃO POSSUI PROCESSOS POR VIOLENCIA DOMESTICA!)</h4>
                                 {% endfor %}
@@ -56,18 +56,18 @@
                             <table class="w-100">
                                 <thead>
                                     <tr class="bg-primary text-white">
-                                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Técnico Responsavel</th>
-                                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Evolução/Demandas/Percepções</th>
-                                        <th style="padding: 10px; font-size: large; border: solid 1px #dee2e6;">Data de registro</th>
+                                        <th>Técnico Responsavel</th>
+                                        <th>Evolução/Demandas/Percepções</th>
+                                        <th>Data de registro</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for form in form_acomp_central %}
                                         <tr style="background-color: #f9f9f9;">
-                                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.tecnico_responsavel }}</td>
-                                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.evolucao_percepcoes }}</td>
-                                            <td style="padding: 10px; border: solid 1px #dee2e6;">{{ form.data_registro }}</td>
+                                            <td>{{ form.tecnico_responsavel }}</td>
+                                            <td>{{ form.evolucao_percepcoes }}</td>
+                                            <td>{{ form.data_registro }}</td>
                     
                                         </tr>
                                     {% empty %}

@@ -6,14 +6,14 @@
 {% endblock %}
 
 {% block content %} 
-            <div class="container bg-white">
+            <div class="container bg-white rounded">
                 <h1 class="text-center" id="title_process_edit">{{ cidadao.nome }}</h1>
                 
                 <div class="section-title d-flex justify-content-center">
                     <h2>Todos os processos atrelados</h2>
                 </div>
 
-                    <div class="info-item">
+                    <div>
                             <form method="post">
                                 {% csrf_token %}
                                 {{ violen_domest_formset.management_form }}

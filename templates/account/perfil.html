@@ -1,48 +1,54 @@
 {% extends 'commons/include/new_base.html' %}
 {% load static %}
 
-{% block title %}HOME | PERFIL{% endblock %}
-
-{% block css %}
-    <link href="{% static 'css/perfil.css' %}" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
-    <section class="bg-dark py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 mb-4 mb-sm-5">
-                    <div class="card card-style1 border-0">
-                        <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6 mb-4 mb-lg-0 text-center">
-                                    <img src="{% static 'img/do-utilizador.png' %}" alt="Imagem padrão" class="img-fluid" style="max-width: 40%;">
+
+<section class="bg-dark py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-4 mb-sm-5">
+                <div class="card card-style1 border-0">
+                    <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0 text-center">
+                            <img src="{{ user.profile_image }}" alt="Imagem de Perfil" onerror="this.src='https://th.bing.com/th/id/R.b84e94b34cf94cf7df6534beca0f18be?rik=A7grf4rTsFJAlQ&riu=http%3a%2f%2fassets.stickpng.com%2fthumbs%2f585e4beacb11b227491c3399.png&ehk=%2f7DjJ5adkIYfWfL4YSP4uLobeynRdeglnEPUcDrHr%2bM%3d&risl=&pid=ImgRaw&r=0'" style="height: 200px;" autocomplete="off">
+                            </div>
+                            <div class="col-lg-6 px-xl-10">
+                                <div class="bg-secondary d-lg-inline-block py-3 px-3 px-sm-4 mb-4 rounded">
+                                    <h3 class="h2 text-white mb-0">Bem vindo(a): {{ user.nome }}</h3>
                                 </div>
-                                <div class="col-lg-6 px-xl-10">
-                                    <div class="bg-secondary d-lg-inline-block py-3 px-3 px-sm-4 mb-4 rounded">
-                                        <h3 class="h2 text-white mb-0">Bem vindo(a): {{ user.nome }}</h3>
-                                    </div>
-                                    <ul class="list-unstyled mb-4">
-                                        <li class="mb-2">
-                                            <span class="text-secondary me-2 font-weight-600">Usuario logado: {{ user.cpf }}</span>
-                                            <br>
-                                            <span class="text-secondary me-2 font-weight-600">Ultimo acesso: {{ user.last_login }}</span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2">
+                                        <span class="text-secondary me-2 font-weight-600">Usuario logado: {{ user.cpf }}</span>
+                                        <br>
+                                        <span class="text-secondary me-2 font-weight-600">Ultimo acesso: {{ user.last_login }}</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="bg-primary text-light text-center py-4 mt-5 fixed-bottom">
-        <div class="container">
-            <p class="mb-1">&copy; 2024-<strong>DDMS</strong>-Divisão de Desenvolvimento e Manutenção de Sistemas
-                <img src="{{ MEDIA_URL }}/media/brasaoacre.png" class="img-fluid" alt="Logo" style="height: 40px;"></p>
-            <p class="mb-0">Rio Branco ACRE</p>
-        </div>
-    </footer>
+<div class="container border border-2 border-dark bg-dark d-flex justify-content-center mt-2 rounded">
+    <form method="post" class="mt-2" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="text-white">Link da imagem</label>
+        {{ form.profile_image }}
+        <button type="submit">Atualizar</button>
+    </form>
+    <br>
+</div>
+
+<footer class="bg-info text-dark text-center py-4 mt-5 fixed-bottom">
+    <div class="container">
+        <p class="mb-1" style="font-size: large;">&copy; 2024-<strong>DDMS</strong>-Divisão de Desenvolvimento e Manutenção de Sistemas
+            <img src="{{ MEDIA_URL }}/media/brasaoacre.png" class="img-fluid" alt="Logo" style="height: 40px;"></p>
+        <p class="mb-0">Rio Branco ACRE</p>
+    </div>
+</footer>
+
 {% endblock content %}

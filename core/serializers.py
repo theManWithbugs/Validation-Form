@@ -12,3 +12,4 @@ class CidadaoSerializer(serializers.ModelSerializer):
         model = Cidadao
         fields = '__all__'
 
+

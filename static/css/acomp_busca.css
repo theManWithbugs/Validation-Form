@@ -6,7 +6,7 @@ body {
     margin: 0 auto;
 }
 
-h1, h4 th, td {
+h1, h4 {
     font-family: 'Roboto', sans-serif;
 }
 
@@ -23,3 +23,28 @@ h2 {
     color: white;
     height: 180px;
 }
+
+td {
+    padding: 10px; 
+    border: solid 1px #dee2e6;
+    font-family: sans-serif;
+}
+
+th {
+    padding: 10px; font-size: large; 
+    border: solid 1px #dee2e6;
+    font-family: sans-serif;
+}
+
+#cabecalho {
+    background-color: #f8f9fa; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px;
+}
+
+#title_search {
+    font-family: 'Times New Roman', Times, serif; 
+    margin-left: 30px;
+}
+

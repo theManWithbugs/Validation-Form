@@ -137,12 +137,6 @@ class UserChangeFormCustom(UserChangeForm):
         model = User
         fields = ('cpf', 'nome', 'is_active', 'is_staff', 'is_superuser')
 
-class ArmTimeForm(forms.ModelForm):
-    class Meta:
-        model =  ArmTime
-        fields = '__all__'
-        exclude = ['cidadao']
-
 class ViolenDomestForm(forms.ModelForm):
     class Meta:
         model = ViolenDomest
@@ -165,6 +159,11 @@ class ViolenDomestFormTwo(forms.ModelForm):
         for f in self.fields:
             self.fields[f].widget.attrs['class'] = 'form-control form-control-sm'
             self.fields['process_referente'].widget.attrs['readonly'] = 'readonly'
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['profile_image']
 
 
 
