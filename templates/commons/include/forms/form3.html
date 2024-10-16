@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 form-container">
-                <h2 class="text-center mb-4">Formulário: informações tecnicas</h2>
+                <h2 class="text-center mb-4 bg-dark text-white">Formulário: informações tecnicas</h2>
                 <form method="post" action="{% url 'form3' %}">
                     {% csrf_token %}
                     {{ formulario_tecnico.as_p }}

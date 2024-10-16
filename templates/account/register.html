@@ -1,12 +1,13 @@
 {% load static %}
 <!doctype html>
 <html lang="pt-br">
-    <head>
-        <title>LOGIN | CIAP</title>
-        <meta charset="utf-8" />
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css/login.css' %}" rel="stylesheet">
-    </head>
+
+<head>
+    <title>REGISTER |</title>
+    <meta charset="utf-8" />
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/register.css' %}" rel="stylesheet">
+</head>
 
 {% block content %}
 <body>
@@ -23,21 +24,29 @@
                             <form id="login-form" class="form" method="post" style="color: aliceblue;">
                                 {% csrf_token %}
                                 <h3 class="text-center text-info">Centro integrado de alternativas penais</h3>
-                                <div class="form-group mb-2">
-                                    {{ form.cpf.errors }}
-                                    {{ form.cpf.label_tag }}
-                                    {{ form.cpf }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.senha.errors }}
-                                    {{ form.senha.label_tag }}
-                                    {{ form.senha }}
-                                </div>
                                 <br>
-                                <div class="form-group d-flex justify-content-center">
-                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Entrar" style="width: 30%;">
+                                <h3 class="text-center text-info">Cadastro de usuario</h3>
+                                <div class="form-group mb-4 d-flex justify-content-center">
+                                    <label for="nome">Nome:</label>
+                                    <input type="text" id="nome" name="nome">
                                 </div>
-                                    <a href="{% url 'register' %}" class="btn-primary">Não possui registro?</a>
+
+                                <div class="form-group mb-4 d-flex justify-content-center">
+                                    <label for="cpf">CPF: </label>
+                                    <input type="text" id="cpf" name="cpf">
+                                </div>
+
+                                <div class="form-group mb-4 d-flex justify-content-center">
+                                    <label for="senha">Senha:</label>
+                                    <input type="password" id="senha" name="password">
+                                </div>
+
+                                <br>
+                                <div class="form-group d-flex justify-content-center" id="save_button">
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Salvar"
+                                        style="width: 30%;">
+                                </div>
+                                <a href="{% url 'login_new' %}" class="btn-primary">Retornar para login</a>
                             </form>
                         </div>
                     </div>
@@ -47,7 +56,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
 </body>
 {% endblock content %}
 </html>
-

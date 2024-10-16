@@ -1,19 +1,16 @@
-    #img_background {
-        background-size: cover; 
-        background-position: cover;
+    body {
+        background-image: url('/media/acreImg.png');
+        background-size: cover;
+        background-position: top left;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        margin-top: 20px;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
         filter: brightness(0.9) contrast(1.2);
     }
 
     #login .container #login-row #login-column #login-box {
         margin-top: 120px;
         max-width: 600px;
-        height: 560px;
+        height: 600px;
         border: 1px solid #9C9C9C;
         background-color: rgba(10, 10, 10, 0.863);
     }
@@ -35,3 +32,6 @@
         color: aliceblue;
     }
 
+    h3 {
+        font-family: 'Times New Roman', Times, serif;
+    }

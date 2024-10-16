@@ -1,57 +1,32 @@
-
 anychart.onDocumentReady(function () {
-    // create data set on our data
-    var chartData = {
-      title: 'Top 3 Products with Region Sales Data',
-      header: ['#', 'Florida', 'Texas', 'Arizona', 'Nevada'],
-      rows: [
-        ['Nail polish', 6814, 3054, 4376, 4229],
-        ['Eyebrow pencil', 7012, 5067, 8987, 3932],
-        ['Lipstick', 8814, 9054, 4376, 9256]
-      ]
-    };
+    fetch('/faixas-etarias/')
+        .then(response => response.json())
+        .then(data => {
+            var chartData = {
+                title: 'Faixas Etarias de idades (Porcentagem)',
+                header: ['#', 'Acre'],
+                rows: data.faixas_etarias
+            };
 
-    // create column chart
-    var chart = anychart.column();
+            var chart = anychart.column();
+            chart.data(chartData);
+            chart.animation(true);
+            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+            chart.yAxis().title('Indice');
+            chart.labels().enabled(true).position('center-top').anchor('center-bottom').format('{%Value}{groupsSeparator: }%');
+            chart.hovered().labels(false);
+            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+            chart.interactivity().hoverMode('single');
+            chart.tooltip().positionMode('point').position('center-top').anchor('center-bottom').offsetX(0).offsetY(5)
+                .titleFormat('{%X}').format('{%SeriesName} : #{%Value}{groupsSeparator: }');
 
-    // set chart data
-    chart.data(chartData);
+            // Definindo as cores das colunas
+            var colors = ['#00008B'];
+            var series = chart.getSeriesAt(0);
+            series.fill(colors);
 
-    // turn on chart animation
-    chart.animation(true);
-
-    chart.yAxis().labels().format('${%Value}{groupsSeparator: }');
-
-    // set titles for Y-axis
-    chart.yAxis().title('Revenue');
-
-    chart
-      .labels()
-      .enabled(true)
-      .position('center-top')
-      .anchor('center-bottom')
-      .format('${%Value}{groupsSeparator: }');
-    chart.hovered().labels(false);
-
-    // turn on legend and tune it
-    chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
-
-    // interactivity settings and tooltip position
-    chart.interactivity().hoverMode('single');
-
-    chart
-      .tooltip()
-      .positionMode('point')
-      .position('center-top')
-      .anchor('center-bottom')
-      .offsetX(0)
-      .offsetY(5)
-      .titleFormat('{%X}')
-      .format('{%SeriesName} : ${%Value}{groupsSeparator: }');
-
-    // set container id for the chart
-    chart.container('container');
-
-    // initiate chart drawing
-    chart.draw();
-  });
+            chart.container('grafico');
+            chart.draw();
+        })
+        .catch(error => console.error('Erro ao carregar os dados:', error));
+});

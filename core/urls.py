@@ -7,6 +7,7 @@ handler404 = custom_404_view
 
 urlpatterns = [
     path('', views.login_n, name='login_new'),
+    path('register/', views.register_user, name='register'),
     path('base/', views.home, name='base'),
     path('faixas-etarias/', FaixasEtarias.as_view(), name='faixas_etarias'),
     path('base/', views.actions_view, name='action'),

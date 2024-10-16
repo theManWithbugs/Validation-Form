@@ -1,9 +1,21 @@
 .container {
+    background-color: aquamarine;
     width: auto;
 } 
 
 i {
+    font-size: larger;
     margin-left: 6px;
 }
+
+h4, h5 {
+    border-bottom: 2px solid #007bff; /* Underline for headings */
+    padding-bottom: 5px;
+}
+
+.card {
+    border-radius: 10px; /* Rounded corners for the card */
+}
+
 
 

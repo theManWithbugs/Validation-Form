@@ -1,13 +1,52 @@
+body {
+    background-color: #008080;
+}
+
 .container {
-    max-width: 900px;
     margin: 0 auto;
 }
 
-h1, h4 th, td {
+h1, h4 {
     font-family: 'Roboto', sans-serif;
 }
 
-.ficha_info {
-    text-align: center; 
-    color: #004085;
+h2 {
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
+
+.btn-primary {  
+    width: 120px;
+    margin-top: 15px;
+}
+.card {
+    color: white;
+    height: 180px;
+}
+
+td {
+    padding: 10px; 
+    border: solid 1px #dee2e6;
+    font-size: larger;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+th {
+    padding: 10px; font-size: large; 
+    border: solid 1px #dee2e6;
+    font-size: larger;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#cabecalho {
+    background-color: #f8f9fa; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px;
+}
+
+#title_search {
+    font-family: 'Times New Roman', Times, serif; 
+    margin-left: 30px;
+}
+

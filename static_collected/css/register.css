@@ -1,0 +1,43 @@
+#img_background {
+    background-size: cover; 
+    background-position: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin-top: 20px;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    filter: brightness(0.9) contrast(1.2);
+}
+
+#login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    height: 560px;
+    border: 1px solid #9C9C9C;
+    background-color: rgba(10, 10, 10, 0.863);
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link {
+    margin-top: -85px;
+}
+
+img {
+    width: 40%;
+    height: 60%;
+}
+
+label {
+    margin-right: 9px;
+    font-size: larger;
+    color: aliceblue;
+}
+
+input {
+    width: 100%;
+}
+

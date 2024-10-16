@@ -1,0 +1,65 @@
+body {
+    background-image: url('/media/acreImg.png');
+    background-size: cover;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: brightness(0.9) contrast(1.2);
+}
+
+#login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    height: 640px;
+    border: 1px solid #9C9C9C;
+    background-color: rgba(10, 10, 10, 0.863);
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link {
+    margin-top: -85px;
+}
+
+img {
+    width: 40%;
+    height: 60%;
+}
+
+label {
+    margin-right: 9px;
+    font-size: larger;
+    color: aliceblue;
+}
+
+input {
+    height: 42px;
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+h3 {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#save_button {
+    margin-top: -25px;
+}
+
+#cpf {
+    margin-left: 20px;
+    width: 90%;
+}
+

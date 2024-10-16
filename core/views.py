@@ -2,7 +2,7 @@ from datetime import date, datetime
 from itertools import count
 from django.conf import settings
 from django.contrib import messages
-from django.db import IntegrityError
+from django.db import DatabaseError, IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test
@@ -21,7 +21,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from django.forms import modelformset_factory
-from .models import ActivityLog
+from .models import ActivityLog, User
 
 def login_n(request):
     if request.method == 'POST':
@@ -36,14 +36,43 @@ def login_n(request):
                 return redirect('base')
 
             else: 
-                form.add_error('senha', 'Senha incorreta')
+                form.add_error('cpf', 'Não consta no banco')
         else:
-            messages.error(request, '')
+            messages.error(request, 'Invalido!')
     else:
         form = CPFValidationForm()
 
     return render(request, 'account/login_n.html', {'form': form})
 
+def register_user(request):
+    template_name = 'account/register.html'
+
+    nome = None
+    cpf= None
+    password = None
+
+    if request.method == 'POST':
+       nome = request.POST.get('nome')
+       cpf = request.POST.get('cpf')
+       password = request.POST.get('password')
+  
+    #verifica se não está vazio antes de tentar criar o objeto
+    if not nome or not cpf or not password:
+        messages.error(request, 'Todos os campos são necessarios!')
+        return render(request, template_name)
+
+    try:
+        user = User.objects.create_user(
+            cpf=cpf,
+            password=password,
+            nome=nome,
+        )
+        return redirect('login_new')
+    except DatabaseError:
+        messages.error(request, 'Não foi possível cadastrar!')
+           
+    return render(request, template_name)
+        
 def atualizar_perfil_img(request):
     if request.user.is_authenticated:
         user = request.user  # Now it's guaranteed to be a User instance

@@ -1,14 +1,14 @@
 body {
-    background-color: darkblue;
+    background-color: #008080;
     filter: brightness(0.9) contrast(1.0);
 }
 
 span {
-    font-family: 'Roboto', sans-serif;
+    font-family: sans-serif;
     font-size: x-large;
 }
     
-.btn-primary {
+.btn-success {
     margin-bottom: 10px;
 }
 
@@ -34,6 +34,12 @@ label {
     margin: 0;
     padding: 0;
 }
+
+i {
+    font-size: larger;
+}
+
+
 
 
 
