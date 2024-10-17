@@ -137,17 +137,6 @@ def tipo_penal_quant():
 
     return resultado
 
-def reduzir_tempo(cpf, horas_a_subtrair):
-    try:
-        arm_time = ArmTime.objects.filter(cidadao__cpf=cpf).first()
-        if arm_time is None:
-            return False
-        arm_time.time -= horas_a_subtrair
-        arm_time.save()
-        return True
-    except ArmTime.DoesNotExist:
-        return False
-
 def contar_faixa_etaria():
     faixa_etarias = {
         "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24).count(),

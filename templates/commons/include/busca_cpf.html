@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
+
+{% include 'commons/include/alert_error_message.html' %}
+
                 <div class="container bg-transparent">
                     <div class="card shadow-sm rounded bg-dark">
                         <div class="card-header bg-primary text-white border-bottom-0">
@@ -158,7 +161,7 @@
                             <form method="post" action="{% url 'excluir_form' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                                <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
+                                <h5 class="d-flex justify-content-center mt-3" style="font-family: Verdana, Geneva, Tahoma, sans-serif"><strong>Apenas administradores ou desenvolvedores podem excluir!</strong> 
                                     <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
                                 </h5>
                                 <button class="btn btn-danger" type="submit">Excluir Cidadão</button>

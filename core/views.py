@@ -34,11 +34,10 @@ def login_n(request):
             if user is not None:
                 login(request, user)
                 return redirect('base')
-
             else: 
                 form.add_error('cpf', 'Não consta no banco')
         else:
-            messages.error(request, 'Invalido!')
+            messages.error(request, 'Dados invalidos!')
     else:
         form = CPFValidationForm()
 
@@ -246,7 +245,7 @@ def capturar_dados_viole(request):
         if cpf:
             return redirect('form_violen', cpf)
         else:
-            messages.error(request, '')
+            messages.error(request, 'O campo CPF não deve estar vazio!')
 
     return render(request, 'commons/include/cap_viol.html')
 
@@ -300,9 +299,6 @@ def busca_cpf_view(request):
 
         else:
             return redirect('not_found_page')
-    else:
-        messages.error(request, '')
-        print(form.errors)
 
     context = {
         'form': form,
@@ -352,12 +348,7 @@ def buscar_nome_view(request):
             if objs.object_list.exists():
                 cidadao = objs.object_list.all()
             else:
-                return redirect('not_found_page')
-        else:
-            messages.error(request, 'Nenhum nome fornecido para a busca')
-
-    else:
-        messages.error(request, '')
+                messages.error(request, 'Não consta nenhum dado com esse caracter!')
 
     context = {
         'form': form,
@@ -375,11 +366,14 @@ def more_info_view(request, cpf):
 
     cidadao = get_object_or_404(Cidadao, cpf=cpf)
 
-    historico_saude = cidadao.historicos_saude.first()
-    historico_criminal = cidadao.historicos_criminais.first()
-    informacoes_complementares = cidadao.informacoes_complementares.first()
-    form_acomp = cidadao.form_acompanhamento_central.first()
-    form_violen = cidadao.form_violencia_domes.all()
+    try:
+        historico_saude = cidadao.historicos_saude.first()
+        historico_criminal = cidadao.historicos_criminais.first()
+        informacoes_complementares = cidadao.informacoes_complementares.first()
+        form_acomp = cidadao.form_acompanhamento_central.first()
+        form_violen = cidadao.form_violencia_domes.all()
+    except DatabaseError:
+        messages.error(request, 'Não foi possível localizar os dados no banco!')
 
     context = {
         'cidadao': cidadao,
@@ -565,40 +559,6 @@ class FaixasEtarias(APIView):
             'faixas_etarias': faixas_etarias,
         })
 
-@login_required
-def custom_404_view(request, exception):
-    return render(request, 'templates/errors/404.html', status=404)
-
-@login_required
-def edit_form_view(request):
-    return render(request, 'commons/include/editar_form.html')
-
-def logout_view(request):
-    auth_logout(request)
-    return redirect('login_new')
-
-def footer_view(request):
-    template_name = 'commons/include/footer.html'
-    return render(request, template_name)
-
-@login_required
-def sucess_page_view(request):
-    template_name = 'commons/include/add_pages/sucess_page.html'
-    return render(request, template_name)
-
-@login_required
-def notfound_view(request):
-    template_name='commons/include/add_pages/not_found.html'
-    return render(request, template_name)
-
-@login_required
-def missing_data_view(request):
-    return render(request, 'commons/include/add_pages/missing_data.html')
-
-@login_required
-def permission_denied_view(request):
-    return render(request, 'commons/include/add_pages/permiss.html')
-
 #-------------------------------------------------------------------------------------------------------#
 @login_required
 def buscar_acmform_view (request):
@@ -624,7 +584,7 @@ def buscar_acmform_view (request):
             violen_domest = cidadao.form_violencia_domes.all()
 
     else:
-        messages.error(request, '')
+        messages.error(request, 'Não foi possível localizar!')
 
     context = {
         'formulario': form, 
@@ -703,7 +663,7 @@ def capturar_cpf_process(request):
         if cpf:
             return redirect('editar_process', cpf=cpf)
         else:
-            messages.error(request, '')
+            messages.error(request, 'O campo CPF não deve estar vazio!')
     return render(request, 'commons/include/capturar_process.html')
 
 #formset cria uma coleção de formulario baseados em um modelo, que nesse caso é ViolenDomestica
@@ -738,6 +698,40 @@ def editar_process(request, cpf):
     }
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
+
+@login_required
+def custom_404_view(request, exception):
+    return render(request, 'templates/errors/404.html', status=404)
+
+@login_required
+def edit_form_view(request):
+    return render(request, 'commons/include/editar_form.html')
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('login_new')
+
+def footer_view(request):
+    template_name = 'commons/include/footer.html'
+    return render(request, template_name)
+
+@login_required
+def sucess_page_view(request):
+    template_name = 'commons/include/add_pages/sucess_page.html'
+    return render(request, template_name)
+
+@login_required
+def notfound_view(request):
+    template_name='commons/include/add_pages/not_found.html'
+    return render(request, template_name)
+
+@login_required
+def missing_data_view(request):
+    return render(request, 'commons/include/add_pages/missing_data.html')
+
+@login_required
+def permission_denied_view(request):
+    return render(request, 'commons/include/add_pages/permiss.html')
 
 
 

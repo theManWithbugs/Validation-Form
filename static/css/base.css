@@ -8,7 +8,7 @@ span {
     font-size: x-large;
 }
     
-.btn-success {
+.btn-primary {
     margin-bottom: 10px;
 }
 
@@ -37,6 +37,12 @@ label {
 
 i {
     font-size: larger;
+}
+
+img {
+    height: 270px; 
+    margin-top: -50px; 
+    margin-bottom: -40px;
 }
 
 
