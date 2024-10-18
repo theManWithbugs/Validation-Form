@@ -8,9 +8,10 @@ body {
 }
 
 #login .container #login-row #login-column #login-box {
+    width: 90%;
     margin-top: 120px;
     max-width: 600px;
-    height: 640px;
+    height: auto;
     border: 1px solid #9C9C9C;
     background-color: rgba(10, 10, 10, 0.863);
 }
@@ -19,13 +20,10 @@ body {
     padding: 20px;
 }
 
-#login .container #login-row #login-column #login-box #login-form #register-link {
-    margin-top: -85px;
-}
-
 img {
     width: 40%;
-    height: 60%;
+    max-width: 100%;
+    height: auto;
 }
 
 label {
@@ -62,4 +60,23 @@ h3 {
     margin-left: 20px;
     width: 90%;
 }
+
+@media (max-width: 576px) {
+    #login_box {
+        margin-top: 20px;
+        min-height: 500px;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+}
+
+
+
 

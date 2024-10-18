@@ -22,20 +22,20 @@
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a href="{% url 'base' %}" class="nav-link align-middle px-0 text-white">
+                            <a href="{% url 'base' %}" class="mb-1 nav-link align-middle px-0 text-white">
                                 <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Pagina inicial</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{% url 'estatisticas' %}" class="nav-link px-0 align-middle text-white">
+                            <a href="{% url 'estatisticas' %}" class="mb-1 nav-link px-0 align-middle text-white">
                                 <i class="fs-4 bi-bar-chart"></i> <span class="ms-1 d-none d-sm-inline">Estatisticas</span></a>
                         </li>
                         <li>
-                            <a href="{% url 'perfil' %}" class="nav-link px-0 align-middle text-white">
+                            <a href="{% url 'perfil' %}" class="mb-1 nav-link px-0 align-middle text-white">
                                 <i class="fs-4 bi-person"></i> <span class="ms-1 d-none d-sm-inline">Perfil</span> </a>
                         </li>
                         <li>
-                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-white">
+                            <a href="#submenu3" data-bs-toggle="collapse" class=" mb-2 nav-link px-0 align-middle text-white">
                                 <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">ACMP central</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
@@ -47,8 +47,12 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="{% url 'actions' %}" class="mb-0 px-0 align-middle text-decoration-none text-white">
+                            <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
                                 <i class="fs-4 bi-file-earmark-lock"></i><span class="ms-1 d-none d-sm-inline">Relatório de ações</span>
+                        </li>
+                        <li>
+                            <a href="{% url 'register' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
+                                <i class="fs-3 bi-person-check"></i><span class="ms-1 d-none d-sm-inline">Registrar acesso</span>
                         </li>
                         <li>
                             <a href="{% url 'logout' %}" class="nav-link px-0 align-middle text-white">

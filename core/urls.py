@@ -1,7 +1,7 @@
 from django.urls import path
 from core import views
 from django.conf import settings
-from core.views import FaixasEtarias, custom_404_view
+from core.views import FaixasEtarias, IndexView, custom_404_view
 
 handler404 = custom_404_view
 
@@ -39,6 +39,7 @@ urlpatterns = [
     path('base/alterar_process/editar_process/<str:cpf>/', views.editar_process, name='editar_process'),
     path('base/actions/', views.actions_view, name='actions'),
     path('base/perfil/', views.atualizar_perfil_img, name='perfil'),
+    path('base/pdf_test/', IndexView.as_view(), name='index'), 
     ]
 
 

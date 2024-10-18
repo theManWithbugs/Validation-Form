@@ -1,3 +1,4 @@
+import io
 from datetime import date, datetime
 from itertools import count
 from django.conf import settings
@@ -22,6 +23,12 @@ from rest_framework.response import Response
 from .serializers import *
 from django.forms import modelformset_factory
 from .models import ActivityLog, User
+from django.http import FileResponse
+from django.views.generic import View
+from reportlab.pdfgen import canvas
+
+def is_staff(user):
+    return user.is_staff
 
 def login_n(request):
     if request.method == 'POST':
@@ -43,21 +50,28 @@ def login_n(request):
 
     return render(request, 'account/login_n.html', {'form': form})
 
+@login_required
+@user_passes_test(is_staff, login_url='permission_denied')
 def register_user(request):
     template_name = 'account/register.html'
 
     nome = None
     cpf= None
     password = None
+    confirmar_password = None
 
     if request.method == 'POST':
        nome = request.POST.get('nome')
        cpf = request.POST.get('cpf')
        password = request.POST.get('password')
+       confirmar_password = request.POST.get('confirmar_password')
   
+    if password != confirmar_password:
+        messages.error(request, 'As senhas devem ser iguais!')
+        return redirect('register')
+
     #verifica se não está vazio antes de tentar criar o objeto
     if not nome or not cpf or not password:
-        messages.error(request, 'Todos os campos são necessarios!')
         return render(request, template_name)
 
     try:
@@ -66,7 +80,7 @@ def register_user(request):
             password=password,
             nome=nome,
         )
-        return redirect('login_new')
+        messages.success(request, 'Cadastro realizado com sucesso!')
     except DatabaseError:
         messages.error(request, 'Não foi possível cadastrar!')
            
@@ -90,8 +104,6 @@ def atualizar_perfil_img(request):
 #essa view é usada para verificar se o usuario logado possui is_staff igual a true
 #tal referência pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
 #para esse caso foi usado o atributo is staff, e caso o ususario não seja é redirecionado para a pagina 
-def is_staff(user):
-    return user.is_staff
 
 @login_required
 def home(request):
@@ -583,8 +595,6 @@ def buscar_acmform_view (request):
             form_acomp = cidadao.form_acompanhamento_central.all()
             violen_domest = cidadao.form_violencia_domes.all()
 
-    else:
-        messages.error(request, 'Não foi possível localizar!')
 
     context = {
         'formulario': form, 
@@ -733,8 +743,39 @@ def missing_data_view(request):
 def permission_denied_view(request):
     return render(request, 'commons/include/add_pages/permiss.html')
 
+class IndexView(View):
+  def get(self, request, *args, **kwargs):
 
+    buffer = io.BytesIO()
 
+    pdf = canvas.Canvas(buffer)
+
+    log = ActivityLog.objects.all().order_by('-timestamp')[:20]
+    y_position = 600
+
+    for activity in log:
+        pdf.drawString(100, y_position, f"Usuário: {activity.user.nome} - "
+                    f"Data: {activity.timestamp.strftime('%Y-%m-%d %H:%M:%S')} - "
+                    f"CPF: {activity.cpf_excluido or 'Empty'}")
+        y_position -= 20  # Move para baixo para o próximo registro
+
+        if y_position < 50:
+            pdf.showPage()
+            pdf.drawString(100, 800, "Log de atividades")
+            y_position = 750
+
+    pdf.drawString(100, 100, "Gerando PDF com Django")
+      #primeiro número distância da esquerda para a direita
+      #segundo número a distância de baixo para cima
+
+    image_path = 'static/img/ciap_img.png'
+    pdf.drawImage(image_path, 210, 700, width=170, height=110)
+
+    pdf.showPage()
+    pdf.save()
+
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=False, filename='Relatorio de actions.pdf')
 
 
 

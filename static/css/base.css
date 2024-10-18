@@ -1,4 +1,9 @@
 body {
+    background-image: url('/media/acreImg.png');
+    background-size: cover;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-color: #008080;
     filter: brightness(0.9) contrast(1.0);
 }
@@ -44,6 +49,12 @@ img {
     margin-top: -50px; 
     margin-bottom: -40px;
 }
+
+.card {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+
 
 
 

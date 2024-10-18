@@ -20,10 +20,11 @@ anychart.onDocumentReady(function () {
             chart.tooltip().positionMode('point').position('center-top').anchor('center-bottom').offsetX(0).offsetY(5)
                 .titleFormat('{%X}').format('{%SeriesName} : #{%Value}{groupsSeparator: }');
 
-            // Definindo as cores das colunas
             var colors = ['#00008B'];
             var series = chart.getSeriesAt(0);
             series.fill(colors);
+
+            chart.background().fill('rgba(255, 255, 255, 0.4)'); 
 
             chart.container('grafico');
             chart.draw();
