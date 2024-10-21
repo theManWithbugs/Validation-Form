@@ -24,7 +24,7 @@ anychart.onDocumentReady(function () {
             var series = chart.getSeriesAt(0);
             series.fill(colors);
 
-            chart.background().fill('rgba(255, 255, 255, 0.4)'); 
+            chart.background().fill('rgba(255, 255, 255, 0.8)'); 
 
             chart.container('grafico');
             chart.draw();

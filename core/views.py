@@ -26,6 +26,8 @@ from .models import ActivityLog, User
 from django.http import FileResponse
 from django.views.generic import View
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
 
 def is_staff(user):
     return user.is_staff
@@ -301,6 +303,7 @@ def busca_cpf_view(request):
     if form.is_valid():
         cpf = form.cleaned_data.get('cpf')
         cidadao_queryset = Cidadao.objects.filter(cpf=cpf)
+        request.session['cpf'] = cpf
 
         if cidadao_queryset.exists():
             cidadao = cidadao_queryset.first()
@@ -744,39 +747,122 @@ def permission_denied_view(request):
     return render(request, 'commons/include/add_pages/permiss.html')
 
 class IndexView(View):
-  def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        cpf = request.session.get('cpf')
+        
+        buffer = io.BytesIO()
 
-    buffer = io.BytesIO()
+        #esse comando cria um canvas pdf, não sei o que é isso, deve ser o arquivo pdf
+        pdf = canvas.Canvas(buffer, pagesize=letter)
 
-    pdf = canvas.Canvas(buffer)
+        cidadao = Cidadao.objects.get(cpf=cpf)
+        historico_saude = HistoricoSaude.objects.filter(cidadao=cidadao)
+        historico_criminal = HistoricoCriminal.objects.filter(cidadao=cidadao)
+        informacoes_complementares = InformacoesComplementares.objects.filter(cidadao=cidadao)
 
-    log = ActivityLog.objects.all().order_by('-timestamp')[:20]
-    y_position = 600
+        image_path = 'static/img/ciap_img.png'
+        pdf.drawImage(image_path, 210, 660, width=170, height=110)
 
-    for activity in log:
-        pdf.drawString(100, y_position, f"Usuário: {activity.user.nome} - "
-                    f"Data: {activity.timestamp.strftime('%Y-%m-%d %H:%M:%S')} - "
-                    f"CPF: {activity.cpf_excluido or 'Empty'}")
-        y_position -= 20  # Move para baixo para o próximo registro
+        pdf.drawString(100, 630, f"Cidadão: {cidadao.nome}")
+        pdf.drawString(100, 612, f"CPF: {cidadao.cpf}")
 
-        if y_position < 50:
-            pdf.showPage()
-            pdf.drawString(100, 800, "Log de atividades")
-            y_position = 750
+        y_position = 580
+        line_height = 20
 
-    pdf.drawString(100, 100, "Gerando PDF com Django")
-      #primeiro número distância da esquerda para a direita
-      #segundo número a distância de baixo para cima
+        pdf.drawString(100, y_position, "-HISTORICO DE SAÚDE-")
+        y_position -= line_height
+        for item in historico_saude:
+            pdf.drawString(100, y_position, f"Apresenta problemas de saude?: {item.saude}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Faz ou fez tratamento psiquiatrico?: {item.tratamento_psi}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Especifique o tratamento psiquiatrico: {item.tratamento_psi_jus}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Faz uso de alguma medicação controlada?: {item.medicacao_controlada}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Especifique o tipo de medicação controlada: {item.medicacao_controlada_jus}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"É portador de alguma deficiência: {item.deficiencia}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Faz ou já fez uso de: {item.drogas_uso}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Já procurou tratamento?: {item.tratamento}")
+            y_position -= line_height
+            if y_position < 40:  
+                pdf.showPage()  
+                pdf.setFont("Helvetica", 12)
+                y_position = 800  
 
-    image_path = 'static/img/ciap_img.png'
-    pdf.drawImage(image_path, 210, 700, width=170, height=110)
+            y_position -= line_height
 
-    pdf.showPage()
-    pdf.save()
+        pdf.drawString(100, y_position, "-HISTORICO CRIMINAL-")
+        y_position -= line_height
+        for item in historico_criminal:
+            pdf.drawString(100, y_position, f"Já esteve preso?: {item.ja_esteve_preso}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Por qual motivo esteve preso?: {item.prisao_justificativa}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Alguém da sua familia já esteve preso?: {item.prisao_familiar}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Número do processo: {item.numero_do_processo}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Juiz de origem: {item.juiz_de_origem}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Medida aplicada: {item.medida_aplicada}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Tipo penal: {item.tipo_penal}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Em caso de violência domestica: {item.violencia_domestica}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Nome da vitima de violência domestica: {item.violencia_dome_nome_vitima}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Grau de parentesco da vitima: {item.grau_de_parentesco}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Relata reincidência?: {item.reincidencia}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Sugestão de trabalho: {item.sugestao_de_trabalho}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Sugestão de encaminhamento: {item.sugest_encaminhamento}")
+            y_position -= line_height
+            if y_position < 40:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 12)
+                y_position = 800
 
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=False, filename='Relatorio de actions.pdf')
+            y_position -= line_height
 
+        pdf.showPage()
+        pdf.setFont("Helvetica", 12)
+        y_position = 730
+        pdf.drawString(100, y_position, "-INFORMAÇÕES COMPLEMENTARES-")
+        y_position -= line_height
+        for item in informacoes_complementares:
+            pdf.drawString(100, y_position, f"Quantas pessoas moram com você ? (inclua você na contagem): {item.quantas_pessoas}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Nome de um familiar: {item.nome_familiar}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Grau de parentesco: {item.parentesco}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Idade do familiar: {item.idade_familiar}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Grau de Escolaridade do familiar: {item.escolaridade_familiar}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Análise descritiva: {item.analise_descritiva}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Tipificação penal: {item.tip_penal}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Medida de cumprimento: {item.medida_cumprimento}")
+            y_position -= line_height
+            pdf.drawString(100, y_position, f"Motivo de saida: {item.motivo_saida}")
+            y_position -= line_height
+            if y_position < 40:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 12)
+                y_position = 800
+                
+        pdf.save()
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=False, filename='Ficha.pdf')
 
 
 

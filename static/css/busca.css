@@ -19,19 +19,14 @@ body {
     margin-left: -1%;
 }
 
-.btn-danger {
-    margin-top: 15px;
-    margin-left: 45%; 
-    margin-bottom: 15px;
-}
-
 p {
     font-size: large;
 }
 
 .container {
     background-color: white;
-    width: 1000px;
+    max-width: 1000px; 
+    width: 100%; 
 }
 
 .section-title {
@@ -47,6 +42,14 @@ hr {
     height: 5px;
     background-color: black;
 }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; 
+    max-height: 40px;
+}
+
 
 
 

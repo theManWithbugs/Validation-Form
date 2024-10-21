@@ -29,11 +29,34 @@
     }
 
     label {
+        margin-right: 9px;
+        font-size: larger;
         color: aliceblue;
     }
-
+    
+    input {
+        height: 42px;
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        outline: none;
+    }
+    
+    input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    
     h3 {
         font-family: 'Times New Roman', Times, serif;
+    }
+    
+    #cpf {
+        margin-left: 20px;
+        width: 90%;
     }
 
     @media (max-width: 576px) {

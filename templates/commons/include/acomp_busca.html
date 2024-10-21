@@ -12,7 +12,7 @@
     {% include 'commons/include/alert_error_message.html' %}
 
                 <div class="container">
-                    <div class="bg-white p-3 rounded">
+                    <div class="p-3 rounded">
                         <h3 id="title_search">Buscar formulario de acompanhamento(CPF)</h3>
                         <nav class="navbar navbar-light bg-light">
                             <div class="container-fluid">
@@ -42,8 +42,8 @@
                             <div id="cabecalho">
                                 <h2 class="d-flex justify-content-center text-primary">FICHAS DE ACOMPANHAMENTO</h2>
                                 <hr>
-                                <h4 class="d-flex justify-content-center">Nome: <strong class="text-danger"> {{ cidadao.nome }} </strong> </h4>
-                                <h4 class="d-flex justify-content-center">Número do processo:  <strong class="text-danger"> {{ historico_criminal.numero_do_processo }}  </strong> </h4>
+                                <h4 class="d-flex justify-content-center">Nome: <strong class="text-danger ms-1"> {{ cidadao.nome }} </strong> </h4>
+                                <h4 class="d-flex justify-content-center">Número do processo:  <strong class="text-danger ms-1"> {{ historico_criminal.numero_do_processo }}  </strong> </h4>
                                 {% if violen_domest %}
                                     <hr>
                                     <h3 class="d-flex justify-content-center">Processos por violência domestica abaixo:</h3>
@@ -62,7 +62,6 @@
                                         <th>Técnico Responsavel</th>
                                         <th>Evolução/Demandas/Percepções</th>
                                         <th>Data de registro</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,7 +70,6 @@
                                             <td>{{ form.tecnico_responsavel }}</td>
                                             <td>{{ form.evolucao_percepcoes }}</td>
                                             <td>{{ form.data_registro }}</td>
-                    
                                         </tr>
                                     {% empty %}
                                         <tr>
