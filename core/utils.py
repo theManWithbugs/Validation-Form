@@ -4,6 +4,9 @@ from django.forms import ValidationError
 from .models import *
 import re
 from django.utils import timezone
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 #funçãp para validar cpf fora da classe CPFValidationForm
 def clean_cpf_out(self):
@@ -196,6 +199,16 @@ def contar_faixa_etaria_porcentagem():
         ]
 
     return porcentagens
+
+def render_to_pdf(template_src, context_dict):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="output.pdf"'
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Tivemos alguns errors <pre>' + html + '</pre>')
+    return response
 
 
     

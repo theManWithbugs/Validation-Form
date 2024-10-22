@@ -12,13 +12,13 @@
     {% include 'commons/include/alert_error_message.html' %}
 
                 <div class="container">
-                    <div class="p-3 rounded">
+                    <div class="p-3 bg-light rounded">
                         <h3 id="title_search">Buscar formulario de acompanhamento(CPF)</h3>
                         <nav class="navbar navbar-light bg-light">
                             <div class="container-fluid">
                                 <div class="d-flex justify-content-center w-100">
                                         <form class="d-flex w-100" method="get" action="{% url 'acmform' %}">
-                                            <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill" maxlength="11">
+                                            <input type="text" name="cpf" placeholder="Buscar pelo CPF" class="form-control flex-fill" maxlength="11" value="{{ request.GET.cpf }}">
                                             <button type="submit" class="btn btn-outline-success flex-shrink-1" style="margin-left: 5px;">Buscar</button>
                                         </form>
                                 </div>
@@ -42,18 +42,26 @@
                             <div id="cabecalho">
                                 <h2 class="d-flex justify-content-center text-primary">FICHAS DE ACOMPANHAMENTO</h2>
                                 <hr>
-                                <h4 class="d-flex justify-content-center">Nome: <strong class="text-danger ms-1"> {{ cidadao.nome }} </strong> </h4>
-                                <h4 class="d-flex justify-content-center">Número do processo:  <strong class="text-danger ms-1"> {{ historico_criminal.numero_do_processo }}  </strong> </h4>
+                                <h4 class="d-flex justify-content-center bg-dark text-white">Nome: <strong class="text-danger ms-1"> {{ cidadao.nome }} </strong> </h4>
+                                <h4 class="d-flex justify-content-center bg-dark text-white">Número do processo:  <strong class="text-danger ms-1"> {{ historico_criminal.numero_do_processo }}  </strong> </h4>
+                                <a class="btn btn-primary" href="{% url 'acmp_pdf' %}" id="btn_imprimir" target="_blank">
+                                    <i class="bi bi-printer">Documento PDF</i>
+                                </a>
                                 {% if violen_domest %}
                                     <hr>
-                                    <h3 class="d-flex justify-content-center">Processos por violência domestica abaixo:</h3>
+
+                                <div class="bg-dark text-white">
+                                        <h3 class="d-flex justify-content-center">Processos por violência domestica:</h3>
+                                        <br>
+                                    {% endif %}
+                                    {% for processos in violen_domest %}
+                                        <h4 class="mb-2 ms-5"> Número:  <strong class="text-danger"> {{ processos.process_referente }} </strong></h4>
+                                        {% empty %}
+                                        <h4 class="d-flex justify-content-center text-warning">(NÃO POSSUI PROCESSOS POR VIOLENCIA DOMESTICA!)</h4>
+                                    {% endfor %}
                                     <br>
-                                {% endif %}
-                                {% for processos in violen_domest %}
-                                    <h4 class="mb-2 ms-5"> Número:  <strong class="text-danger"> {{ processos.process_referente }} </strong></h4>
-                                    {% empty %}
-                                    <h4 class="d-flex justify-content-center text-warning">(NÃO POSSUI PROCESSOS POR VIOLENCIA DOMESTICA!)</h4>
-                                {% endfor %}
+                                </div>
+
                             </div>
                     
                             <table class="w-100">

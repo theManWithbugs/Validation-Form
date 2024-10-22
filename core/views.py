@@ -28,6 +28,8 @@ from django.views.generic import View
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 def is_staff(user):
     return user.is_staff
@@ -586,6 +588,7 @@ def buscar_acmform_view (request):
 
     if form.is_valid():
         cpf = form.cleaned_data['cpf']
+        request.session['cpf'] = cpf
 
         try:
             cidadao = Cidadao.objects.get(cpf=cpf)
@@ -608,6 +611,33 @@ def buscar_acmform_view (request):
     }
 
     return render(request, 'commons/include/acomp_busca.html', context)
+
+@login_required
+def pdf_view(request):
+    template_name = 'commons/include/acmp_pdf.html'
+    cpf = request.session.get('cpf')
+
+    historico_criminal = None
+    form_acomp = None
+    violen_domest = None
+
+    if cpf:
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+
+            historico_criminal = cidadao.historicos_criminais.first()
+            form_acomp = cidadao.form_acompanhamento_central.all()
+            violen_domest = cidadao.form_violencia_domes.all()
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+
+    context = {
+            'cidadao': cidadao,
+            'historico_criminal': historico_criminal,
+            'form_acomp': form_acomp,
+            'violen_domest': violen_domest,
+            }
+    return render_to_pdf(template_name, context)
 
 #Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
 #-------------------------------------------------------------------------------------------------------#    
@@ -723,10 +753,6 @@ def edit_form_view(request):
 def logout_view(request):
     auth_logout(request)
     return redirect('login_new')
-
-def footer_view(request):
-    template_name = 'commons/include/footer.html'
-    return render(request, template_name)
 
 @login_required
 def sucess_page_view(request):

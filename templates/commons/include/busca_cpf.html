@@ -35,7 +35,7 @@
                                 <div class="d-flex justify-content-center w-100">
                                     <form class="d-flex w-100" method="get" action="{% url 'busca' %}">
                                         {% csrf_token %}
-                                        <input type="text" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="11" value="{{ request.GET.cpf }}">
+                                        <input type="number" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="11" value="{{ request.GET.cpf }}">
                                         <button class="btn btn-outline-success flex-shrink-1" type="submit" style="margin-left: 5px;">Buscar</button>
                                     </form>
                                 </div>
@@ -162,9 +162,9 @@
                         {% endif %}
                     </div>
 
-                    <div class="button-container bg-white">
+                    <div class="button-container bg-white rounded">
                         <a class="btn btn-primary mb-0 me-2" href="{% url 'imprimir_pdf' %}">
-                            <i class="bi bi-printer">Imprimir ficha</i>
+                            <i class="bi bi-printer">Documento PDF</i>
                         </a>
                     
                         {% if user.is_staff %}

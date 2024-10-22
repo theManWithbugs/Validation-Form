@@ -20,7 +20,7 @@ anychart.onDocumentReady(function () {
             chart.tooltip().positionMode('point').position('center-top').anchor('center-bottom').offsetX(0).offsetY(5)
                 .titleFormat('{%X}').format('{%SeriesName} : #{%Value}{groupsSeparator: }');
 
-            var colors = ['#00008B'];
+            var colors = ['#0000FF'];
             var series = chart.getSeriesAt(0);
             series.fill(colors);
 

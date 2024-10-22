@@ -11,7 +11,7 @@
                         <div class="d-flex justify-content-center w-100">
                             <form class="d-flex w-100" method="post" action="{% url 'alterar_process' %}">
                                 {% csrf_token %}
-                                <input type="text" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="80">
+                                <input type="number" name="cpf" class="form-control flex-fill" placeholder="Buscar..." maxlength="80">
                                 <button class="btn btn-outline-success flex-shrink-1" type="submit" style="margin-left: 5px;">Buscar</button>
                             </form>
                         </div>
