@@ -8,7 +8,12 @@
 {% block content %}
     <div class="container rounded">
             {% if cidadao.cpf %}
-                <h2 class="text-center" style="margin-top: 20px;">{{ cidadao.nome }}</h2>
+
+            <br>
+
+            <hr>
+                <h2 class="text-center bg-dark text-white">{{ cidadao.nome }}</h2>
+            <hr>
                 
                 <div class="section-title">
                     <h3>Informações Pessoais</h3>
@@ -33,6 +38,8 @@
                     <p><strong>Escolaridade:</strong> {{ cidadao.escolaridade }}</p>
                 </div>
 
+                <hr>
+
                 <div class="section-title">
                     <h3>Histórico de Saúde</h3>
                 </div>
@@ -51,6 +58,8 @@
                         <p>Histórico de saúde não disponível.</p>
                     {% endif %}
                 </div>
+
+                <hr>
 
                 <div class="section-title">
                     <h3>Histórico Criminal</h3>
@@ -75,6 +84,8 @@
                     {% endif %}
                 </div>
 
+                <hr>
+
                 <div class="section-title">
                     <h3>Informações Complementares</h3>
                 </div>
@@ -95,6 +106,7 @@
                         <p>Informações complementares não disponíveis.</p>
                     {% endif %}
 
+                    <hr>
                     <br>
 
                 <div class="violen_process">
@@ -107,7 +119,7 @@
                             </div>
                             {% endfor %}
                         {% else %}
-                        <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
+                        <p><strong style="color: crimson; font-size: larger;" class="ms-5">Não possui registro de violência domestica</strong></p>
                     {% endif %}
                     <form method="post" action="{% url 'excluir_form' %}">
                         {% csrf_token %}

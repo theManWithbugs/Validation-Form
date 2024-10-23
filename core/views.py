@@ -1,6 +1,9 @@
+from asyncio import run
 import io
 from datetime import date, datetime
 from itertools import count
+import os
+import tempfile
 from django.conf import settings
 from django.contrib import messages
 from django.db import DatabaseError, IntegrityError
@@ -30,6 +33,12 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from docx import Document
+from docx.shared import Inches
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+import pypandoc
+from django.template.loader import render_to_string
+
 
 def is_staff(user):
     return user.is_staff
@@ -889,6 +898,92 @@ class IndexView(View):
         pdf.save()
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=False, filename='Ficha.pdf')
+    
+def doc_editavel(request):
+
+    historico_saude = None
+    historico_criminal = None
+    informacoes_complementares = None
+
+    cpf = request.session.get('cpf')
+
+    if cpf:
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+
+            historico_saude = HistoricoSaude.objects.filter(cidadao=cidadao)
+            historico_criminal = HistoricoCriminal.objects.filter(cidadao=cidadao)
+            informacoes_complementares = InformacoesComplementares.objects.filter(cidadao=cidadao)
+        except Cidadao.DoesNotExist:
+            print('')
+    
+    doc = Document()
+
+    img_ciap = 'static/img/ciap_img.png'
+
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run()
+    run.add_picture(img_ciap, width=Inches(2))
+    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+    doc.add_heading('Formulario de acompanhamento na central', 0)
+    doc.add_paragraph('Nome: ' + cidadao.nome)
+
+    doc.add_paragraph('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed eros auctor nisi hendrerit hendrerit. Vestibulum elementum rutrum mauris et imperdiet. Curabitur non ex vel est scelerisque dapibus sagittis et justo. Suspendisse ullamcorper pharetra elementum. Vivamus hendrerit auctor ultricies. Interdum et malesuada fames ac ante ipsum primis in faucibus. In non mi at eros consectetur vestibulum. Nulla laoreet, justo quis faucibus sollicitudin, velit metus scelerisque mauris, id elementum orci eros eu metus. Ut vestibulum convallis elit sit amet tempus. Nulla ac tortor feugiat, elementum risus eget, vulputate libero. Vivamus consequat nibh sed enim tristique blandit. In porttitor tellus vitae consequat laoreet. Phasellus eget mi sit amet eros blandit convallis. Vivamus gravida id tellus laoreet vulputate.')
+    doc.add_paragraph('Suspendisse et leo nec massa condimentum pulvinar. Etiam iaculis, ex eu venenatis convallis, lacus ante varius ante, in faucibus erat urna at odio. Nullam sed euismod enim, vitae sagittis purus. Aliquam non est nec risus consectetur faucibus quis non libero. Sed congue odio ac elit efficitur venenatis. Proin sit amet pharetra arcu, sit amet convallis tortor. Mauris id nulla quis nisl semper ultrices eget suscipit tortor. Donec luctus vitae turpis nec eleifend. Sed vel ligula magna.')
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=meu_documento.docx'
+    doc.save(response)
+
+    return response
+
+def generate_docx(request):
+    template_name = 'commons/include/acmp_ficha_edit.html'
+    cpf = request.session.get('cpf')
+
+    historico_criminal = None
+    form_acomp = None
+    violen_domest = None
+
+    if cpf:
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+
+            historico_criminal = cidadao.historicos_criminais.first()
+            form_acomp = cidadao.form_acompanhamento_central.all()
+            violen_domest = cidadao.form_violencia_domes.all()
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+
+    context = {
+            'cidadao': cidadao,
+            'historico_criminal': historico_criminal,
+            'form_acomp': form_acomp,
+            'violen_domest': violen_domest,
+            }
+    
+    # aqui é passado o nome do template e o contexto
+    html_content = render_to_string(template_name, context)
+        
+    # cria um arquivo temporario
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as temp_docx:
+        # Converter HTML para DOCX e salvar no arquivo temporário
+        pypandoc.convert_text(html_content, 'docx', format='html', outputfile=temp_docx.name)
+
+        # Abrir o arquivo para leitura
+        temp_docx.seek(0)
+        response = HttpResponse(temp_docx.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = 'attachment; filename="output.docx"'
+
+    # Após baixar exclui o arquivo temporario
+    os.unlink(temp_docx.name)
+    
+    return response
+
+
+
+
 
 
 

@@ -45,11 +45,11 @@
             </div>
 
     {% if objs %}
-                <div class="container bg-dark mb-5">
-                    <h3 class="d-flex justify-content-center mb-3 mt-3" style="color: aliceblue;">Resultados aproximados:</h3>
+                <div class="container bg-secondary mb-5 rounded">
+                    <h3 class="d-flex justify-content-center mb-3 mt-2 text-white">Resultados aproximados:</h3>
                         <div class="d-flex justify-content-center">
                             {% if objs %}
-                                <ul style="width: 90%;">
+                                <ul style="width: 70%;">
                                     {% for obj in objs %}
                                     <div class="mt-4 bg-light" style="border: solid 1px; border-radius: 5px;">
                                         <li class="d-flex justify-content-center" style="font-size: larger;">{{ obj.nome }}</li>

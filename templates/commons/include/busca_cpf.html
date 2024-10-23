@@ -50,9 +50,9 @@
             {% if cidadao %}
                 <div class="container border border-2 py-5 rounded">
 
-                <h2 class="title_nome d-flex justify-content-center">{{ cidadao.nome }}</h2>
-
-                <br>
+                <hr>
+                <h2 class="title_nome d-flex justify-content-center bg-dark text-white">{{ cidadao.nome }}</h2>
+                <hr>
                 
                     <div class="section-title">
                         <h3>Informações Pessoais</h3>
@@ -75,8 +75,8 @@
                         <p><strong>Cor/Raça:</strong> {{ cidadao.cor_raca }}</p>
                         <p><strong>Escolaridade:</strong> {{ cidadao.escolaridade }}</p>
                     </div>
+
                     <hr>
-                    <br>
                
                     <div class="section-title">
                         <h3>Histórico de Saúde</h3>
@@ -96,8 +96,9 @@
                             <p>Histórico de saúde não disponível.</p>
                         {% endif %}
                     </div>
+
                     <hr>
-                    <br>
+                
                 
                     <div class="section-title">
                         <h3>Histórico Criminal</h3>
@@ -121,9 +122,9 @@
                             <p>Histórico criminal não disponível.</p>
                         {% endif %}
                     </div>
+
                     <hr>
-                    <br>
-                
+                   
                     <div id="title_4">
                         <h3>Informações Complementares</h3>
                     </div>
@@ -146,7 +147,6 @@
                     </div>
                 
                     <hr>
-                    <br>
                       
                     {% if form_violen %}
                     <div class="violen_process">
@@ -158,7 +158,7 @@
                             </div>
                             {% endfor %}
                         {% else %}
-                        <p><strong style="color: crimson; font-size: larger;">Não possui registro de violência domestica</strong></p>
+                        <p><strong style="color: crimson; font-size: larger;" class="ms-5">Não possui registro de violência domestica</strong></p>
                         {% endif %}
                     </div>
 

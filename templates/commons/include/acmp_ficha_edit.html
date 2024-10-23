@@ -2,13 +2,7 @@
 <!doctype html>
 <html lang="pt-br">
     <head>
-        <title>ACMP-PDF</title>
         <style>
-           @page {
-            size: a4;
-            margin: 1cm;
-           }
-
            th {
             border: 1px solid #000; 
             padding: 12px; 
@@ -26,6 +20,8 @@
             text-align: center;
             font-size: 14px;
            }
+
+           
         </style>
     </head>
 
@@ -33,16 +29,16 @@
 
         <br>
 
-        <img src="static/img/ciap_img.png" style="width: 250px; height: 150px; text-align: center;">
+        <img src="static/img/ciap_img.png"  width="300" height="auto" margin-left="50">
 
         <hr>
-            <h1 style="text-align: center; font-size: 17px; margin-top: -5px;">FORMULARIO DE ACOMPANHAMENTO NA CENTRAL</h1>
-            <h1 id="sub_title">Nome: {{ cidadao.nome }}</h1>
-            <h1 id="sub_title">Número do processo: {{ historico_criminal.numero_do_processo }}</h1>
-            <h1 id="sub_title">Data de entrada: {{ cidadao.data_entrada }}</h1>
-            <h1 id="sub_title">Tipo penal: {{ historico_criminal.tipo_penal }}</h1>
-            <h1 id="sub_title">Medida aplicada: {{ historico_criminal.medida_aplicada }}</h1>
-            <h1 id="sub_title">Telefone: {{ cidadao.telefone }}</h1>
+            <h4 style="text-align: center; font-size: 17px; margin-top: -5px;">FORMULARIO DE ACOMPANHAMENTO NA CENTRAL</h4>
+            <h4 id="sub_title">Nome: {{ cidadao.nome }}</h4>
+            <h4 id="sub_title">Número do processo: {{ historico_criminal.numero_do_processo }}</h4>
+            <h4 id="sub_title">Data de entrada: {{ cidadao.data_entrada }}</h4>
+            <h4 id="sub_title">Tipo penal: {{ historico_criminal.tipo_penal }}</h4>
+            <h4 id="sub_title">Medida aplicada: {{ historico_criminal.medida_aplicada }}</h4>
+            <h4 id="sub_title">Telefone: {{ cidadao.telefone }}</h4>
         <hr>
 
         <br>

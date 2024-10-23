@@ -51,7 +51,14 @@ th {
 }
 
 #btn_imprimir {
-    margin-left: 380px; 
-    width: 150px;
+    margin-left: 330px; 
+    max-width: 150px;
 }
+
+#btn_word {
+    max-width: 330px;
+    margin-left: 10px;
+}
+
+
 

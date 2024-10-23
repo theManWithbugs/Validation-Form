@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row justify-content-center mt-1">
             <div class="col-md-8 form-container">
-                <h2 class="text-center mb-4 bg-dark text-white">Formulário: informações complementares</h2>
+                <h2 class="text-center mb-4">Formulário: informações complementares</h2>
                 <form method="post" action="{% url 'form4' %}">
                     {% csrf_token %}
                     {{ formulario_complementar.as_p }}

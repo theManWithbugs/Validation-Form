@@ -1,7 +1,7 @@
 from django.urls import path
 from core import views
 from django.conf import settings
-from core.views import FaixasEtarias, IndexView, custom_404_view
+from core.views import FaixasEtarias, IndexView, custom_404_view, doc_editavel, generate_docx
 
 handler404 = custom_404_view
 
@@ -53,6 +53,10 @@ urlpatterns = [
     #pdf views
     path('base/pdf_test/', IndexView.as_view(), name='imprimir_pdf'), 
     path('acmp_pdf/', views.pdf_view, name='acmp_pdf'),
+
+    #word_view
+    path('gerar_word/', doc_editavel, name='gerar_editavel'),
+    path('generate-docx/', generate_docx, name='generate_docx'),
     ]
 
 
