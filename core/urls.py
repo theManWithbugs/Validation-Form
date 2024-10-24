@@ -1,7 +1,7 @@
 from django.urls import path
 from core import views
 from django.conf import settings
-from core.views import FaixasEtarias, IndexView, custom_404_view, doc_editavel, generate_docx
+from core.views import FaixasEtarias, IndexView, custom_404_view, generate_docx
 
 handler404 = custom_404_view
 
@@ -9,6 +9,7 @@ urlpatterns = [
     #login, register and logout
     path('', views.login_n, name='login_new'),
     path('register/', views.register_user, name='register'),
+    path('remov_user', views.remover_acesso, name='rem_user'),
     path('logout/', views.logout_view, name='logout'),
 
     #base page
@@ -55,7 +56,6 @@ urlpatterns = [
     path('acmp_pdf/', views.pdf_view, name='acmp_pdf'),
 
     #word_view
-    path('gerar_word/', doc_editavel, name='gerar_editavel'),
     path('generate-docx/', generate_docx, name='generate_docx'),
     ]
 

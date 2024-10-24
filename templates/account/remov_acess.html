@@ -1,0 +1,49 @@
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link href="{% static 'css/base.css' %}" rel="stylesheet">
+   
+    </head>
+
+    <body>
+
+    <div class="container bg-dark text-white mt-5" style="height: 500px; max-width: 600px;">
+        <div class="d-flex justify-content-center">
+            <form method="post" action="{% url 'rem_user' %}">
+                {% csrf_token %}
+                <label for="cpf">Digite o cpf: </label>
+                <input type="number" name="cpf" id="cpf" class="w-100">
+            </form>
+        </div>
+
+        <br>
+
+        <h5 class="d-flex justify-content-center">Nome de usúario: {{ usuario.nome }}</h5>
+        <h5 class="d-flex justify-content-center">CPF: {{ usuario.cpf }}</h5>
+
+        <form method="post" action="{% url 'rem_user' %}" onsubmit="setConfirmarValue()">
+            {% csrf_token %}
+            <input type="hidden" name="confirmar" id="confirmar" class="w-100">
+            <button>Remover</button>
+        </form>
+
+    </div>
+
+
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/all.min.js' %}"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+        
+        <script>
+            function setConfirmarValue() {
+                document.getElementById('confirmar').value = 'true'
+            }
+        </script>
+    </body>
+</html>

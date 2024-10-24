@@ -103,27 +103,6 @@ def tipo_penal():
 
     return sorted_porcentagens
 
-def tipo_penal_ativos():
-    tipos = [
-        'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
-        'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
-    ]
-    resultado = {}
-    
-    for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO').count()
-
-    total = sum(resultado.values())
-
-    if total > 0:
-        porcentagens = {tipo: (count / total) * 100 for tipo, count in resultado.items()}
-    else:
-        porcentagens = {tipo: 0 for tipo in tipos}
-
-    sorted_porcentagens = sorted(porcentagens.items(), key=lambda x: x[1], reverse=True)
-
-    return sorted_porcentagens
-
 def medida_cumprimento_calc():
     tipos = [
         'COMPARECIMENTO BIMESTRAL', 'COMPARECIMENTO MENSAL', 'COMPARECIMENTO QUINZENAL',
@@ -230,6 +209,88 @@ def render_to_pdf(template_src, context_dict):
     if pisa_status.err:
         return HttpResponse('Tivemos alguns errors <pre>' + html + '</pre>')
     return response
+
+#---------------------------------------------------------------------------------------------------------------------#
+
+def calcular_sexo_ativos():
+
+    #É possível usar o doublescore __ para referenciar modelos diferentes quando existe uma chave primaria
+    #interligando os dois modelos.
+    masculino_count = Cidadao.objects.filter(sexo='M', informacoes_complementares__motivo_saida='ATIVO').count()
+    feminino_count = Cidadao.objects.filter(sexo='F', informacoes_complementares__motivo_saida='ATIVO').count()
+
+    total_count = masculino_count + feminino_count
+
+    if total_count == 0:
+        porcentagem_masculino = 0
+        porcentagem_feminino = 0
+    else:
+        porcentagem_masculino = (masculino_count / total_count) * 100
+        porcentagem_feminino = (feminino_count / total_count) * 100
+
+    return porcentagem_masculino, porcentagem_feminino
+
+def tipo_penal_ativos():
+    tipos = [
+        'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
+        'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
+    ]
+    resultado = {}
+    
+    for tipo in tipos:
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO').count()
+
+    total = sum(resultado.values())
+
+    if total > 0:
+        porcentagens = {tipo: (count / total) * 100 for tipo, count in resultado.items()}
+    else:
+        porcentagens = {tipo: 0 for tipo in tipos}
+
+    sorted_porcentagens = sorted(porcentagens.items(), key=lambda x: x[1], reverse=True)
+
+    return sorted_porcentagens
+
+def medida_cumprimento_calc_ativos():
+    tipos = [
+        'COMPARECIMENTO BIMESTRAL', 'COMPARECIMENTO MENSAL', 'COMPARECIMENTO QUINZENAL',
+        'COMPARECIMENTO SEMANAL', 'COMPARECIMENTO TRIMESTRAL', 'GRUPO REFLEXIVO', 'PSC'
+    ]
+
+    resultado_medida = {}
+
+    for tipo in tipos:
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, motivo_saida='ATIVO').count()
+    
+    return resultado_medida
+
+def contar_faixa_etaria_porcentagem_ativos():
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO').count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO').count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO').count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39, informacoes_complementares__motivo_saida='ATIVO').count()  
+
+    total = media1 + media2 + media3 + media4
+
+    if total > 0:
+        porcentagens = [
+            ['De 18-24', round((media1 / total) * 100, 2)],
+            ['De 25-29', round((media2 / total) * 100, 2)],
+            ['De 30-34', round((media3 / total) * 100, 2)],
+            ['De 35-39', round((media4 / total) * 100, 2)],
+        ]
+    else:
+        porcentagens = [
+            ['De 18-24', 0.00],
+            ['De 25-29', 0.00],
+            ['De 30-34', 0.00],
+            ['De 35-39', 0.00],
+        ]
+
+    return porcentagens
+
+
+
 
 
     

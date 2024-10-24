@@ -15,7 +15,6 @@ async function fetchHistoricos() {
 
         chart.background().fill('rgba(255, 255, 255, 0.6)'); 
 
-
         chart.container('container_chart');
         chart.draw();
     });

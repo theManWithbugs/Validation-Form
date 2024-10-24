@@ -3,7 +3,7 @@ anychart.onDocumentReady(function () {
         .then(response => response.json())
         .then(data => {
             var chartData = {
-                title: 'Faixas Etarias de idades (Porcentagem)',
+                title: 'Faixas Etarias de idades (Porcentagem de Ativos)',
                 header: ['#', 'Acre'],
                 rows: data.faixas_etarias
             };

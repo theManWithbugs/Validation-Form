@@ -168,11 +168,11 @@
                         </a>
                     
                         {% if user.is_staff %}
-                        <form method="post" action="{% url 'excluir_form' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                            <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
-                        </form>
+                            <form method="post" action="{% url 'excluir_form' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
+                            </form>
                         {% endif %}
                     </div>                                  
 

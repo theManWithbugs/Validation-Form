@@ -12,7 +12,7 @@
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <img src="{% static '/img/img_ciap.png' %}" class="img-fluid" alt="Logo">
                     <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -53,6 +53,10 @@
                         <li>
                             <a href="{% url 'register' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
                                 <i class="fs-3 bi-person-check"></i><span class="ms-1 d-none d-sm-inline">Registrar acesso</span>
+                        </li>
+                        <li>
+                            <a href="{% url 'rem_user' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
+                                <i class="fs-3 bi bi-person-x"></i><span class="ms-1 d-none d-sm-inline">Remover usuario</span>
                         </li>
                         <li>
                             <a href="{% url 'logout' %}" class="nav-link px-0 align-middle text-white">

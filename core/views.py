@@ -1,19 +1,16 @@
-from asyncio import run
 import io
 from datetime import date, datetime
-from itertools import count
 import os
 import tempfile
 from django.conf import settings
 from django.contrib import messages
-from django.db import DatabaseError, IntegrityError
+from django.db import DatabaseError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test
-from django.core.exceptions import ValidationError
 from .forms import *
 from .forms import CidadaoForm
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.db.models import Count
@@ -30,12 +27,6 @@ from django.http import FileResponse
 from django.views.generic import View
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from docx import Document
-from docx.shared import Inches
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import pypandoc
 from django.template.loader import render_to_string
 
@@ -98,6 +89,29 @@ def register_user(request):
         messages.error(request, 'Não foi possível cadastrar!')
            
     return render(request, template_name)
+
+def remover_acesso(request):
+    template_name = 'account/remov_acess.html'
+
+    usuario = None
+    confirmar = None
+
+    cpf = request.POST.get('cpf')
+    confirmar = request.POST.get('cpf')
+
+    try:
+        usuario = User.objects.get(cpf=cpf)
+        print(usuario.nome)
+        if confirmar == True:
+            usuario.delete()
+    except User.DoesNotExist:
+        print(f"O usuario: {cpf} não existe!")
+
+    context = { 
+        'usuario': usuario,
+    }
+
+    return render(request, template_name, context)
         
 def atualizar_perfil_img(request):
     if request.user.is_authenticated:
@@ -452,7 +466,7 @@ def excluir_form(request):
         'cidadao': cidadao,
     }
 
-    return render(request, 'commons/include/busca_form.html', context)
+    return request, context
 
 @login_required
 def capturar_cpf(request):
@@ -521,7 +535,13 @@ def analise_view(request):
     faixas_etarias = contar_faixa_etaria()
     faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem_sta()
 
-    porcentagem_masculino, porcentagem_feminino = calcular_sexo()
+    tip_penal_ativos =  tipo_penal_ativos()
+    medida_cump_ativos = medida_cumprimento_calc_ativos()
+    resultado_masculino_at, resultado_feminino_at = calcular_sexo_ativos()
+    resultado_faixas_etarias_ativos = contar_faixa_etaria_porcentagem_ativos()
+
+
+    resultado_masculino, resultado_feminino = calcular_sexo()
 
     total_usuarios = Cidadao.objects.count()
 
@@ -535,8 +555,8 @@ def analise_view(request):
                 )
     
     context = {
-        'porcentagem_homens': porcentagem_masculino,
-        'porcentagem_mulheres': porcentagem_feminino,
+        'porcentagem_homens': resultado_masculino,
+        'porcentagem_mulheres': resultado_feminino,
         'aumento_percentual': aumento_percentual,
         'total_usuarios': total_usuarios,
         'drogas_ms': drogas_ms,
@@ -548,6 +568,12 @@ def analise_view(request):
         'ativos': ativos,
         'faixas_etarias': faixas_etarias,
         'faixas_etarias_porcentagem': faixas_etarias_porcentagem,
+
+        'tip_penal_ativos': tip_penal_ativos,
+        'medida_cump_ativos': medida_cump_ativos,
+        'resultado_masculino_at': resultado_masculino_at,
+        'resultado_feminino_at': resultado_feminino_at,
+        'resultado_faixas_etarias_ativos': resultado_faixas_etarias_ativos,
     }
 
     return render(request, template_name, context)
@@ -577,7 +603,7 @@ class FaixasEtarias(APIView):
         serializer = CidadaoSerializer(idades, many=True)
 
         # Chamando a função para calcular as faixas etárias
-        faixas_etarias = contar_faixa_etaria_porcentagem()
+        faixas_etarias = contar_faixa_etaria_porcentagem_ativos()
 
         # Retornando os dados em um formato que inclua as idades e faixas etárias
         return Response({
@@ -898,45 +924,6 @@ class IndexView(View):
         pdf.save()
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=False, filename='Ficha.pdf')
-    
-def doc_editavel(request):
-
-    historico_saude = None
-    historico_criminal = None
-    informacoes_complementares = None
-
-    cpf = request.session.get('cpf')
-
-    if cpf:
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
-
-            historico_saude = HistoricoSaude.objects.filter(cidadao=cidadao)
-            historico_criminal = HistoricoCriminal.objects.filter(cidadao=cidadao)
-            informacoes_complementares = InformacoesComplementares.objects.filter(cidadao=cidadao)
-        except Cidadao.DoesNotExist:
-            print('')
-    
-    doc = Document()
-
-    img_ciap = 'static/img/ciap_img.png'
-
-    paragraph = doc.add_paragraph()
-    run = paragraph.add_run()
-    run.add_picture(img_ciap, width=Inches(2))
-    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-
-    doc.add_heading('Formulario de acompanhamento na central', 0)
-    doc.add_paragraph('Nome: ' + cidadao.nome)
-
-    doc.add_paragraph('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed eros auctor nisi hendrerit hendrerit. Vestibulum elementum rutrum mauris et imperdiet. Curabitur non ex vel est scelerisque dapibus sagittis et justo. Suspendisse ullamcorper pharetra elementum. Vivamus hendrerit auctor ultricies. Interdum et malesuada fames ac ante ipsum primis in faucibus. In non mi at eros consectetur vestibulum. Nulla laoreet, justo quis faucibus sollicitudin, velit metus scelerisque mauris, id elementum orci eros eu metus. Ut vestibulum convallis elit sit amet tempus. Nulla ac tortor feugiat, elementum risus eget, vulputate libero. Vivamus consequat nibh sed enim tristique blandit. In porttitor tellus vitae consequat laoreet. Phasellus eget mi sit amet eros blandit convallis. Vivamus gravida id tellus laoreet vulputate.')
-    doc.add_paragraph('Suspendisse et leo nec massa condimentum pulvinar. Etiam iaculis, ex eu venenatis convallis, lacus ante varius ante, in faucibus erat urna at odio. Nullam sed euismod enim, vitae sagittis purus. Aliquam non est nec risus consectetur faucibus quis non libero. Sed congue odio ac elit efficitur venenatis. Proin sit amet pharetra arcu, sit amet convallis tortor. Mauris id nulla quis nisl semper ultrices eget suscipit tortor. Donec luctus vitae turpis nec eleifend. Sed vel ligula magna.')
-
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment; filename=meu_documento.docx'
-    doc.save(response)
-
-    return response
 
 def generate_docx(request):
     template_name = 'commons/include/acmp_ficha_edit.html'

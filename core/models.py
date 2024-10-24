@@ -107,7 +107,7 @@ class Cidadao(models.Model):
         super().save(*args, **kwargs)
 
 
-    #metodo utilizado para controlar a conversão de dado para JSON quando armazenado na sessão
+    #metodo utilizado para controlar a conversão de dado para JSON quando armazenado na sessão, cria um dicionario
     def to_dict(self):
         return {
             'cpf': self.cpf,
