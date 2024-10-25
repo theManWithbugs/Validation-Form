@@ -265,6 +265,11 @@ c_status_process = (
     ('ARQUIVADO', 'ARQUIVADO'),
 )
 
+c_unidade = (
+    ('RB', 'RIO BRANCO'),
+    ('CR', 'CRUZEIRO DO SUL'),
+)
+
 
 
 

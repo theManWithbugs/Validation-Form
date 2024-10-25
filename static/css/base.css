@@ -58,6 +58,18 @@ img {
     border: solid 1px black;
 }
 
+.botao {
+    background-color: dark;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao.hover {
+    color: yellow;
+}
+
 
 
 

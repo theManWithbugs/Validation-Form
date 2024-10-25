@@ -1,49 +1,86 @@
 {% load static %}
 <html lang="pt-br">
-    <head>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <link href="{% static 'css/base.css' %}" rel="stylesheet">
-   
-    </head>
+<head>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 
-    <body>
+    <style>
+        #efeito_piscar {
+            font-size: 1.3em;
+            animation: piscar 1s infinite;
+        }
 
-    <div class="container bg-dark text-white mt-5" style="height: 500px; max-width: 600px;">
-        <div class="d-flex justify-content-center">
-            <form method="post" action="{% url 'rem_user' %}">
-                {% csrf_token %}
-                <label for="cpf">Digite o cpf: </label>
-                <input type="number" name="cpf" id="cpf" class="w-100">
-            </form>
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ambos estão interligados pelo javascript -->
+    <div class="container bg-dark d-flex justify-content-center rounded mt-5" style="height: 500px; max-width: 700px;">
+        <div class="container bg-secondary rounded mt-5" style="height: 400px; max-width: 600px;">
+            <br>
+            <h4 class="d-flex justify-content-center md-2 bg-dark rounded py-2"> <span class="text-danger" id="efeito_piscar">(DESATIVAR ACESSO DE USÚARIO)</span><i class="fs-1 bi bi-person-x text-white"></i></h4>
+            <div class="d-flex justify-content-center">
+                <form method="post" action="{% url 'rem_user' %}" class="mt-5" id="myform">
+                    {% csrf_token %}
+                    <label for="cpf"><strong>CPF:</strong></label>
+                    <input type="number" name="cpf" id="cpf" class="w-95 h-95">
+                    <button type="button" class="btn btn-primary h-80" id="confirmBtn">Remover</button>
+                </form>
+            </div>
+
+            <br>
+
+            <div class="bg-dark text-white rounded">
+                <br>
+                <h4 class="d-flex justify-content-center text-danger">Não é realizado a exlusão do acesso pois os logs de usúario devem permanecer, é apenas removido o acesso!</h4>
+                <br>
+            </div>
         </div>
-
-        <br>
-
-        <h5 class="d-flex justify-content-center">Nome de usúario: {{ usuario.nome }}</h5>
-        <h5 class="d-flex justify-content-center">CPF: {{ usuario.cpf }}</h5>
-
-        <form method="post" action="{% url 'rem_user' %}" onsubmit="setConfirmarValue()">
-            {% csrf_token %}
-            <input type="hidden" name="confirmar" id="confirmar" class="w-100">
-            <button>Remover</button>
-        </form>
-
     </div>
 
+    <!-- O model de confirmação abre uma janela para confirmar a alteração -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Acesso alterado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você realmente deseja remover o acesso do usuário?
+                    <h4 class="d-flex justify-content-center text-danger">Nome de usúario a excluir:</h4>
+                    <h5 class="d-flex justify-content-center">Nome de usúario: {{ usuario.nome }}</h5>
+                    <h5 class="d-flex justify-content-center">CPF: {{ usuario.cpf }}</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="finalizeRemoval">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/popper.min.js' %}"></script>
-        <script src="{% static 'js/all.min.js' %}"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
-        <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
-        
-        <script>
-            function setConfirmarValue() {
-                document.getElementById('confirmar').value = 'true'
-            }
-        </script>
-    </body>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+
+    <script>
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            // Mostra o modal de confirmação
+            var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            myModal.show();
+        });
+
+        document.getElementById('finalizeRemoval').addEventListener('click', function() {
+            // Envia o formulário quando o usuário confirma
+            document.getElementById('myform').submit();
+        });
+    </script>
+</body>
 </html>

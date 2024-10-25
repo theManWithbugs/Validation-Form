@@ -23,44 +23,44 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
                             <a href="{% url 'base' %}" class="mb-1 nav-link align-middle px-0 text-white">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Pagina inicial</span>
+                                <i class="fs-4 bi-house text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Pagina inicial</span>
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'estatisticas' %}" class="mb-1 nav-link px-0 align-middle text-white">
-                                <i class="fs-4 bi-bar-chart"></i> <span class="ms-1 d-none d-sm-inline">Estatisticas</span></a>
+                                <i class="fs-4 bi-bar-chart text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">Estatisticas</span></a>
                         </li>
                         <li>
                             <a href="{% url 'perfil' %}" class="mb-1 nav-link px-0 align-middle text-white">
-                                <i class="fs-4 bi-person"></i> <span class="ms-1 d-none d-sm-inline">Perfil</span> </a>
+                                <i class="fs-4 bi-person text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">Perfil</span> </a>
                         </li>
                         <li>
                             <a href="#submenu3" data-bs-toggle="collapse" class=" mb-2 nav-link px-0 align-middle text-white">
-                                <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">ACMP central</span></a>
+                                <i class="fs-4 bi-grid text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">ACMP central</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="{% url 'register_acmform_view' %}" class="nav-link px-0 text-white"> <span class="d-none d-sm-inline">Cadastrar ACMP</span></a>
+                                    <a href="{% url 'register_acmform_view' %}" class="nav-link px-0 text-white"> <span class="botao d-none d-sm-inline">Cadastrar ACMP</span></a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'acmform' %}" class="nav-link px-0 text-white"> <span class="d-none d-sm-inline">Ficha-ACMP</span></a>
+                                    <a href="{% url 'acmform' %}" class="nav-link px-0 text-white"> <span class="botao d-none d-sm-inline">Ficha-ACMP</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
-                                <i class="fs-4 bi-file-earmark-lock"></i><span class="ms-1 d-none d-sm-inline">Relatório de ações</span>
+                                <i class="fs-4 bi-file-earmark-lock text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Relatório de ações</span>
                         </li>
                         <li>
                             <a href="{% url 'register' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
-                                <i class="fs-3 bi-person-check"></i><span class="ms-1 d-none d-sm-inline">Registrar acesso</span>
+                                <i class="fs-3 bi-person-check text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Registrar acesso</span>
                         </li>
                         <li>
                             <a href="{% url 'rem_user' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
-                                <i class="fs-3 bi bi-person-x"></i><span class="ms-1 d-none d-sm-inline">Remover usuario</span>
+                                <i class="fs-3 bi bi-person-x text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Remover usuario</span>
                         </li>
                         <li>
                             <a href="{% url 'logout' %}" class="nav-link px-0 align-middle text-white">
-                                <i class="fs-4 bi-door-open"></i><span class="ms-1 d-none d-sm-inline">Encerrar seção</span></a>
+                                <i class="fs-4 bi-door-open text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Encerrar seção</span></a>
                         </li>
                     </ul>
                     <hr>

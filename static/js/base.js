@@ -31,3 +31,16 @@ anychart.onDocumentReady(function () {
         })
         .catch(error => console.error('Erro ao carregar os dados:', error));
 });
+
+const botoes = document.querySelectorAll('.botao');
+
+botoes.forEach(botao => {
+    botao.addEventListener('mouseover', () => {
+        botao.classList.add('hover');
+    });
+
+    botao.addEventListener('mouseout', () => {
+        botao.classList.remove('hover');
+    });
+});
+

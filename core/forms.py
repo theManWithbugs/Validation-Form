@@ -112,6 +112,11 @@ class BuscarCidadaoForm(forms.Form):
     nome = models.CharField(max_length=80)
     cpf = forms.CharField(label='CPF', max_length=11, required=True)
 
+class ExcluirViolenDomest(forms.Form):
+    class Meta:
+        model = 'ViolenDomest'
+        fields = ['process_referente']
+
 class BuscarNomeForm(forms.Form):
     nome = forms.CharField(max_length=80, required=True)
 

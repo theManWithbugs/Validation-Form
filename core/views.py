@@ -8,6 +8,7 @@ from django.db import DatabaseError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse
 from .forms import *
 from .forms import CidadaoForm
 from django.http import HttpResponse
@@ -92,20 +93,16 @@ def register_user(request):
 
 def remover_acesso(request):
     template_name = 'account/remov_acess.html'
-
     usuario = None
-    confirmar = None
-
     cpf = request.POST.get('cpf')
-    confirmar = request.POST.get('cpf')
 
     try:
         usuario = User.objects.get(cpf=cpf)
         print(usuario.nome)
-        if confirmar == True:
-            usuario.delete()
+        usuario.is_active = False
+        usuario.save()
     except User.DoesNotExist:
-        print(f"O usuario: {cpf} não existe!")
+        messages.error(request, f"O usuario: {cpf} não existe!")
 
     context = { 
         'usuario': usuario,
@@ -135,8 +132,8 @@ def atualizar_perfil_img(request):
 @login_required
 def home(request):
     template_name = 'commons/home.html'
+    
     aumento_percentual = calcular_porcent()
-
     total_usuarios = Cidadao.objects.count()  
     total_usuarios_site = User.objects.count()
     ativos = contar_ativos()
@@ -402,6 +399,7 @@ def buscar_nome_view(request):
 
     return render(request, 'commons/include/buscar_nome.html', context)
 
+#ERRO AINDA NÃO RESOLVIDO!
 def more_info_view(request, cpf):
 
     cidadao = get_object_or_404(Cidadao, cpf=cpf)
@@ -733,6 +731,30 @@ def violen_info(request, process_referente):
     }
 
     return render(request, 'commons/include/process_more.html', context)
+
+#NÃO FUNCIONA, ESTÁ RETORNANDO UMA TUPLA
+def excluir_process(request):
+
+    form = ExcluirViolenDomest(request.POST or None)
+
+    process_referente = get_object_or_404(ViolenDomest,  process_referente=process_referente)
+
+    if request.method == 'POST':
+        if  process_referente:
+            try:
+                process_referente.delete()  
+                print("Foi realizado a exclusão do processo!")
+            except ViolenDomest.DoesNotExist:
+                messages.error(request, 'O dado não existe!')
+        else:
+            messages.error(request, 'Número do processo não fornecido!')
+
+    context = {
+        'processo': process_referente,
+        'form': form,
+    }
+
+    return render(request, 'commons/include/busca_cpf.html', context)
 
 @user_passes_test(is_staff, login_url='permission_denied')
 def capturar_cpf_process(request):
