@@ -145,6 +145,20 @@
                             <p>Informações complementares não disponíveis.</p>
                         {% endif %}
                     </div>
+
+                    <div class="button-container bg-white rounded">
+                        <a class="btn btn-primary mb-0 me-2" href="{% url 'imprimir_pdf' %}" target="_blank">
+                            <i class="bi bi-printer">Documento PDF</i>
+                        </a>
+                    
+                        {% if user.is_staff %}
+                            <form method="post" action="{% url 'excluir_form' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
+                            </form>
+                        {% endif %}
+                    </div>       
                 
                     <hr>
                       
@@ -160,21 +174,7 @@
                         {% else %}
                         <p><strong style="color: crimson; font-size: larger;" class="ms-5">Não possui registro de violência domestica</strong></p>
                         {% endif %}
-                    </div>
-
-                    <div class="button-container bg-white rounded">
-                        <a class="btn btn-primary mb-0 me-2" href="{% url 'imprimir_pdf' %}">
-                            <i class="bi bi-printer">Documento PDF</i>
-                        </a>
-                    
-                        {% if user.is_staff %}
-                            <form method="post" action="{% url 'excluir_form' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
-                            </form>
-                        {% endif %}
-                    </div>                                  
+                    </div>                           
 
                 {% else %}
                     {% if form.is_valid %}

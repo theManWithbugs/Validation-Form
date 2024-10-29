@@ -3,7 +3,7 @@ anychart.onDocumentReady(function () {
         .then(response => response.json())
         .then(data => {
             var chartData = {
-                title: 'Faixas Etarias de idades (Porcentagem de Ativos)',
+                title: 'Faixas Etarias de idades (Porcentagem Ativos)',
                 header: ['#', 'Acre'],
                 rows: data.faixas_etarias
             };
@@ -42,5 +42,14 @@ botoes.forEach(botao => {
     botao.addEventListener('mouseout', () => {
         botao.classList.remove('hover');
     });
+});
+
+document.getElementById('confirmBtn').addEventListener('click', function() {
+    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    myModal.show();
+});
+
+document.getElementById('finalizeRemoval').addEventListener('click', function() {
+    document.getElementById('myform').submit();
 });
 

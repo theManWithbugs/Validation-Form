@@ -1,6 +1,7 @@
 from datetime import timedelta
 from itertools import count
 from django.forms import ValidationError
+from requests import request
 from .models import *
 import re
 from django.utils import timezone
@@ -83,6 +84,7 @@ def contar_ativos():
     return ativos
 
 def tipo_penal():
+
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
         'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'

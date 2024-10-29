@@ -23,6 +23,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     cpf = models.CharField(max_length=11, unique=True)
     nome = models.CharField(max_length=255, default='')
     profile_image = models.URLField(max_length=200, blank=True, null=True)
+    unidade = models.CharField(
+                            choices=c_unidade,
+                            max_length=15,
+                            null=False,
+                            blank=False,
+                            default='Não informado',
+                            )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -37,6 +44,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 # FORMULÁRIO 1
 class Cidadao(models.Model):
 
+    unidade = models.CharField(
+                        choices=c_unidade,
+                        max_length=15,
+                        null=False,
+                        blank=False,
+                        default='Não informado',
+                        )
     cpf = models.CharField(max_length=11, primary_key=True, verbose_name='Cpf:', unique=True)
     nome = models.CharField(max_length=80, verbose_name='Nome completo:')
     nome_social = models.CharField(max_length=80, blank=True, null=True, verbose_name='Nome social:', default='Não definido')

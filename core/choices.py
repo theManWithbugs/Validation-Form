@@ -266,8 +266,9 @@ c_status_process = (
 )
 
 c_unidade = (
-    ('RB', 'RIO BRANCO'),
-    ('CR', 'CRUZEIRO DO SUL'),
+    ('Não informado', 'Não informado'),
+    ('IAPEN-RB', 'IAPEN-RB'),
+    ('IAPEN-CR', 'IAPEN-CR'),
 )
 
 

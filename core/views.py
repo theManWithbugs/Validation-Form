@@ -31,7 +31,6 @@ from reportlab.lib.pagesizes import letter
 import pypandoc
 from django.template.loader import render_to_string
 
-
 def is_staff(user):
     return user.is_staff
 
@@ -64,9 +63,11 @@ def register_user(request):
     cpf= None
     password = None
     confirmar_password = None
+    unidade = None
 
     if request.method == 'POST':
        nome = request.POST.get('nome')
+       unidade = request.POST.get('unidade')
        cpf = request.POST.get('cpf')
        password = request.POST.get('password')
        confirmar_password = request.POST.get('confirmar_password')
@@ -82,6 +83,7 @@ def register_user(request):
     try:
         user = User.objects.create_user(
             cpf=cpf,
+            unidade = unidade,
             password=password,
             nome=nome,
         )
@@ -322,9 +324,11 @@ def busca_cpf_view(request):
     informacoes_complementares = None
     form_violen = None
 
+    unidade_usuario = request.user.unidade
+
     if form.is_valid():
         cpf = form.cleaned_data.get('cpf')
-        cidadao_queryset = Cidadao.objects.filter(cpf=cpf)
+        cidadao_queryset = Cidadao.objects.filter(cpf=cpf, unidade=unidade_usuario)
         request.session['cpf'] = cpf
 
         if cidadao_queryset.exists():
@@ -357,6 +361,8 @@ def buscar_nome_view(request):
     historico_criminal= None
     informacoes_complementares = None
 
+    unidade_usuario = request.user.unidade
+
     #inicia a lista como vazia para evitar erros
     objs = []
 
@@ -371,7 +377,7 @@ def buscar_nome_view(request):
 
         #verifica se nome não está vazio
         if nome:
-            cidadao__queryset = Cidadao.objects.filter(nome__icontains=nome)
+            cidadao__queryset = Cidadao.objects.filter(nome__icontains=nome, unidade=unidade_usuario)
             paginator = Paginator(cidadao__queryset, 10)
             page = request.GET.get('page')
 
@@ -619,12 +625,14 @@ def buscar_acmform_view (request):
     historico_criminal = None
     violen_domest = None
 
+    unidade_usuario = request.user.unidade
+
     if form.is_valid():
         cpf = form.cleaned_data['cpf']
         request.session['cpf'] = cpf
 
         try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
+            cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
         
         except Cidadao.DoesNotExist:
             return redirect('not_found_page')
@@ -693,10 +701,11 @@ def register_acmform_view(request):
 
 @login_required
 def acomp_central_form(request):
+    unidade_usuario = request.user.unidade
     cpf = request.session.get('cpf')
 
     try:
-        cidadao = Cidadao.objects.get(cpf=cpf)
+        cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
     except Cidadao.DoesNotExist:
         return redirect('not_found_page')
 
@@ -733,25 +742,21 @@ def violen_info(request, process_referente):
     return render(request, 'commons/include/process_more.html', context)
 
 #NÃO FUNCIONA, ESTÁ RETORNANDO UMA TUPLA
-def excluir_process(request):
+def excluir_process(request, process_referente):
 
-    form = ExcluirViolenDomest(request.POST or None)
-
-    process_referente = get_object_or_404(ViolenDomest,  process_referente=process_referente)
+    process_referente_obj = get_object_or_404(ViolenDomest,  process_referente=process_referente)
 
     if request.method == 'POST':
-        if  process_referente:
-            try:
-                process_referente.delete()  
-                print("Foi realizado a exclusão do processo!")
-            except ViolenDomest.DoesNotExist:
-                messages.error(request, 'O dado não existe!')
+        try:
+            process_referente_obj.delete()
+            print("Foi realizado a exclusão do processo!")
+        except ViolenDomest.DoesNotExist:
+            messages.error(request, 'O dado não existe!')
         else:
             messages.error(request, 'Número do processo não fornecido!')
 
     context = {
-        'processo': process_referente,
-        'form': form,
+        'processo': process_referente_obj,
     }
 
     return render(request, 'commons/include/busca_cpf.html', context)
@@ -947,6 +952,7 @@ class IndexView(View):
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=False, filename='Ficha.pdf')
 
+@login_required
 def generate_docx(request):
     template_name = 'commons/include/acmp_ficha_edit.html'
     cpf = request.session.get('cpf')

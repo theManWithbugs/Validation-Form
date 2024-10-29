@@ -33,6 +33,8 @@
                     <p><strong> Tecnico responsavel:</strong> {{ processo.tecnico_responsavel_vio }}</p>
                 </div>
 
+                <h4>{{ processo.process_referente }}</h4>
+
                 {% if user.is_staff %}
                     <form method="post" action="{% url 'excluir_process' %}">
                         {% csrf_token %}

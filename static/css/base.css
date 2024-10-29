@@ -70,6 +70,16 @@ img {
     color: yellow;
 }
 
+#efeito_piscar {
+    font-size: 1.3em;
+    animation: piscar 1s infinite;
+}
+
+@keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 
 
 
