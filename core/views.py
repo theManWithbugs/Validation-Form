@@ -100,7 +100,6 @@ def remover_acesso(request):
 
     try:
         usuario = User.objects.get(cpf=cpf)
-        print(usuario.nome)
         usuario.is_active = False
         usuario.save()
     except User.DoesNotExist:
@@ -151,13 +150,15 @@ def home(request):
 
 @login_required
 def actions_view(request): 
+    template_name = 'commons/include/actions.html'
     alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:20]
-    return render(request, 'commons/include/actions.html', {'alteracoes': alteracoes})
+    return render(request, template_name, {'alteracoes': alteracoes})
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
 #-------------------------------------------------------------------------------------------------------#         
 @login_required
 def form1_view(request):
+    template_name = 'commons/include/forms/form.html'
     if request.method == 'POST':
         form = CidadaoForm(request.POST)
         if form.is_valid():
@@ -168,7 +169,7 @@ def form1_view(request):
                 if isinstance(form_data[field], (date, datetime)):
                     form_data[field] = form_data[field].isoformat()  # Usa o formato ISO para datas e datetimes
 
-            # Salvar dados no session
+            # Salvar os dados na seção
             request.session['cidadao_form_data'] = form_data
             request.session['form1_complete'] = True
             return redirect('form2')
@@ -177,10 +178,11 @@ def form1_view(request):
     else:
         form = CidadaoForm()
     
-    return render(request, 'commons/include/forms/form.html', {'formulario': form})
+    return render(request, template_name, {'formulario': form})
 
 @login_required
 def form2_view(request):
+    template_name = 'commons/include/forms/form2.html'
     if not request.session.get('form1_complete'):
         messages.error(request, 'Formulario 1 não preenchido')
         return redirect('form1')
@@ -203,10 +205,11 @@ def form2_view(request):
     else:
         form = HistoricoSaudeForm()
 
-    return render(request, 'commons/include/forms/form2.html', {'formulario_saude': form})
+    return render(request, template_name, {'formulario_saude': form})
 
 @login_required
 def form3_view(request):
+    template_name = 'commons/include/forms/form3.html'
     if not request.session.get('form2_complete'):
         messages.error(request, 'Formulario 2 não preenchido')
         return redirect('form2')
@@ -229,11 +232,12 @@ def form3_view(request):
     else:
         form = HistoricoCriminalForm()
 
-    return render(request, 'commons/include/forms/form3.html', {'formulario_tecnico': form})
+    return render(request, template_name, {'formulario_tecnico': form})
 
 
 @login_required
 def form4_view(request):
+    template_name = 'commons/include/forms/form4.html'
     if not (request.session.get('form1_complete') and
             request.session.get('form2_complete') and
             request.session.get('form3_complete')):
@@ -274,10 +278,11 @@ def form4_view(request):
     else:
         form = InformacoesComplementaresForm()
 
-    return render(request, 'commons/include/forms/form4.html', {'formulario_complementar': form,})
+    return render(request, template_name, {'formulario_complementar': form})
 
 @login_required
 def capturar_dados_viole(request):
+    template_name = 'commons/include/cap_viol.html'
     if request.method == 'POST':
         cpf = request.POST.get('cpf')
         if cpf:
@@ -285,10 +290,11 @@ def capturar_dados_viole(request):
         else:
             messages.error(request, 'O campo CPF não deve estar vazio!')
 
-    return render(request, 'commons/include/cap_viol.html')
+    return render(request, template_name)
 
 @login_required
 def form_violencia_domest(request, cpf):
+    template_name = 'commons/include/forms/form_violen.html'
     try:
         cidadao = Cidadao.objects.get(cpf=cpf)
     except Cidadao.DoesNotExist:
@@ -311,11 +317,12 @@ def form_violencia_domest(request, cpf):
         'cidadao': cidadao,
     }
 
-    return render(request, 'commons/include/forms/form_violen.html', context)
+    return render(request, template_name, context)
        
 #-------------------------------------------------------------------------------------------------------#  
 @login_required
 def busca_cpf_view(request):
+    template_name = 'commons/include/busca_cpf.html'
     form = BuscarCidadaoForm(request.GET or None)
 
     cidadao = None
@@ -350,10 +357,11 @@ def busca_cpf_view(request):
         'form_violen': form_violen,
     }
 
-    return render(request, 'commons/include/busca_cpf.html', context)
+    return render(request, template_name, context)
 
 @login_required
 def buscar_nome_view(request):
+    template_name = 'commons/include/buscar_nome.html'
     form = BuscarNomeForm(request.GET or None)
 
     cidadao = None
@@ -403,10 +411,10 @@ def buscar_nome_view(request):
         'search': nome,
     }
 
-    return render(request, 'commons/include/buscar_nome.html', context)
+    return render(request, template_name, context)
 
-#ERRO AINDA NÃO RESOLVIDO!
 def more_info_view(request, cpf):
+    template_name = 'commons/include/more_info.html'
 
     cidadao = get_object_or_404(Cidadao, cpf=cpf)
 
@@ -428,7 +436,7 @@ def more_info_view(request, cpf):
         'form_violen': form_violen,
     }
 
-    return render(request, 'commons/include/more_info.html', context)
+    return render(request, template_name, context)
     
 #-------------------------------------------------------------------------------------------------------#
 @login_required
@@ -489,6 +497,11 @@ def atualizar_dados(request, cpf):
         cidadao = Cidadao.objects.get(cpf=cpf)
     except Cidadao.DoesNotExist:
         return redirect('not_found_page')
+
+    unidade_usuario = request.user.unidade
+    if cidadao.unidade != unidade_usuario:
+        messages.error(request, 'Você não tem permissão para acessar esses dados.')
+        return redirect('permission_denied')
 
     #é realizado a criação de variaveis e em seguida é atribuido valores a cada instância de modelo
     if request.method == 'POST':
@@ -642,6 +655,8 @@ def buscar_acmform_view (request):
             form_acomp = cidadao.form_acompanhamento_central.all()
             violen_domest = cidadao.form_violencia_domes.all()
 
+    else:
+        messages.error(request, 'Os dados devem ser inseridos para a busca!')
 
     context = {
         'formulario': form, 
@@ -740,26 +755,6 @@ def violen_info(request, process_referente):
     }
 
     return render(request, 'commons/include/process_more.html', context)
-
-#NÃO FUNCIONA, ESTÁ RETORNANDO UMA TUPLA
-def excluir_process(request, process_referente):
-
-    process_referente_obj = get_object_or_404(ViolenDomest,  process_referente=process_referente)
-
-    if request.method == 'POST':
-        try:
-            process_referente_obj.delete()
-            print("Foi realizado a exclusão do processo!")
-        except ViolenDomest.DoesNotExist:
-            messages.error(request, 'O dado não existe!')
-        else:
-            messages.error(request, 'Número do processo não fornecido!')
-
-    context = {
-        'processo': process_referente_obj,
-    }
-
-    return render(request, 'commons/include/busca_cpf.html', context)
 
 @user_passes_test(is_staff, login_url='permission_denied')
 def capturar_cpf_process(request):

@@ -8,6 +8,9 @@
 </head>
 
 <body>
+
+    {% include 'commons/include/alert_error_message.html' %}
+
     <!-- Ambos estão interligados pelo javascript -->
     <div class="container bg-dark d-flex justify-content-center rounded mt-5" style="height: 500px; max-width: 700px;">
         <div class="container bg-secondary rounded mt-5" style="height: 400px; max-width: 600px;">
@@ -17,7 +20,7 @@
                 <form method="post" action="{% url 'rem_user' %}" class="mt-5" id="myform">
                     {% csrf_token %}
                     <label for="cpf"><strong>CPF:</strong></label>
-                    <input type="number" name="cpf" id="cpf" class="w-95 h-95">
+                    <input type="text" name="cpf" id="cpf" class="w-95 h-95" maxlength="11">
                     <button type="button" class="btn btn-primary h-80" id="confirmBtn">Remover</button>
                 </form>
             </div>
@@ -37,25 +40,31 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Acesso alterado!</h5>
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmar alteração</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Você realmente deseja remover o acesso do usuário?
-                    <h4 class="d-flex justify-content-center text-danger">Nome de usúario a excluir:</h4>
-                    <h5 class="d-flex justify-content-center">Nome de usúario: {{ usuario.nome }}</h5>
-                    <h5 class="d-flex justify-content-center">CPF: {{ usuario.cpf }}</h5>
+                    <h5> Você realmente deseja remover o acesso do usuário? </h5>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="finalizeRemoval">Confirmar</button>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/all.min.js' %}"></script>
+
+    <script>
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            myModal.show();
+        });
+        document.getElementById('finalizeRemoval').addEventListener('click', function() {
+            document.getElementById('myform').submit();
+        });
+    </script>
 </body>
 </html>

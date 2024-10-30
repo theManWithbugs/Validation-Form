@@ -41,7 +41,6 @@ urlpatterns = [
     #the other views
     path('base/edit_form/', views.edit_form_view, name='edit_view'),
     path('base/excluir/', views.excluir_form, name='excluir_form'),
-    path('base/excluir/', views.excluir_process, name='excluir_process'),
     path('base/editar_dados',views.capturar_cpf, name='capturar_dados'),
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
     path('base/estatisticas/', views.analise_view, name='estatisticas'),

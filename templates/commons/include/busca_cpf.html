@@ -108,7 +108,7 @@
                             <p><strong>Já Esteve Preso:</strong> {{ historico_criminal.ja_esteve_preso }}</p>
                             <p><strong>Prisão Justificativa:</strong> {{ historico_criminal.prisao_justificativa }}</p>
                             <p><strong>Prisão Familiar:</strong> {{ historico_criminal.prisao_familiar }}</p>
-                            <p><strong>Número do Processo:</strong> {{ historico_criminal.numero_do_processo }}</p>
+                            <p><strong>Número do Processo:</strong> <span class="text-danger fs-5">({{ historico_criminal.numero_do_processo }})</span> </p>
                             <p><strong>Juiz de Origem:</strong> {{ historico_criminal.juiz_de_origem }}</p>
                             <p><strong>Medida Aplicada:</strong> {{ historico_criminal.medida_aplicada }}</p>
                             <p><strong>Tipo Penal:</strong> {{ historico_criminal.tipo_penal }}</p>
@@ -152,11 +152,26 @@
                         </a>
                     
                         {% if user.is_staff %}
-                            <form method="post" action="{% url 'excluir_form' %}">
+                            <form method="post" action="{% url 'excluir_form' %}" id="myform">
                                 {% csrf_token %}
                                 <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
+                                <button class="btn btn-danger" type="button" id="confirmBtn">Excluir Cidadão</button>
                             </form>
+
+                            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmModalLabel">Confirmar exclusão de dados</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-danger" id="finalizeRemoval">Confirmar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>       
                 
@@ -167,7 +182,7 @@
                         <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
                             {% for items in form_violen %}
                             <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
-                                <p><strong> Número do processo: ===>></strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
+                                <p><strong> Número do processo: ===>></strong><a class="btn btn-info me-2" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
                                 <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
                             </div>
                             {% endfor %}

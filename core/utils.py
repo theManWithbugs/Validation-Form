@@ -64,8 +64,8 @@ def calcular_porcent():
 
 #função para calcular porcentagem de usuarios masculinos e femininos
 def calcular_sexo():
-    masculino_count = Cidadao.objects.filter(sexo='M').count()
-    feminino_count = Cidadao.objects.filter(sexo='F').count()
+    masculino_count = Cidadao.objects.filter(sexo='M', unidade='IAPEN-RB').count()
+    feminino_count = Cidadao.objects.filter(sexo='F', unidade='IAPEN-RB').count()
 
     total_count = masculino_count + feminino_count
 
@@ -92,7 +92,7 @@ def tipo_penal():
     resultado = {}
     
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo).count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, cidadao__unidade='IAPEN-RB').count()
 
     total = sum(resultado.values())
 
@@ -114,7 +114,7 @@ def medida_cumprimento_calc():
     resultado_medida = {}
 
     for tipo in tipos:
-        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo).count()
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, cidadao__unidade='IAPEN-RB').count()
     
     return resultado_medida
 
@@ -126,7 +126,7 @@ def medida_cumprimento_saida():
     resultado_medida_saida = {}
 
     for tipo in tipos:
-        resultado_medida_saida[tipo] = InformacoesComplementares.objects.filter(motivo_saida=tipo).count()
+        resultado_medida_saida[tipo] = InformacoesComplementares.objects.filter(motivo_saida=tipo, cidadao__unidade='IAPEN-RB').count()
     
     return resultado_medida_saida
 
@@ -138,25 +138,25 @@ def tipo_penal_quant():
     resultado = {}
 
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo).count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, cidadao__unidade='IAPEN-RB').count()
 
     return resultado
 
 def contar_faixa_etaria():
     faixa_etarias = {
-        "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24).count(),
-        "25 a 29": Cidadao.objects.filter(idade__gte=25, idade__lte=29).count(),
-        "30 a 34": Cidadao.objects.filter(idade__gte=30, idade__lte=34).count(),
-        "35 a 59": Cidadao.objects.filter(idade__gte=35, idade__lte=34).count(),
+        "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count(),
+        "25 a 29": Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count(),
+        "30 a 34": Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count(),
+        "35 a 59": Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade='IAPEN-RB').count(),
     }
     
     return faixa_etarias
 
 def contar_faixa_etaria_porcentagem_sta():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24).count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29).count() 
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34).count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39).count()  
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade='IAPEN-RB').count()  
 
     total = media1 + media2 + media3 + media4
 
@@ -178,10 +178,10 @@ def contar_faixa_etaria_porcentagem_sta():
     return porcentagens
 
 def contar_faixa_etaria_porcentagem():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24).count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29).count() 
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34).count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39).count()  
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39, unidade='IAPEN-RB').count()  
 
     total = media1 + media2 + media3 + media4
 
@@ -218,8 +218,8 @@ def calcular_sexo_ativos():
 
     #É possível usar o doublescore __ para referenciar modelos diferentes quando existe uma chave primaria
     #interligando os dois modelos.
-    masculino_count = Cidadao.objects.filter(sexo='M', informacoes_complementares__motivo_saida='ATIVO').count()
-    feminino_count = Cidadao.objects.filter(sexo='F', informacoes_complementares__motivo_saida='ATIVO').count()
+    masculino_count = Cidadao.objects.filter(sexo='M', informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
+    feminino_count = Cidadao.objects.filter(sexo='F', informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
 
     total_count = masculino_count + feminino_count
 
@@ -240,7 +240,7 @@ def tipo_penal_ativos():
     resultado = {}
     
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO').count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO', cidadao__unidade='IAPEN-RB').count()
 
     total = sum(resultado.values())
 
@@ -262,15 +262,15 @@ def medida_cumprimento_calc_ativos():
     resultado_medida = {}
 
     for tipo in tipos:
-        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, motivo_saida='ATIVO').count()
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, motivo_saida='ATIVO', cidadao__unidade='IAPEN-RB').count()
     
     return resultado_medida
 
 def contar_faixa_etaria_porcentagem_ativos():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO').count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO').count() 
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO').count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39, informacoes_complementares__motivo_saida='ATIVO').count()  
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()  
 
     total = media1 + media2 + media3 + media4
 
@@ -290,6 +290,7 @@ def contar_faixa_etaria_porcentagem_ativos():
         ]
 
     return porcentagens
+
 
 
 

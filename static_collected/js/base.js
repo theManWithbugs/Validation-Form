@@ -3,7 +3,7 @@ anychart.onDocumentReady(function () {
         .then(response => response.json())
         .then(data => {
             var chartData = {
-                title: 'Faixas Etarias de idades (Porcentagem)',
+                title: 'Idades (Porcentagem Geral)',
                 header: ['#', 'Acre'],
                 rows: data.faixas_etarias
             };
@@ -30,3 +30,13 @@ anychart.onDocumentReady(function () {
         })
         .catch(error => console.error('Erro ao carregar os dados:', error));
 });
+
+document.getElementById('confirmBtn').addEventListener('click', function() {
+    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    myModal.show();
+});
+document.getElementById('finalizeRemoval').addEventListener('click', function() {
+    document.getElementById('myform').submit();
+});
+
+

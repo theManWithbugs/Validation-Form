@@ -53,3 +53,4 @@ document.getElementById('finalizeRemoval').addEventListener('click', function() 
     document.getElementById('myform').submit();
 });
 
+

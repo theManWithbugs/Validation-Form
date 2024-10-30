@@ -109,24 +109,27 @@
                     <hr>
                     <br>
 
-                    {% if user.is_staff %}
-                        <form method="post" action="{% url 'excluir_form' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
-                            <h5 class="d-flex justify-content-center mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif">
-                                <strong>Apenas administradores ou desenvolvedores podem excluir!</strong>
-                                <i class="fas fa-exclamation-triangle" style="margin-left: 4px;"></i>
-                            </h5>
-                            <button class="btn btn-danger" type="submit" style="margin-left: 40%;">Excluir Cidadão</button>
-                        </form>
-                    {% endif %}
+                    
+                    <div class="button-container bg-white rounded">
+                        <a class="btn btn-primary mb-0 me-2" href="{% url 'imprimir_pdf' %}" target="_blank">
+                            <i class="bi bi-printer">Documento PDF</i>
+                        </a>
+                    
+                        {% if user.is_staff %}
+                            <form method="post" action="{% url 'excluir_form' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cpf" value="{{ cidadao.cpf }}">
+                                <button class="btn btn-danger" type="submit">Excluir Cidadão</button>
+                            </form>
+                        {% endif %}
+                    </div>   
 
                 <div class="violen_process">
                     {% if form_violen %}
                         <h3 class="d-flex justify-content-center">(PROCESSOS POR VIOLENCIA DOMESTICA)</h3>
                             {% for items in form_violen %}
                             <div class="container bg-dark d-flex justify-content-center mt-2 p-1" style="border: solid 1px; color: white; border-radius: 10px;">
-                                <p><strong> Número do processo: =====>> </strong><a class="btn btn-info" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
+                                <p><strong> Número do processo: =====>> </strong><a class="btn btn-info me-2" href="{% url 'violen_info' items.process_referente %}" value=" items.process_referente "> {{  items.process_referente }}</a></p>
                                 <p>STATUS: <strong style="color: red;"> {{ items.status_process }} </strong></p>
                             </div>
                             {% endfor %}
