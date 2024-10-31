@@ -43,7 +43,6 @@ urlpatterns = [
     path('base/excluir/', views.excluir_form, name='excluir_form'),
     path('base/editar_dados',views.capturar_cpf, name='capturar_dados'),
     path('atualizar_dados/<str:cpf>/', views.atualizar_dados, name='atualizar_dados'),
-    path('base/estatisticas/', views.analise_view, name='estatisticas'),
     path('base/buscar_nome/more_info/<str:cpf>/', views.more_info_view, name='more_info'),
     path('base/busca/process_info/<str:process_referente>/', views.violen_info, name='violen_info'),
     path('base/alterar_process/', views.capturar_cpf_process, name='alterar_process'),
@@ -54,6 +53,10 @@ urlpatterns = [
     #pdf views
     path('base/pdf_test/', IndexView.as_view(), name='imprimir_pdf'), 
     path('acmp_pdf/', views.pdf_view, name='acmp_pdf'),
+
+    #views de estatisticas
+    path('base/estatisticas/', views.analise_view, name='estatisticas'),
+    path('base/estatisticas_CR/', views.analise_view_CR, name='estatisticas_CR'),
 
     #word_view
     path('generate-docx/', generate_docx, name='generate_docx'),

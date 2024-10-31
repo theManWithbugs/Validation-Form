@@ -12,57 +12,60 @@
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark sidebar">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-secondary sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <img src="{% static '/img/img_ciap.png' %}" class="img-fluid" alt="Logo">
-                    <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                        <span class="d-none d-sm-inline text-white">Menu de opções
-                            <i class="bi bi-gear" style="margin-left: 5px;"></i>
-                        </span>
-                    </a>
+                    <h1 class="mt-3 ms-2 mb-2">CIAP</h1>
+                    <img src="{% static 'img/ciap_img_new.jpg' %}" class="img-fluid mb-4" alt="Logo">
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a href="{% url 'base' %}" class="mb-1 nav-link align-middle px-0 text-white">
+                            <a href="{% url 'base' %}" class="mb-1 nav-link align-middle px-0 text-dark">
                                 <i class="fs-4 bi-house text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Pagina inicial</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{% url 'estatisticas' %}" class="mb-1 nav-link px-0 align-middle text-white">
+                            <a href="{% url 'estatisticas' %}" class="mb-1 nav-link px-0 align-middle text-dark">
                                 <i class="fs-4 bi-bar-chart text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">Estatisticas</span></a>
                         </li>
                         <li>
-                            <a href="{% url 'perfil' %}" class="mb-1 nav-link px-0 align-middle text-white">
+                            <a href="{% url 'perfil' %}" class="mb-1 nav-link px-0 align-middle text-dark">
                                 <i class="fs-4 bi-person text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">Perfil</span> </a>
                         </li>
                         <li>
-                            <a href="#submenu3" data-bs-toggle="collapse" class=" mb-2 nav-link px-0 align-middle text-white">
+                            <a href="#submenu3" data-bs-toggle="collapse" class=" mb-2 nav-link px-0 align-middle text-dark">
                                 <i class="fs-4 bi-grid text-warning"></i> <span class="botao ms-1 d-none d-sm-inline">ACMP central</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="{% url 'register_acmform_view' %}" class="nav-link px-0 text-white"> <span class="botao d-none d-sm-inline">Cadastrar ACMP</span></a>
+                                    <a href="{% url 'register_acmform_view' %}" class="nav-link px-0 text-dark"> <span class="botao d-none d-sm-inline">Cadastrar ACMP</span></a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'acmform' %}" class="nav-link px-0 text-white"> <span class="botao d-none d-sm-inline">Ficha-ACMP</span></a>
+                                    <a href="{% url 'acmform' %}" class="nav-link px-0 text-dark"> <span class="botao d-none d-sm-inline">Ficha-ACMP</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
+                            <a href="{% url 'actions' %}" class="mb-3 px-0 align-middle text-decoration-none text-dark">
                                 <i class="fs-4 bi-file-earmark-lock text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Relatório de ações</span>
                         </li>
                         <li>
-                            <a href="{% url 'register' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
+                            <a href="{% url 'register' %}" class="mb-3 px-0 align-middle text-decoration-none text-dark">
                                 <i class="fs-3 bi-person-check text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Registrar acesso</span>
                         </li>
                         <li>
-                            <a href="{% url 'rem_user' %}" class="mb-3 px-0 align-middle text-decoration-none text-white">
+                            <a href="{% url 'rem_user' %}" class="mb-3 px-0 align-middle text-decoration-none text-dark">
                                 <i class="fs-3 bi bi-person-x text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Remover usuario</span>
                         </li>
                         <li>
-                            <a href="{% url 'logout' %}" class="nav-link px-0 align-middle text-white">
+                            <a href="{% url 'logout' %}" class="nav-link px-0 align-middle text-dark">
                                 <i class="fs-4 bi-door-open text-warning"></i><span class="botao ms-1 d-none d-sm-inline">Encerrar seção</span></a>
                         </li>
                     </ul>
+ 
+                    <div>
+                        <img src="{% static 'img/brasaoacre.png' %}" style="max-width: 60px; height: auto;" id="img_brasao">
+                        <br>
+                        <span class="text-dark" style="font-size: large;">DDMS-Divisão de manutenção e desenvolvimento de sistemas</span>
+                    </div>
+
                     <hr>
                 </div>
             </div>

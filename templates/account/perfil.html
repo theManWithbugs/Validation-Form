@@ -1,6 +1,8 @@
 {% extends 'commons/include/new_base.html' %}
 {% load static %}
 
+{% block title %}HOME | PERFIL{% endblock %}
+
 {% block content %}
 <section class="bg-dark py-5">
     <div class="container">
@@ -43,13 +45,4 @@
     </form>
     <br>
 </div>
-
-<footer class="bg-success text-white text-center py-4 mt-5 fixed-bottom">
-    <div class="container">
-        <p class="mb-1" style="font-size: large;">&copy; 2024-<strong>DDMS</strong>-Divisão de Desenvolvimento e Manutenção de Sistemas
-            <img src="{{ MEDIA_URL }}/media/brasaoacre.png" class="img-fluid" alt="Logo" style="height: 40px;"></p>
-        <p class="mb-0">Rio Branco ACRE</p>
-    </div>
-</footer>
-
 {% endblock content %}

@@ -133,20 +133,7 @@ def atualizar_perfil_img(request):
 @login_required
 def home(request):
     template_name = 'commons/home.html'
-    
-    aumento_percentual = calcular_porcent()
-    total_usuarios = Cidadao.objects.count()  
-    total_usuarios_site = User.objects.count()
-    ativos = contar_ativos()
-
-    context = {
-        'total_usuarios': total_usuarios,  
-        'aumento_percentual': aumento_percentual,
-        'total_usuarios_site': total_usuarios_site,
-        'ativos': ativos,
-    }
-
-    return render(request, template_name, context)
+    return render(request, template_name)
 
 @login_required
 def actions_view(request): 
@@ -595,6 +582,10 @@ def analise_view(request):
 
     return render(request, template_name, context)
 
+def analise_view_CR(request):
+    template_name = 'commons/include/estatisticas_CR.html'
+    return render(request, template_name)
+
 class HistoricoCriminalList(APIView):
     def get(self, request):
         # Obtendo os históricos
@@ -615,14 +606,12 @@ class HistoricoCriminalList(APIView):
         })
 class FaixasEtarias(APIView):
     def get(self, request):
-        # Obtendo as idades dos cidadãos
+
         idades = Cidadao.objects.all()
         serializer = CidadaoSerializer(idades, many=True)
 
-        # Chamando a função para calcular as faixas etárias
         faixas_etarias = contar_faixa_etaria_porcentagem_ativos()
 
-        # Retornando os dados em um formato que inclua as idades e faixas etárias
         return Response({
             'idades': serializer.data,
             'faixas_etarias': faixas_etarias,

@@ -267,10 +267,10 @@ def medida_cumprimento_calc_ativos():
     return resultado_medida
 
 def contar_faixa_etaria_porcentagem_ativos():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count() 
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
     media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()  
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
 
     total = media1 + media2 + media3 + media4
 
@@ -279,17 +279,18 @@ def contar_faixa_etaria_porcentagem_ativos():
             ['De 18-24', round((media1 / total) * 100, 2)],
             ['De 25-29', round((media2 / total) * 100, 2)],
             ['De 30-34', round((media3 / total) * 100, 2)],
-            ['De 35-39', round((media4 / total) * 100, 2)],
+            ['De 35-59', round((media4 / total) * 100, 2)],
         ]
     else:
         porcentagens = [
             ['De 18-24', 0.00],
             ['De 25-29', 0.00],
             ['De 30-34', 0.00],
-            ['De 35-39', 0.00],
+            ['De 35-59', 0.00],
         ]
 
     return porcentagens
+
 
 
 

@@ -2,9 +2,14 @@ anychart.onDocumentReady(function () {
     fetch('/faixas-etarias/')
         .then(response => response.json())
         .then(data => {
+            // Verifique se os dados têm a estrutura correta
+            if (!data.faixas_etarias || !Array.isArray(data.faixas_etarias)) {
+                throw new Error('Dados inválidos recebidos.');
+            }
+
             var chartData = {
-                title: 'Faixas Etarias de idades (Porcentagem Ativos)',
-                header: ['#', 'Acre'],
+                title: 'Faixas Etárias de Idades (Porcentagem Ativos)',
+                header: ['Faixa Etária', 'Porcentagem'],
                 rows: data.faixas_etarias
             };
 
@@ -12,7 +17,7 @@ anychart.onDocumentReady(function () {
             chart.data(chartData);
             chart.animation(true);
             chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
-            chart.yAxis().title('Indice');
+            chart.yAxis().title('Índice');
             chart.labels().enabled(true).position('center-top').anchor('center-bottom').format('{%Value}{groupsSeparator: }%');
             chart.hovered().labels(false);
             chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
@@ -20,9 +25,9 @@ anychart.onDocumentReady(function () {
             chart.tooltip().positionMode('point').position('center-top').anchor('center-bottom').offsetX(0).offsetY(5)
                 .titleFormat('{%X}').format('{%SeriesName} : #{%Value}{groupsSeparator: }');
 
-            var colors = ['#00000'];
-            var series = chart.getSeriesAt(0);
-            series.fill(colors);
+            // Ajustando a cor da série
+            var series = chart.column(data.faixas_etarias);
+            series.fill('#000000'); // Preto sólido
 
             chart.background().fill('rgba(255, 255, 255, 0.8)'); 
 
