@@ -23,3 +23,5 @@ async function fetchHistoricos() {
 window.onload = fetchHistoricos;
 
 
+
+

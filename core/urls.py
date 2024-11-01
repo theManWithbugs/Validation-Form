@@ -56,7 +56,6 @@ urlpatterns = [
 
     #views de estatisticas
     path('base/estatisticas/', views.analise_view, name='estatisticas'),
-    path('base/estatisticas_CR/', views.analise_view_CR, name='estatisticas_CR'),
 
     #word_view
     path('generate-docx/', generate_docx, name='generate_docx'),

@@ -4,7 +4,6 @@ body {
     background-position: top left;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-color: #008080;
     filter: brightness(0.9) contrast(1.0);
 }
 
@@ -83,6 +82,10 @@ img {
 #img_brasao {
     margin-left: 90px;
     margin-bottom: 15px;
+}
+
+#home_location {
+    margin-top: 70px;
 }
 
 

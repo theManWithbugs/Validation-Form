@@ -529,23 +529,23 @@ def atualizar_dados(request, cpf):
 # Aqui nesta pagina ficam as estatisticas para análise de dados
 @login_required
 def analise_view(request):
-    aumento_percentual =  calcular_porcent()
+    aumento_percentual =  calcular_porcent(request)
     template_name = 'commons/include/estatisticas.html'
-    resultado_tipo_penal = tipo_penal()
-    resultado = tipo_penal_quant()
-    resultado_medida = medida_cumprimento_calc()
-    resultado_cumprimento_saida = medida_cumprimento_saida()
-    ativos = contar_ativos()
-    faixas_etarias = contar_faixa_etaria()
-    faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem_sta()
+    resultado_tipo_penal = tipo_penal(request)
+    resultado = tipo_penal_quant(request)
+    resultado_medida = medida_cumprimento_calc(request)
+    resultado_cumprimento_saida = medida_cumprimento_saida(request)
+    ativos = contar_ativos(request)
+    faixas_etarias = contar_faixa_etaria(request)
+    faixas_etarias_porcentagem = contar_faixa_etaria_porcentagem_sta(request)
 
-    tip_penal_ativos =  tipo_penal_ativos()
-    medida_cump_ativos = medida_cumprimento_calc_ativos()
-    resultado_masculino_at, resultado_feminino_at = calcular_sexo_ativos()
-    resultado_faixas_etarias_ativos = contar_faixa_etaria_porcentagem_ativos()
+    tip_penal_ativos =  tipo_penal_ativos(request)
+    medida_cump_ativos = medida_cumprimento_calc_ativos(request)
+    resultado_masculino_at, resultado_feminino_at = calcular_sexo_ativos(request)
+    resultado_faixas_etarias_ativos = contar_faixa_etaria_porcentagem_ativos(request)
 
 
-    resultado_masculino, resultado_feminino = calcular_sexo()
+    resultado_masculino, resultado_feminino = calcular_sexo(request)
 
     total_usuarios = Cidadao.objects.count()
 
@@ -582,10 +582,6 @@ def analise_view(request):
 
     return render(request, template_name, context)
 
-def analise_view_CR(request):
-    template_name = 'commons/include/estatisticas_CR.html'
-    return render(request, template_name)
-
 class HistoricoCriminalList(APIView):
     def get(self, request):
         # Obtendo os históricos
@@ -593,10 +589,10 @@ class HistoricoCriminalList(APIView):
         serializer = HistoricoCriminalSerializer(historicos, many=True)
 
         # Chamando a função para calcular porcentagens dos tipos penais
-        tipos_penais_porcentagens = tipo_penal()
+        tipos_penais_porcentagens = tipo_penal(request)
 
         # Chamando a função para calcular medidas de cumprimento
-        medidas_cumprimento = medida_cumprimento_calc()
+        medidas_cumprimento = medida_cumprimento_calc(request)
 
         # Retornando os dados em um formato que inclua as porcentagens e medidas
         return Response({
@@ -610,7 +606,7 @@ class FaixasEtarias(APIView):
         idades = Cidadao.objects.all()
         serializer = CidadaoSerializer(idades, many=True)
 
-        faixas_etarias = contar_faixa_etaria_porcentagem_ativos()
+        faixas_etarias = contar_faixa_etaria_porcentagem_ativos(request)
 
         return Response({
             'idades': serializer.data,
@@ -643,9 +639,6 @@ def buscar_acmform_view (request):
             historico_criminal = cidadao.historicos_criminais.first()
             form_acomp = cidadao.form_acompanhamento_central.all()
             violen_domest = cidadao.form_violencia_domes.all()
-
-    else:
-        messages.error(request, 'Os dados devem ser inseridos para a busca!')
 
     context = {
         'formulario': form, 
@@ -832,10 +825,12 @@ class IndexView(View):
         historico_criminal = HistoricoCriminal.objects.filter(cidadao=cidadao)
         informacoes_complementares = InformacoesComplementares.objects.filter(cidadao=cidadao)
 
+        pdf.setFont("Helvetica", 12)
+
         image_path = 'static/img/ciap_img.png'
         pdf.drawImage(image_path, 210, 660, width=170, height=110)
 
-        pdf.drawString(100, 630, f"Cidadão: {cidadao.nome}")
+        pdf.drawString(100, 630, f"Nome: {cidadao.nome}")
         pdf.drawString(100, 612, f"CPF: {cidadao.cpf}")
 
         y_position = 580

@@ -53,8 +53,7 @@ textarea:focus {
 }
 
 h2 {
-    color: white;
-    background-color: black;
+    color: #007bff;
     margin-bottom: 1rem; 
 }
 
@@ -69,4 +68,8 @@ h2 {
 
 i {
     margin-left: 4px;
+}
+
+hr {
+    border-bottom: solid 5px;
 }

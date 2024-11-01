@@ -36,8 +36,11 @@ def clean_cpf_out(self):
 
     return cpf
 
+#---------------------------------------------------------------------------------------------------------------------#
+
 #função para realizar calculo da porcentagem de aumento mensal de usuarios 
-def calcular_porcent():
+def calcular_porcent(request):
+    user_logado_unidade = request.user.unidade
     agora = timezone.now()
     
     # Definir o início e fim do mês atual
@@ -45,14 +48,14 @@ def calcular_porcent():
     fim_do_mes = (inicio_do_mes + timedelta(days=31)).replace(day=1)
     
     # Contar os cadastros do mês atual
-    cadastros_este_mes = Cidadao.objects.filter(data_entrada__gte=inicio_do_mes, data_entrada__lt=fim_do_mes).count()
+    cadastros_este_mes = Cidadao.objects.filter(data_entrada__gte=inicio_do_mes, data_entrada__lt=fim_do_mes, unidade=user_logado_unidade).count()
     
     # Definir o início e fim do mês anterior
     inicio_mes_anterior = (inicio_do_mes - timedelta(days=1)).replace(day=1)
     fim_mes_anterior = inicio_do_mes
     
     # Contar os cadastros do mês anterior
-    cadastros_mes_anterior = Cidadao.objects.filter(data_entrada__gte=inicio_mes_anterior, data_entrada__lt=fim_mes_anterior).count()
+    cadastros_mes_anterior = Cidadao.objects.filter(data_entrada__gte=inicio_mes_anterior, data_entrada__lt=fim_mes_anterior, unidade=user_logado_unidade).count()
     
     # Evitar divisão por zero e tratar o caso onde o mês anterior não tem cadastros
     if cadastros_mes_anterior == 0:
@@ -63,9 +66,11 @@ def calcular_porcent():
     return aumento_percentual
 
 #função para calcular porcentagem de usuarios masculinos e femininos
-def calcular_sexo():
-    masculino_count = Cidadao.objects.filter(sexo='M', unidade='IAPEN-RB').count()
-    feminino_count = Cidadao.objects.filter(sexo='F', unidade='IAPEN-RB').count()
+def calcular_sexo(request):
+    user_logado_unidade = request.user.unidade
+
+    masculino_count = Cidadao.objects.filter(sexo='M', unidade=user_logado_unidade).count()
+    feminino_count = Cidadao.objects.filter(sexo='F', unidade=user_logado_unidade).count()
 
     total_count = masculino_count + feminino_count
 
@@ -78,12 +83,15 @@ def calcular_sexo():
 
     return porcentagem_masculino, porcentagem_feminino
 
-def contar_ativos():
-    ativos = InformacoesComplementares.objects.filter(motivo_saida='ATIVO').count()
+def contar_ativos(request):
+    user_logado_unidade = request.user.unidade
+
+    ativos = InformacoesComplementares.objects.filter(motivo_saida='ATIVO', cidadao__unidade=user_logado_unidade).count()
 
     return ativos
 
-def tipo_penal():
+def tipo_penal(request):
+    user_logado_unidade = request.user.unidade
 
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
@@ -92,7 +100,7 @@ def tipo_penal():
     resultado = {}
     
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, cidadao__unidade='IAPEN-RB').count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, cidadao__unidade=user_logado_unidade).count()
 
     total = sum(resultado.values())
 
@@ -105,7 +113,9 @@ def tipo_penal():
 
     return sorted_porcentagens
 
-def medida_cumprimento_calc():
+def medida_cumprimento_calc(request):
+    user_logado_unidade = request.user.unidade
+
     tipos = [
         'COMPARECIMENTO BIMESTRAL', 'COMPARECIMENTO MENSAL', 'COMPARECIMENTO QUINZENAL',
         'COMPARECIMENTO SEMANAL', 'COMPARECIMENTO TRIMESTRAL', 'GRUPO REFLEXIVO', 'PSC'
@@ -114,11 +124,13 @@ def medida_cumprimento_calc():
     resultado_medida = {}
 
     for tipo in tipos:
-        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, cidadao__unidade='IAPEN-RB').count()
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, cidadao__unidade=user_logado_unidade).count()
     
     return resultado_medida
 
-def medida_cumprimento_saida():
+def medida_cumprimento_saida(request):
+    user_logado_unidade = request.user.unidade
+
     tipos = [
         'NAO DEFINIDO', 'ATIVO', 'CUMPRIMENTO INTEGRAL', 'DESCUMPRIMENTO', 'PRISAO', 'OUTRO'
     ]
@@ -126,11 +138,13 @@ def medida_cumprimento_saida():
     resultado_medida_saida = {}
 
     for tipo in tipos:
-        resultado_medida_saida[tipo] = InformacoesComplementares.objects.filter(motivo_saida=tipo, cidadao__unidade='IAPEN-RB').count()
+        resultado_medida_saida[tipo] = InformacoesComplementares.objects.filter(motivo_saida=tipo, cidadao__unidade=user_logado_unidade).count()
     
     return resultado_medida_saida
 
-def tipo_penal_quant():
+def tipo_penal_quant(request):
+    user_logado_unidade = request.user.unidade  
+
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
         'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
@@ -138,25 +152,33 @@ def tipo_penal_quant():
     resultado = {}
 
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, cidadao__unidade='IAPEN-RB').count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(
+            tip_penal=tipo,
+            cidadao__unidade=user_logado_unidade  # Filtra pela unidade do usuário logado
+        ).count()
 
     return resultado
 
-def contar_faixa_etaria():
+
+def contar_faixa_etaria(request):
+    user_logado_unidade = request.user.unidade  
+
     faixa_etarias = {
-        "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count(),
-        "25 a 29": Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count(),
-        "30 a 34": Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count(),
-        "35 a 59": Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade='IAPEN-RB').count(),
+        "18 a 24": Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade=user_logado_unidade).count(),
+        "25 a 29": Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade=user_logado_unidade).count(),
+        "30 a 34": Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade=user_logado_unidade).count(),
+        "35 a 59": Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade=user_logado_unidade).count(),
     }
     
     return faixa_etarias
 
-def contar_faixa_etaria_porcentagem_sta():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count() 
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade='IAPEN-RB').count()  
+def contar_faixa_etaria_porcentagem_sta(request):
+    user_logado_unidade = request.user.unidade
+
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade=user_logado_unidade).count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade=user_logado_unidade).count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade=user_logado_unidade).count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, unidade=user_logado_unidade).count()  
 
     total = media1 + media2 + media3 + media4
 
@@ -177,11 +199,13 @@ def contar_faixa_etaria_porcentagem_sta():
 
     return porcentagens
 
-def contar_faixa_etaria_porcentagem():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade='IAPEN-RB').count() 
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade='IAPEN-RB').count() 
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade='IAPEN-RB').count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39, unidade='IAPEN-RB').count()  
+def contar_faixa_etaria_porcentagem(request):
+    user_logado_unidade = request.user.unidade
+
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, unidade=user_logado_unidade).count() 
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, unidade=user_logado_unidade).count() 
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, unidade=user_logado_unidade).count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=39, unidade=user_logado_unidade).count()  
 
     total = media1 + media2 + media3 + media4
 
@@ -206,7 +230,7 @@ def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     html = template.render(context_dict)
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="output.pdf"'
+    response['Content-Disposition'] = 'inline; filename="ficha.pdf"'
     pisa_status = pisa.CreatePDF(html, dest=response)
     if pisa_status.err:
         return HttpResponse('Tivemos alguns errors <pre>' + html + '</pre>')
@@ -214,12 +238,13 @@ def render_to_pdf(template_src, context_dict):
 
 #---------------------------------------------------------------------------------------------------------------------#
 
-def calcular_sexo_ativos():
+def calcular_sexo_ativos(request):
+    user_logado_unidade = request.user.unidade
 
     #É possível usar o doublescore __ para referenciar modelos diferentes quando existe uma chave primaria
     #interligando os dois modelos.
-    masculino_count = Cidadao.objects.filter(sexo='M', informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
-    feminino_count = Cidadao.objects.filter(sexo='F', informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
+    masculino_count = Cidadao.objects.filter(sexo='M', informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
+    feminino_count = Cidadao.objects.filter(sexo='F', informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
 
     total_count = masculino_count + feminino_count
 
@@ -232,7 +257,8 @@ def calcular_sexo_ativos():
 
     return porcentagem_masculino, porcentagem_feminino
 
-def tipo_penal_ativos():
+def tipo_penal_ativos(request):
+    user_logado_unidade = request.user.unidade
     tipos = [
         'VIOLENCIA DOMESTICA', 'FURTO', 'CRIME AMBIENTAL', 'RACISMO', 'TRANSITO',
         'CRIME DE DROGAS', 'OUTROS CRIMES', 'LESAO CORPORAL', 'CRIME DE ARMA', 'ESTELIONATO'
@@ -240,7 +266,7 @@ def tipo_penal_ativos():
     resultado = {}
     
     for tipo in tipos:
-        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO', cidadao__unidade='IAPEN-RB').count()
+        resultado[tipo] = InformacoesComplementares.objects.filter(tip_penal=tipo, motivo_saida='ATIVO', cidadao__unidade=user_logado_unidade).count()
 
     total = sum(resultado.values())
 
@@ -253,7 +279,8 @@ def tipo_penal_ativos():
 
     return sorted_porcentagens
 
-def medida_cumprimento_calc_ativos():
+def medida_cumprimento_calc_ativos(request):
+    user_logado_unidade = request.user.unidade
     tipos = [
         'COMPARECIMENTO BIMESTRAL', 'COMPARECIMENTO MENSAL', 'COMPARECIMENTO QUINZENAL',
         'COMPARECIMENTO SEMANAL', 'COMPARECIMENTO TRIMESTRAL', 'GRUPO REFLEXIVO', 'PSC'
@@ -262,15 +289,17 @@ def medida_cumprimento_calc_ativos():
     resultado_medida = {}
 
     for tipo in tipos:
-        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, motivo_saida='ATIVO', cidadao__unidade='IAPEN-RB').count()
+        resultado_medida[tipo] = InformacoesComplementares.objects.filter(medida_cumprimento=tipo, motivo_saida='ATIVO', cidadao__unidade=user_logado_unidade).count()
     
     return resultado_medida
 
-def contar_faixa_etaria_porcentagem_ativos():
-    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
-    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
-    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
-    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, informacoes_complementares__motivo_saida='ATIVO', unidade='IAPEN-RB').count()
+def contar_faixa_etaria_porcentagem_ativos(request):
+    user_logado_unidade = request.user.unidade
+
+    media1 = Cidadao.objects.filter(idade__gte=18, idade__lte=24, informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
+    media2 = Cidadao.objects.filter(idade__gte=25, idade__lte=29, informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
+    media3 = Cidadao.objects.filter(idade__gte=30, idade__lte=34, informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
+    media4 = Cidadao.objects.filter(idade__gte=35, idade__lte=59, informacoes_complementares__motivo_saida='ATIVO', unidade=user_logado_unidade).count()
 
     total = media1 + media2 + media3 + media4
 
@@ -290,6 +319,10 @@ def contar_faixa_etaria_porcentagem_ativos():
         ]
 
     return porcentagens
+
+
+
+
 
 
 

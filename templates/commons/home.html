@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-<div class="row gap-1 justify-content-center mt-5">
+<div class="row gap-1 justify-content-center" id="home_location">
     <div class="col-md-auto">
         <div class="card col me-1" style="width: 18rem;">
             <img src="{% static 'img/img_form_cadastro.jpg' %}" class="img_home mb-2">
             <div class="card-body">
-                <h5 class="card-title">Novo cadastro de formulario</h5>
+                <h5 class="card-title">Novo formulario</h5>
             </div>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'form1' %}" class="btn btn-success">Novo cadastro</a>
@@ -27,11 +27,9 @@
     </div>
     <div class="col-md-auto">
         <div class="card col me-1" style="width: 18rem;">
-            <i class="bi bi-pencil fa-5x d-flex justify-content-center mt-1"></i>
+            <img src="{% static 'img/img_edicao.jpg' %}" class="img_home mb-2">
             <div class="card-body">
                 <h5 class="card-title">Edição de dados</h5>
-                <p class="card-text">Edição de dados gerais relaionados a uma determinada ficha de registro, operação
-                    irreversivel!</p>
             </div>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'capturar_dados' %}" class="btn btn-success">Editar dados</a>
@@ -40,19 +38,18 @@
     </div>
     <div class="col-md-auto">
         <div class="card col me-1" style="width: 18rem;">
-            <i class="bi bi-shield-fill-x fa-5x d-flex justify-content-center mt-1"></i>
+            <img src="{% static 'img/img_form_viol.jpg' %}" class="img_home mb-2">
             <div class="card-body">
-                <h5 class="card-title">Registrar formulario extra</h5>
-                <p class="card-text">Realizar adição de formulario por violência domestica a uma determinada ficha</p>
+                <h5 class="card-title">Formulario adicional</h5>
             </div>
             <div class="d-flex justify-content-center">
-                <a href="{% url 'capturar_violen' %}" class="btn btn-success">Violência</a>
+                <a href="{% url 'capturar_violen' %}" class="btn btn-success">Registrar</a>
             </div>
         </div>
     </div>
 </div>  
 
-<div class="container mt-2"  style="margin: 0 auto; max-width: 100%;">
+<div class="container mt-4"  style="margin: 0 auto; max-width: 100%;">
     <div id="grafico" style="width: 100%; height: 450px;"></div>
 </div>
 

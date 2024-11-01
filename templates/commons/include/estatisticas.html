@@ -61,16 +61,8 @@
             </div>
     </div>
 
-    <div class="container mb-2 bg-dark text-white py-3 rounded mt-2" >
-        <h4 class="card-title d-flex justify-content-center">(-ESTATISTICA POR UNIDADE-)</h4>
-            <div class="d-flex justify-content-center grid gap-4 mt-2">
-                <a class="btn btn-primary" href="{% url 'estatisticas' %}">Rio branco</a>
-                <a class="btn btn-primary" href="{% url 'estatisticas_CR' %}">Cruzeiro do Sul</a>
-            </div>
-    </div>
-
     <div class="container mb-3 bg-white text-dark py-3 rounded mt-2">
-        <h4 class="card-title d-flex justify-content-center">ESTATISTICAS REFERENTES A UNIDADE: <span class="text-danger ms-2"> (RIO BRANCO) </span></h4>
+        <h4 class="card-title d-flex justify-content-center">ESTATISTICAS REFERENTES A UNIDADE: <span class="text-danger ms-2"> {{ request.user.unidade }} </span></h4>
     </div>
 
         <div class="container mt-2 mb-2" style="margin: 0 auto; max-width: 80%;">

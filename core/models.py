@@ -38,6 +38,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['unidade']),
+        ]
+
     def __str__(self):
         return self.cpf
     
@@ -83,23 +88,26 @@ class Cidadao(models.Model):
     data_nascimento = models.DateField(blank=False, verbose_name='Data de Nascimento:')
     idade = models.CharField(max_length=3, verbose_name='Idade:')  
     naturalidade = models.CharField(max_length=50, verbose_name='Naturalidade:')
-    sexo = models.CharField(max_length=1, choices=c_sexo, default='selecione', verbose_name='Sexo:')
+    sexo = models.CharField(max_length=1, choices=c_sexo, blank=False,  null=False, verbose_name='Sexo:')
     mae = models.CharField(max_length=50, verbose_name='Nome da mãe:')
     estado_civil = models.CharField(choices=c_estado_civil,
                                     default='selecione',
                                     max_length=20)
-    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=True, verbose_name='Remuneração:')
-    renda_individual = models.CharField(max_length=50, choices=c_renda_invidual)
-    cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça:')
+    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=False, null=False, verbose_name='Remuneração:')
+    renda_individual = models.CharField(max_length=50, choices=c_renda_invidual, null=True, blank=True)
+    cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça:', blank=False, null=False)
     escolaridade = models.CharField(
                                 choices=c_escolaridade,
                                 max_length=22,
-                                default='selecione'
+                                default='selecione',
+                                blank=False, 
+                                null=False,
                                     )
     data_entrada = models.DateField(auto_now_add=True)
     class Meta:
         indexes = [
             models.Index(fields=['nome']),
+            models.Index(fields=['unidade']),
         ]
 
     def __str__(self):
@@ -107,17 +115,28 @@ class Cidadao(models.Model):
 
     def save(self, *args, **kwargs):
         # Converte os campos de texto para maiúsculas
-        self.nome = self.nome.upper()
-        self.nome_social = self.nome_social.upper()
-        self.endereco = self.endereco.upper()
-        self.cidade = self.cidade.upper()
-        self.estado = self.estado.upper()
-        self.naturalidade = self.naturalidade.upper()
-        self.mae = self.mae.upper()
-        self.estado_civil = self.estado_civil.upper()
-        self.remuneracao = self.remuneracao.upper()
-        self.cor_raca = self.cor_raca.upper()
-        self.escolaridade = self.escolaridade.upper()
+        if self.nome is not None:
+            self.nome = self.nome.upper()
+        if self.nome_social is not None:
+            self.nome_social = self.nome_social.upper()
+        if self.endereco is not None:
+            self.endereco = self.endereco.upper()
+        if self.cidade is not None:
+            self.cidade = self.cidade.upper()
+        if self.estado is not None:
+            self.estado = self.estado.upper()
+        if self.naturalidade is not None:
+            self.naturalidade = self.naturalidade.upper()
+        if self.mae is not None:
+            self.mae = self.mae.upper()
+        if self.estado_civil is not None:
+            self.estado_civil = self.estado_civil.upper()
+        if self.remuneracao is not None:
+            self.remuneracao = self.remuneracao.upper()
+        if self.cor_raca is not None:
+            self.cor_raca = self.cor_raca.upper()
+        if self.escolaridade is not None:
+            self.escolaridade = self.escolaridade.upper()
         super().save(*args, **kwargs)
 
 
@@ -154,7 +173,9 @@ class HistoricoSaude(models.Model):
                             choices=c_sim_nao,
                             max_length=3,
                             default='Selecione',
-                            verbose_name='Apresenta problemas de saude?'
+                            verbose_name='Apresenta problemas de saude?',
+                            blank=False,
+                            null=False,
                              )
     saude_just = models.CharField(max_length=80, verbose_name='Se apresenta problema de saúde qual?', blank=True, null=True)
     
@@ -163,22 +184,30 @@ class HistoricoSaude(models.Model):
                                     choices=c_sim_nao,
                                     max_length=3, 
                                     verbose_name='Faz ou fez tratamento psiquiatrico?',
-                                    default='Selecione'
+                                    default='Selecione',
+                                    blank=False,
+                                    null=False,
                                     )
-    tratamento_psi_jus = models.CharField(max_length=80, verbose_name='Especifique o tratamento psiquiatrico:')
+    tratamento_psi_jus = models.CharField(max_length=80, verbose_name='Especifique o tratamento psiquiatrico:', blank=True, null=True)
 
     medicacao_controlada = models.CharField(
                                             choices=c_sim_nao,
                                             max_length=3, 
                                             default='Selecione', 
-                                            verbose_name='Faz uso de alguma medicação controlada?')
+                                            verbose_name='Faz uso de alguma medicação controlada?',
+                                            blank=False,
+                                            null=False,
+                                            )
     
     medicacao_controlada_jus = models.CharField(max_length=80, blank=True, null=True, verbose_name='Especifique o tipo de medicação controlada:')
 
     deficiencia = models.CharField(
         choices=c_sim_nao,
         max_length=3, 
-        verbose_name='É portador de alguma deficiência:')
+        verbose_name='É portador de alguma deficiência:',
+        blank=False,
+        null=False,
+        )
     
     drogas_uso = models.CharField(
         max_length=20,
@@ -197,14 +226,22 @@ class HistoricoSaude(models.Model):
         return f"Histórico de Saúde do Cidadão {self.cidadao.cpf}"
     
     def save(self, *args, **kwargs):
-        self.saude = self.saude.upper()
-        self.saude_just = self.saude_just.upper()
-        self.tratamento_psi = self.tratamento_psi.upper()
-        self.tratamento_psi_jus = self.tratamento_psi_jus.upper()
-        self.medicacao_controlada = self.medicacao_controlada.upper()
-        self.medicacao_controlada_jus = self.medicacao_controlada_jus.upper()
-        self.deficiencia = self.deficiencia.upper()
-        self.tratamento = self.tratamento.upper()
+        if self.saude is not None:
+            self.saude = self.saude.upper()
+        if self.saude_just is not None:
+            self.saude_just = self.saude_just.upper()
+        if self.tratamento_psi is not None:
+            self.tratamento_psi = self.tratamento_psi.upper()
+        if self.tratamento_psi_jus is not None:
+            self.tratamento_psi_jus = self.tratamento_psi_jus.upper()
+        if self.medicacao_controlada is not None:
+            self.medicacao_controlada = self.medicacao_controlada.upper()
+        if self.medicacao_controlada_jus is not None:
+            self.medicacao_controlada_jus = self.medicacao_controlada_jus.upper()
+        if self.deficiencia is not None:
+            self.deficiencia = self.deficiencia.upper()
+        if self.tratamento is not None:
+            self.tratamento = self.tratamento.upper()
         super().save(*args, **kwargs)
 
     def to_dict(self):
@@ -225,16 +262,16 @@ class HistoricoSaude(models.Model):
 class HistoricoCriminal(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='historicos_criminais')
-    ja_esteve_preso = models.CharField(max_length=3, choices=c_sim_nao, blank=True, verbose_name='Já esteve preso?:')
+    ja_esteve_preso = models.CharField(max_length=3, choices=c_sim_nao, blank=False, null=False, verbose_name='Já esteve preso?:')
     prisao_justificativa = models.CharField(max_length=50, blank=True, null=True, verbose_name='Por qual motivo esteve preso?:')
-    prisao_familiar = models.CharField(max_length=3, choices=c_sim_nao, blank=True, verbose_name='Alguém da sua familia já esteve preso?:')
-    numero_do_processo = models.CharField(max_length=30, blank=False, verbose_name='Número do processo:')
-    juiz_de_origem = models.CharField(max_length=50, blank=True, verbose_name='Juiz de origem:')
-    medida_aplicada = models.CharField(max_length=50, blank=True, verbose_name='Medida aplicada:')
+    prisao_familiar = models.CharField(max_length=3, choices=c_sim_nao, blank=False, null=False, verbose_name='Alguém da sua familia já esteve preso?:')
+    numero_do_processo = models.CharField(max_length=30, blank=False, null=False, verbose_name='Número do processo:')
+    juiz_de_origem = models.CharField(max_length=50, blank=False, null=False, verbose_name='Juiz de origem:')
+    medida_aplicada = models.CharField(max_length=50, blank=False, null=False, verbose_name='Medida aplicada:')
     tipo_penal = models.CharField(max_length=50, blank=True, verbose_name='Tipo penal:')
     violencia_domestica = models.CharField(max_length=50, blank=True, verbose_name='Em caso de violência domestica:')
-    violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True, verbose_name='Nome da vitima de violência domestica:')
-    grau_de_parentesco = models.CharField(max_length=50, blank=True, verbose_name='Grau de parentesco da vitima:')
+    violencia_dome_nome_vitima = models.CharField(max_length=50, blank=True, null=True, verbose_name='Nome da vitima de violência domestica:')
+    grau_de_parentesco = models.CharField(max_length=50, blank=True, null=True, verbose_name='Grau de parentesco da vitima:')
     reincidencia = models.CharField(max_length=3, choices=c_sim_nao, blank=True, null=True, verbose_name='Relata reincidência?:') 
     sugestao_de_trabalho = models.CharField(max_length=36, choices=c_sugestao_trabalho, blank=True, null=True)
     sugest_encaminhamento = models.CharField(max_length=36, choices=c_sugestao_encaminhamento, blank=True, null=True, verbose_name='Sugestão de encaminhamento:')
@@ -248,12 +285,19 @@ class HistoricoCriminal(models.Model):
         return f"Histórico Criminal do Cidadão {self.cidadao.cpf}"
     
     def save(self, *args, **kwargs):
-        self.juiz_de_origem = self.juiz_de_origem.upper()
-        self.medida_aplicada = self.medida_aplicada.upper()
-        self.tipo_penal = self.tipo_penal.upper()
-        self.violencia_domestica = self.violencia_domestica.upper()
-        self.violencia_dome_nome_vitima = self.violencia_dome_nome_vitima.upper()
-        self.grau_de_parentesco = self.grau_de_parentesco.upper()
+
+        if self.juiz_de_origem is not None:
+            self.juiz_de_origem = self.juiz_de_origem.upper()
+        if self.medida_aplicada is not None:
+            self.medida_aplicada = self.medida_aplicada.upper()
+        if self.tipo_penal is not None:
+            self.tipo_penal = self.tipo_penal.upper()
+        if self.violencia_domestica is not None:
+            self.violencia_domestica = self.violencia_domestica.upper()
+        if self.violencia_dome_nome_vitima is not None:
+            self.violencia_dome_nome_vitima = self.violencia_dome_nome_vitima.upper()
+        if self.grau_de_parentesco is not None:
+            self.grau_de_parentesco = self.grau_de_parentesco.upper()
         super().save(*args, **kwargs)
 
     def to_dict(self):
@@ -278,14 +322,15 @@ class HistoricoCriminal(models.Model):
 class InformacoesComplementares(models.Model):
 
     cidadao = models.ForeignKey(Cidadao, on_delete=models.CASCADE, to_field='cpf', related_name='informacoes_complementares')
-    quantas_pessoas = models.CharField(max_length=2, verbose_name='Quantas pessoas moram com você ? (inclua você na contagem)')
-    nome_familiar = models.CharField(max_length=70, verbose_name='Nome de um familiar:')
-    parentesco = models.CharField(max_length=100, default='', verbose_name='Grau de parentesco:')
-    idade_familiar = models.CharField(max_length=3, verbose_name='Idade do familiar:', blank=True)  # Valor padrão definido
+    quantas_pessoas = models.CharField(max_length=2, blank=True, null=True,verbose_name='Quantas pessoas moram com você ? (inclua você na contagem)')
+    nome_familiar = models.CharField(max_length=70, blank=False, null=False,verbose_name='Nome de um familiar:')
+    parentesco = models.CharField(max_length=100, blank=True, null=True, verbose_name='Grau de parentesco:')
+    idade_familiar = models.CharField(max_length=3, blank=True, null=True, verbose_name='Idade do familiar:')  # Valor padrão definido
     escolaridade_familiar = models.CharField(  
                                             choices=c_escolaridade,
                                             max_length=30, 
-                                            default='selecione',
+                                            blank=True,
+                                            null=True,
                                             verbose_name='Grau de Escolaridade do familiar:')
     
     ocupacao = models.CharField(max_length=100, verbose_name='Ocupação:')
@@ -314,13 +359,21 @@ class InformacoesComplementares(models.Model):
         return self.nome_familiar
     
     def save(self, *args, **kwargs):
-        self.quantas_pessoas = self.quantas_pessoas.upper()
-        self.nome_familiar = self.nome_familiar.upper()
-        self.parentesco = self.parentesco.upper()
-        self.idade_familiar = self.idade_familiar.upper()
-        self.escolaridade_familiar = self.escolaridade_familiar.upper()
-        self.ocupacao = self.ocupacao.upper()
-        self.analise_descritiva = self.analise_descritiva.upper()
+
+        if self.quantas_pessoas is not None:
+            self.quantas_pessoas = self.quantas_pessoas.upper()
+        if self.nome_familiar is not None:
+            self.nome_familiar = self.nome_familiar.upper()
+        if self.parentesco is not None:
+            self.parentesco = self.parentesco.upper()
+        if self.idade_familiar is not None:
+            self.idade_familiar = self.idade_familiar.upper()
+        if self.escolaridade_familiar is not None:
+            self.escolaridade_familiar = self.escolaridade_familiar.upper()
+        if self.ocupacao is not None:
+            self.ocupacao = self.ocupacao.upper()
+        if self.analise_descritiva is not None:
+            self.analise_descritiva = self.analise_descritiva.upper()
         super().save(*args, **kwargs)
 
     def to_dict(self):

@@ -6,13 +6,16 @@
 {% endblock %}
 
 {% block content %} 
-            <div class="container bg-white rounded">
+            <div class="container rounded">
+                <br>
                 <h1 class="text-center" id="title_process_edit">{{ cidadao.nome }}</h1>
+                <br>
                 
                 <div class="section-title d-flex justify-content-center">
-                    <h2>Todos os processos atrelados</h2>
+                    <h2>(Todos os processos atrelados)</h2>
                 </div>
-
+                    <h5 class="d-flex justify-content-center">Atenção: alteração de número de processo não é permitida!, apenas status de processo.</h5>
+                    <br>
                     <div>
                             <form method="post">
                                 {% csrf_token %}

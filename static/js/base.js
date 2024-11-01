@@ -7,17 +7,10 @@ anychart.onDocumentReady(function () {
                 throw new Error('Dados inválidos recebidos.');
             }
 
-            var chartData = {
-                title: 'Faixas Etárias de Idades (Porcentagem Ativos)',
-                header: ['Faixa Etária', 'Porcentagem'],
-                rows: data.faixas_etarias
-            };
-
-            var chart = anychart.column();
-            chart.data(chartData);
+            var chart = anychart.column(); // Inicializa o gráfico de colunas
             chart.animation(true);
             chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
-            chart.yAxis().title('Índice');
+            chart.yAxis().title('Porcentagem');
             chart.labels().enabled(true).position('center-top').anchor('center-bottom').format('{%Value}{groupsSeparator: }%');
             chart.hovered().labels(false);
             chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
@@ -25,12 +18,17 @@ anychart.onDocumentReady(function () {
             chart.tooltip().positionMode('point').position('center-top').anchor('center-bottom').offsetX(0).offsetY(5)
                 .titleFormat('{%X}').format('{%SeriesName} : #{%Value}{groupsSeparator: }');
 
-            // Ajustando a cor da série
-            var series = chart.column(data.faixas_etarias);
-            series.fill('#000000'); // Preto sólido
+            // Defina uma lista de cores para as colunas
+            const colors = ['#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#8E44AD', '#3498DB', '#E67E22'];
+
+            // Adiciona cada faixa etária como uma série única
+            data.faixas_etarias.forEach((faixa, index) => {
+                const series = chart.column([{ x: faixa[0], value: faixa[1] }]); // Cria uma nova série
+                series.fill(colors[index % colors.length]); // Aplica uma cor diferente para cada série
+                series.name(faixa[0]); // Define o nome da série como a faixa etária
+            });
 
             chart.background().fill('rgba(255, 255, 255, 0.8)'); 
-
             chart.container('grafico');
             chart.draw();
         })
