@@ -15,7 +15,7 @@
         <div class="row justify-content-center mt-1">
             <div class="col-md-8 form-container">
                 <h2 class="text-center mb-4">Formulário: informações complementares</h2>
-                <form method="post" action="{% url 'form4' %}">
+                <form method="post" action="{% url 'form4' %}" autocomplete="off"  >
                     {% csrf_token %}
                     {{ formulario_complementar.as_p }}
                     <button type="submit" class="btn btn-primary btn-block">FINALIZAR

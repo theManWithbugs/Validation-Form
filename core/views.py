@@ -8,7 +8,6 @@ from django.db import DatabaseError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test
-from django.urls import reverse
 from .forms import *
 from .forms import CidadaoForm
 from django.http import HttpResponse
@@ -31,9 +30,16 @@ from reportlab.lib.pagesizes import letter
 import pypandoc
 from django.template.loader import render_to_string
 
+
+#Views que fazem a manipulação do usúario
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#
+
+#Verifica se o usúario possui is_staff como True or False
 def is_staff(user):
     return user.is_staff
 
+#Realiza o login do usúario
 def login_n(request):
     if request.method == 'POST':
         form = CPFValidationForm(request.POST)
@@ -54,6 +60,12 @@ def login_n(request):
 
     return render(request, 'account/login_n.html', {'form': form})
 
+#Realiza o Logou do usúario
+def logout_view(request):
+    auth_logout(request)
+    return redirect('login_new')
+
+#Realiza o cadastro de novo usúario
 @login_required
 @user_passes_test(is_staff, login_url='permission_denied')
 def register_user(request):
@@ -93,6 +105,7 @@ def register_user(request):
            
     return render(request, template_name)
 
+#Remove o acesso de usúario alterando is_active para False
 def remover_acesso(request):
     template_name = 'account/remov_acess.html'
     usuario = None
@@ -125,24 +138,43 @@ def atualizar_perfil_img(request):
         return render(request, 'account/perfil.html', {'form': form})
     else:
         return redirect('login_new')  # Redirect to login if not authenticated
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#  
 
-#essa view é usada para verificar se o usuario logado possui is_staff igual a true
-#tal referência pode ser usado ao chamar o decorador @user_passes_test(is_staff, login_url='login_new')
-#para esse caso foi usado o atributo is staff, e caso o ususario não seja é redirecionado para a pagina 
+
+
+#Views responsaveis pelas paginas inciais, paginas home
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#
 
 @login_required
 def home(request):
     template_name = 'commons/home.html'
     return render(request, template_name)
 
-@login_required
-def actions_view(request): 
-    template_name = 'commons/include/actions.html'
-    alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:20]
-    return render(request, template_name, {'alteracoes': alteracoes})
+#View sincrona para gerar o grafica inicial que faz a busca de faixas etárias
+class FaixasEtarias(APIView):
+    def get(self, request):
+
+        idades = Cidadao.objects.all()
+        serializer = CidadaoSerializer(idades, many=True)
+
+        faixas_etarias = contar_faixa_etaria_porcentagem_ativos(request)
+
+        return Response({
+            'idades': serializer.data,
+            'faixas_etarias': faixas_etarias,
+        })
+
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#  
+
+
 
 #Views de formulario aqui, todas utilizam a mesma logica utilizada
+#-------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------#         
+
 @login_required
 def form1_view(request):
     template_name = 'commons/include/forms/form.html'
@@ -305,7 +337,52 @@ def form_violencia_domest(request, cpf):
     }
 
     return render(request, template_name, context)
-       
+
+#Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
+@login_required
+def register_acmform_view(request):
+    if request.method == 'POST':
+        form = BuscarCidadaoForm(request.POST)
+        if form.is_valid():
+            cpf = form.cleaned_data['cpf']
+            request.session['cpf'] = cpf
+            return redirect('acomp_central_form')
+        else:
+            return redirect('not_found_page')
+    
+    else:
+        form = BuscarCidadaoForm()
+    
+    return render(request, 'commons/include/acomp_reg.html', {'form': form})
+
+@login_required
+def acomp_central_form(request):
+    unidade_usuario = request.user.unidade
+    cpf = request.session.get('cpf')
+
+    try:
+        cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
+    except Cidadao.DoesNotExist:
+        return redirect('not_found_page')
+
+    if request.method == 'POST': 
+        form = AcompCentralForm(request.POST)
+        if form.is_valid():
+            acomp_central = form.save(commit=False)
+            acomp_central.cidadao = cidadao
+            acomp_central.save()
+            messages.success(request, 'Dados salvos com sucesso!')
+            return redirect('sucess_page')
+    else:
+        form = AcompCentralForm()
+
+    return render(request, 'commons/include/acomp_regtwo.html', {'acomp_central': form, 'cidadao': cidadao,})
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#  
+    
+
+#Views de busca
+#-------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------#  
 @login_required
 def busca_cpf_view(request):
@@ -372,7 +449,7 @@ def buscar_nome_view(request):
 
         #verifica se nome não está vazio
         if nome:
-            cidadao__queryset = Cidadao.objects.filter(nome__icontains=nome, unidade=unidade_usuario)
+            cidadao__queryset = Cidadao.objects.filter(nome__startswith=nome, unidade=unidade_usuario)
             paginator = Paginator(cidadao__queryset, 10)
             page = request.GET.get('page')
 
@@ -424,7 +501,49 @@ def more_info_view(request, cpf):
     }
 
     return render(request, template_name, context)
+
+@login_required
+def buscar_acmform_view (request):
+    form = BuscarCidadaoForm(request.GET or None)
+
+    form_acomp = None
+    cidadao = None
+    historico_criminal = None
+    violen_domest = None
+
+    unidade_usuario = request.user.unidade
+
+    if form.is_valid():
+        cpf = form.cleaned_data['cpf']
+        request.session['cpf'] = cpf
+
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
+        
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+        
+        else:
+            historico_criminal = cidadao.historicos_criminais.first()
+            form_acomp = cidadao.form_acompanhamento_central.all()
+            violen_domest = cidadao.form_violencia_domes.all()
+
+    context = {
+        'formulario': form, 
+        'form_acomp_central': form_acomp,
+        'cidadao': cidadao,
+        'historico_criminal': historico_criminal,
+        'violen_domest':  violen_domest,
+    }
+
+    return render(request, 'commons/include/acomp_busca.html', context)
     
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#
+
+
+#Views de manipulação de dados, Exclusão e Edição
+#-------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------#
 @login_required
 @user_passes_test(is_staff, login_url='permission_denied')
@@ -467,6 +586,7 @@ def excluir_form(request):
 
     return request, context
 
+#Se interliga com atualizar dados
 @login_required
 def capturar_cpf(request):
     if request.method == 'POST':
@@ -600,126 +720,7 @@ class HistoricoCriminalList(APIView):
             'tipos_penais_porcentagens': tipos_penais_porcentagens,
             'medidas_cumprimento': medidas_cumprimento
         })
-class FaixasEtarias(APIView):
-    def get(self, request):
 
-        idades = Cidadao.objects.all()
-        serializer = CidadaoSerializer(idades, many=True)
-
-        faixas_etarias = contar_faixa_etaria_porcentagem_ativos(request)
-
-        return Response({
-            'idades': serializer.data,
-            'faixas_etarias': faixas_etarias,
-        })
-
-#-------------------------------------------------------------------------------------------------------#
-@login_required
-def buscar_acmform_view (request):
-    form = BuscarCidadaoForm(request.GET or None)
-
-    form_acomp = None
-    cidadao = None
-    historico_criminal = None
-    violen_domest = None
-
-    unidade_usuario = request.user.unidade
-
-    if form.is_valid():
-        cpf = form.cleaned_data['cpf']
-        request.session['cpf'] = cpf
-
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
-        
-        except Cidadao.DoesNotExist:
-            return redirect('not_found_page')
-        
-        else:
-            historico_criminal = cidadao.historicos_criminais.first()
-            form_acomp = cidadao.form_acompanhamento_central.all()
-            violen_domest = cidadao.form_violencia_domes.all()
-
-    context = {
-        'formulario': form, 
-        'form_acomp_central': form_acomp,
-        'cidadao': cidadao,
-        'historico_criminal': historico_criminal,
-        'violen_domest':  violen_domest,
-    }
-
-    return render(request, 'commons/include/acomp_busca.html', context)
-
-@login_required
-def pdf_view(request):
-    template_name = 'commons/include/acmp_pdf.html'
-    cpf = request.session.get('cpf')
-
-    historico_criminal = None
-    form_acomp = None
-    violen_domest = None
-
-    if cpf:
-        try:
-            cidadao = Cidadao.objects.get(cpf=cpf)
-
-            historico_criminal = cidadao.historicos_criminais.first()
-            form_acomp = cidadao.form_acompanhamento_central.all()
-            violen_domest = cidadao.form_violencia_domes.all()
-        except Cidadao.DoesNotExist:
-            return redirect('not_found_page')
-
-    context = {
-            'cidadao': cidadao,
-            'historico_criminal': historico_criminal,
-            'form_acomp': form_acomp,
-            'violen_domest': violen_domest,
-            }
-    return render_to_pdf(template_name, context)
-
-#Ambas essa views se interligam uma capturando e outra exibindo o formulario para inserção
-#-------------------------------------------------------------------------------------------------------#    
-
-@login_required
-def register_acmform_view(request):
-    if request.method == 'POST':
-        form = BuscarCidadaoForm(request.POST)
-        if form.is_valid():
-            cpf = form.cleaned_data['cpf']
-            request.session['cpf'] = cpf
-            return redirect('acomp_central_form')
-        else:
-            return redirect('not_found_page')
-    
-    else:
-        form = BuscarCidadaoForm()
-    
-    return render(request, 'commons/include/acomp_reg.html', {'form': form})
-
-@login_required
-def acomp_central_form(request):
-    unidade_usuario = request.user.unidade
-    cpf = request.session.get('cpf')
-
-    try:
-        cidadao = Cidadao.objects.get(cpf=cpf, unidade=unidade_usuario)
-    except Cidadao.DoesNotExist:
-        return redirect('not_found_page')
-
-    if request.method == 'POST': 
-        form = AcompCentralForm(request.POST)
-        if form.is_valid():
-            acomp_central = form.save(commit=False)
-            acomp_central.cidadao = cidadao
-            acomp_central.save()
-            messages.success(request, 'Dados salvos com sucesso!')
-            return redirect('sucess_page')
-    else:
-        form = AcompCentralForm()
-
-    return render(request, 'commons/include/acomp_regtwo.html', {'acomp_central': form, 'cidadao': cidadao,})
-
-#-------------------------------------------------------------------------------------------------------#
 
 @login_required
 def violen_info(request, process_referente):
@@ -781,36 +782,14 @@ def editar_process(request, cpf):
 
     return render(request, 'commons/include/exibir_edicaoprocss.html', context)
 
-@login_required
-def custom_404_view(request, exception):
-    return render(request, 'templates/errors/404.html', status=404)
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#  
 
-@login_required
-def edit_form_view(request):
-    return render(request, 'commons/include/editar_form.html')
 
-def logout_view(request):
-    auth_logout(request)
-    return redirect('login_new')
 
-@login_required
-def sucess_page_view(request):
-    template_name = 'commons/include/add_pages/sucess_page.html'
-    return render(request, template_name)
-
-@login_required
-def notfound_view(request):
-    template_name='commons/include/add_pages/not_found.html'
-    return render(request, template_name)
-
-@login_required
-def missing_data_view(request):
-    return render(request, 'commons/include/add_pages/missing_data.html')
-
-@login_required
-def permission_denied_view(request):
-    return render(request, 'commons/include/add_pages/permiss.html')
-
+#Views para criação de Pdf e documento Word
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         cpf = request.session.get('cpf')
@@ -827,7 +806,7 @@ class IndexView(View):
 
         pdf.setFont("Helvetica", 12)
 
-        image_path = 'static/img/ciap_img.png'
+        image_path = 'static/img/cipa_img_new.png'
         pdf.drawImage(image_path, 210, 660, width=170, height=110)
 
         pdf.drawString(100, 630, f"Nome: {cidadao.nome}")
@@ -930,6 +909,33 @@ class IndexView(View):
         pdf.save()
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=False, filename='Ficha.pdf')
+    
+@login_required
+def pdf_view(request):
+    template_name = 'commons/include/acmp_pdf.html'
+    cpf = request.session.get('cpf')
+
+    historico_criminal = None
+    form_acomp = None
+    violen_domest = None
+
+    if cpf:
+        try:
+            cidadao = Cidadao.objects.get(cpf=cpf)
+
+            historico_criminal = cidadao.historicos_criminais.first()
+            form_acomp = cidadao.form_acompanhamento_central.all()
+            violen_domest = cidadao.form_violencia_domes.all()
+        except Cidadao.DoesNotExist:
+            return redirect('not_found_page')
+
+    context = {
+            'cidadao': cidadao,
+            'historico_criminal': historico_criminal,
+            'form_acomp': form_acomp,
+            'violen_domest': violen_domest,
+            }
+    return render_to_pdf(template_name, context)
 
 @login_required
 def generate_docx(request):
@@ -968,12 +974,54 @@ def generate_docx(request):
         # Abrir o arquivo para leitura
         temp_docx.seek(0)
         response = HttpResponse(temp_docx.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = 'attachment; filename="output.docx"'
+        response['Content-Disposition'] = 'attachment; filename="ficha.docx"'
 
     # Após baixar exclui o arquivo temporario
     os.unlink(temp_docx.name)
     
     return response
+
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#
+
+
+#Views que possuem pouca ou nenhuma logica
+#-------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------#  
+@login_required
+def actions_view(request): 
+    template_name = 'commons/include/actions.html'
+    alteracoes = ActivityLog.objects.all().order_by('-timestamp')[:20]
+    return render(request, template_name, {'alteracoes': alteracoes})
+
+@login_required
+def custom_404_view(request, exception):
+    return render(request, 'templates/errors/404.html', status=404)
+
+@login_required
+def edit_form_view(request):
+    return render(request, 'commons/include/editar_form.html')
+
+@login_required
+def sucess_page_view(request):
+    template_name = 'commons/include/add_pages/sucess_page.html'
+    return render(request, template_name)
+
+@login_required
+def notfound_view(request):
+    template_name='commons/include/add_pages/not_found.html'
+    return render(request, template_name)
+
+@login_required
+def missing_data_view(request):
+    return render(request, 'commons/include/add_pages/missing_data.html')
+
+@login_required
+def permission_denied_view(request):
+    return render(request, 'commons/include/add_pages/permiss.html')
+
+
+
 
 
 

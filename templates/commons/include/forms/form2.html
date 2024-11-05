@@ -15,7 +15,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <h2 class="text-center mb-4 mt-1">Formulario: Histórico de Saúde</h2>
-                    <form method="post" action="{% url 'form2' %}">
+                    <form method="post" action="{% url 'form2' %}" autocomplete="off" >
                         {% csrf_token %}
                         {{ formulario_saude.as_p }}
                     <button type="submit" class="btn btn-success btn-block">Continuar

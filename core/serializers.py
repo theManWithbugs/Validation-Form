@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+
 class HistoricoCriminalSerializer(serializers.ModelSerializer):
 
     class Meta:

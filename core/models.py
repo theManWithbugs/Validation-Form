@@ -1,6 +1,5 @@
 from tkinter import CASCADE
 from django.conf import settings
-from django.utils import timezone
 from django.db import models
 from core.choices import *  
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -84,6 +83,7 @@ class Cidadao(models.Model):
                     max_length=19,
                     blank=False,
                     null=False,
+                    default='Não informado',
                      )
     data_nascimento = models.DateField(blank=False, verbose_name='Data de Nascimento:')
     idade = models.CharField(max_length=3, verbose_name='Idade:')  
@@ -93,7 +93,7 @@ class Cidadao(models.Model):
     estado_civil = models.CharField(choices=c_estado_civil,
                                     default='selecione',
                                     max_length=20)
-    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, blank=False, null=False, verbose_name='Remuneração:')
+    remuneracao = models.CharField(max_length=20, choices=c_remuneracao, default='Não informado', verbose_name='Remuneração:')
     renda_individual = models.CharField(max_length=50, choices=c_renda_invidual, null=True, blank=True)
     cor_raca = models.CharField(max_length=8, choices=c_raca_cor, verbose_name='Cor/Raça:', blank=False, null=False)
     escolaridade = models.CharField(
@@ -529,6 +529,9 @@ class ViolenDomest(models.Model):
                                             verbose_name='Tecnico reponsavel:',
                                             max_length=80
                                             )
+    
+    
+
     
     def __str__(self):
         return f"Historico Violência domestica {self.cidadao.cpf}"

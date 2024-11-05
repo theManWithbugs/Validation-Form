@@ -1,10 +1,6 @@
-from urllib import request
 from django import forms
-from django.shortcuts import redirect, render
 from .models import *
-from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-import re
 
 #classe de validação de cpf
 class CPFValidationForm(forms.Form):
