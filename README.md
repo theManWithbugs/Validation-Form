@@ -1,1 +1,1 @@
-![img_ciap](D:\projetos\django\ciap\static\img)
+![img_ciap](https://scontent-gru1-2.xx.fbcdn.net/v/t39.30808-6/277575861_291225576519749_4869599924004648825_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=wRcYUkrzeXsQ7kNvgHPMEP5&_nc_zt=23&_nc_ht=scontent-gru1-2.xx&_nc_gid=AG4W0fUxMPTwlKBo6SCk0Wz&oh=00_AYDm17bPry3dEFOMju0zmNhWznNx-ydNPRtLDcBMSI60_w&oe=67313AF8)
