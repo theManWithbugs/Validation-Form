@@ -50,6 +50,13 @@ img {
 }
 
 .card {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.card_home {
+    height: 100%;
+    width: 100%;
     background-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -85,8 +92,28 @@ img {
 }
 
 #home_location {
+    width: auto;
     margin-top: 70px;
 }
+
+@media screen and (max-width: 1080px) {
+    .card_home {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1080px) {
+    .card_home {
+        width: 100%; 
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .card_home {
+        width: 85%; 
+    }
+}
+
 
 
 
