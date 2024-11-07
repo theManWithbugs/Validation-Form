@@ -85,8 +85,8 @@ class Cidadao(models.Model):
                     null=False,
                     default='Não informado',
                      )
-    data_nascimento = models.DateField(blank=False, verbose_name='Data de Nascimento:')
-    idade = models.CharField(max_length=3, verbose_name='Idade:')  
+    data_nascimento = models.DateField(blank=False, verbose_name='Data de Nascimento: Ex:(dia/mês/ano)')
+    idade = models.CharField(max_length=2, verbose_name='Idade:')  
     naturalidade = models.CharField(max_length=50, verbose_name='Naturalidade:')
     sexo = models.CharField(max_length=1, choices=c_sexo, blank=False,  null=False, verbose_name='Sexo:')
     mae = models.CharField(max_length=50, verbose_name='Nome da mãe:')
