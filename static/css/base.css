@@ -99,6 +99,10 @@ img {
     margin-top: 70px;
 }
 
+.sidebar {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.668), rgb(128, 128, 128));
+}
+
 @media screen and (max-width: 500px) {
     .card_home {
         width: 100%;
